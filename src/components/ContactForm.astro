@@ -5,7 +5,14 @@ const perks = [
   'Gestión completa del cambio',
 ];
 
-const services = ['Luz', 'Gas', 'Internet', 'Móvil', 'Varios servicios'];
+const clientTypes = [
+  { label: 'Autónomo', value: 'autonomo' },
+  { label: 'Empresa', value: 'empresa' },
+  { label: 'Particular', value: 'particular' },
+];
+
+const crmEndpoint = import.meta.env.PUBLIC_CRM_LANDING_LEADS_ENDPOINT ?? 'https://TU_DOMINIO_CRM/PTR-Sales/api/public/api_landing_leads.php?action=create';
+const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
 ---
 
 <section class="contact section" id="contacto">
@@ -31,7 +38,15 @@ const services = ['Luz', 'Gas', 'Internet', 'Móvil', 'Varios servicios'];
         </div>
 
         <div class="contact-form-wrap">
-          <form class="contact-form" method="post" data-contact-form>
+          <form
+            class="contact-form"
+            method="post"
+            enctype="multipart/form-data"
+            data-contact-form
+            data-endpoint={crmEndpoint}
+            data-api-key={crmApiKey}
+            data-source="ahorrasinlios"
+          >
             <div class="contact-field">
               <label class="label-s contact-label" for="contact-name">Nombre completo</label>
               <input
@@ -70,12 +85,50 @@ const services = ['Luz', 'Gas', 'Internet', 'Móvil', 'Varios servicios'];
             </div>
 
             <div class="contact-field">
-              <label class="label-s contact-label" for="contact-service">Servicio principal</label>
-              <select class="contact-input" id="contact-service" name="service" required>
-                {services.map((service) => (
-                  <option value={service}>{service}</option>
+              <label class="label-s contact-label" for="contact-client-type">Tipo de cliente</label>
+              <select class="contact-input" id="contact-client-type" name="client_type" required>
+                <option value="" disabled selected>Selecciona una opción</option>
+                {clientTypes.map((type) => (
+                  <option value={type.value}>{type.label}</option>
                 ))}
               </select>
+            </div>
+
+            <div class="contact-field">
+              <label class="label-s contact-label" for="contact-consumption">Consumo aproximado</label>
+              <input
+                class="contact-input"
+                id="contact-consumption"
+                name="approximate_consumption"
+                type="text"
+                placeholder="Ej. 120€/mes o 2.800 kWh/año"
+              />
+            </div>
+
+            <fieldset class="contact-field contact-fieldset">
+              <legend class="label-s contact-label">Servicios de interés</legend>
+              <div class="contact-checks">
+                <label class="contact-check">
+                  <input type="checkbox" name="service_luz" value="1" />
+                  <span>Luz</span>
+                </label>
+                <label class="contact-check">
+                  <input type="checkbox" name="service_gas" value="1" />
+                  <span>Gas</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <div class="contact-field">
+              <label class="label-s contact-label" for="contact-invoice">Subir factura</label>
+              <input
+                class="contact-input contact-file"
+                id="contact-invoice"
+                name="invoice"
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
+              />
+              <p class="label-xs text-muted contact-file-hint">PDF, JPG o PNG. Máximo 10 MB.</p>
             </div>
 
             <button class="btn-primary contact-submit" type="submit">Solicitar revisión</button>
@@ -186,6 +239,32 @@ const services = ['Luz', 'Gas', 'Internet', 'Móvil', 'Varios servicios'];
     gap: 0.5rem;
   }
 
+  .contact-fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .contact-checks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .contact-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-night);
+    cursor: pointer;
+  }
+
+  .contact-check input {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--color-green);
+  }
+
   .contact-label {
     color: var(--color-night);
   }
@@ -206,6 +285,16 @@ const services = ['Luz', 'Gas', 'Internet', 'Móvil', 'Varios servicios'];
     box-shadow: 0 0 0 0.2rem rgba(121, 184, 42, 0.14);
   }
 
+  .contact-file {
+    padding: 0.5rem 0;
+    border: none;
+    background: transparent;
+  }
+
+  .contact-file-hint {
+    margin: 0;
+  }
+
   .contact-submit {
     width: 100%;
     margin-top: 0.5rem;
@@ -224,6 +313,10 @@ const services = ['Luz', 'Gas', 'Internet', 'Móvil', 'Varios servicios'];
 
   .contact-status.is-success {
     color: #1b7f45;
+  }
+
+  .contact-status.is-error {
+    color: var(--color-error);
   }
 
   .contact-disclaimer {
@@ -262,28 +355,72 @@ const services = ['Luz', 'Gas', 'Internet', 'Móvil', 'Varios servicios'];
   if (form instanceof HTMLFormElement) {
     const status = form.querySelector('[data-form-status]');
     const submit = form.querySelector('button[type="submit"]');
+    const submitLabel = submit instanceof HTMLButtonElement ? submit.textContent : 'Enviar';
 
-    form.addEventListener('submit', (event) => {
+    const setStatus = (message, type) => {
+      if (!(status instanceof HTMLElement)) return;
+      status.textContent = message;
+      status.className = `label-s contact-status is-visible is-${type}`;
+    };
+
+    form.addEventListener('submit', async (event) => {
       event.preventDefault();
+
+      const endpoint = form.dataset.endpoint;
+      const apiKey = form.dataset.apiKey;
+      const source = form.dataset.source || 'ahorrasinlios';
+
+      if (!endpoint || !apiKey) {
+        setStatus('El formulario no está configurado. Inténtalo más tarde.', 'error');
+        return;
+      }
+
+      const data = new FormData(form);
+      const body = new FormData();
+      body.set('source', source);
+      body.set('full_name', String(data.get('name') ?? '').trim());
+      body.set('phone', String(data.get('phone') ?? '').trim());
+      body.set('email', String(data.get('email') ?? '').trim());
+      body.set('client_type', String(data.get('client_type') ?? '').trim());
+
+      const consumption = String(data.get('approximate_consumption') ?? '').trim();
+      if (consumption) body.set('approximate_consumption', consumption);
+
+      if (data.get('service_luz')) body.set('service_luz', '1');
+      if (data.get('service_gas')) body.set('service_gas', '1');
+
+      const invoice = data.get('invoice');
+      if (invoice instanceof File && invoice.size > 0) {
+        body.set('invoice', invoice);
+      }
 
       if (submit instanceof HTMLButtonElement) {
         submit.disabled = true;
-        submit.textContent = 'Solicitud enviada';
+        submit.textContent = 'Enviando...';
       }
 
-      if (status instanceof HTMLElement) {
-        status.textContent = 'Gracias. Te contactaremos en breve para revisar tu factura.';
-        status.className = 'label-s contact-status is-visible is-success';
-      }
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'X-API-Key': apiKey },
+          body,
+        });
+        const result = await response.json().catch(() => null);
 
-      form.reset();
+        if (!response.ok || result?.estado !== 1) {
+          throw new Error(result?.exception || result?.message || 'No se pudo enviar el formulario');
+        }
 
-      window.setTimeout(() => {
+        form.reset();
+        setStatus('Solicitud enviada correctamente. Te contactaremos en breve.', 'success');
+      } catch (error) {
+        setStatus(error instanceof Error ? error.message : 'No se pudo enviar el formulario', 'error');
+      } finally {
         if (submit instanceof HTMLButtonElement) {
           submit.disabled = false;
-          submit.textContent = 'Solicitar revisión';
+          submit.textContent = submitLabel ?? 'Solicitar revisión';
         }
-      }, 1800);
+      }
     });
   }
 </script>
