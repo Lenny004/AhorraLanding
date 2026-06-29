@@ -174,23 +174,13 @@ ul {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.625rem;
   min-width: 0;
-  font-size: var(--size-lg);
-  font-weight: 800;
-  letter-spacing: -0.02em;
 }
 
-.brand-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: var(--radius-full);
-  color: #ffffff;
-  background: var(--color-green);
-  box-shadow: var(--shadow-soft);
+.brand img {
+  display: block;
+  height: var(--brand-logo-height, 3rem);
+  width: auto;
 }
 
 .section {
