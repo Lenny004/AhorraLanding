@@ -1,15 +1,37 @@
+---
+import type { Vertical } from '../lib/vertical';
+
+interface Props {
+  vertical?: Vertical;
+}
+
+const { vertical = 'energy' } = Astro.props;
+
+const copy = {
+  energy: {
+    lead: 'Nuestros usuarios ahorran de media hasta 300€ anuales optimizando luz y gas.',
+    pill: 'Al año en energía',
+  },
+  telecom: {
+    lead: 'Nuestros usuarios ahorran de media hasta 200€ anuales optimizando fibra y móvil.',
+    pill: 'Al año en conectividad',
+  },
+}[vertical];
+
+const amounts = { energy: '300€', telecom: '200€' };
+---
 <section class="savings section">
   <div class="savings-glow" aria-hidden="true"></div>
   <div class="container savings-inner" data-reveal>
     <h2 class="display-xl savings-title">¿Cuánto podrías ahorrar al año?</h2>
     <p class="body-lg text-inverse savings-lead">
-      Nuestros usuarios ahorran de media hasta 300€ anuales agrupando sus servicios.
+      {copy.lead}
     </p>
 
     <div class="savings-card">
       <span class="label-xs savings-label">Ahorro medio estimado</span>
-      <span class="savings-amount">300€</span>
-      <span class="label-s savings-pill">Al año en tu hogar</span>
+      <span class="savings-amount">{amounts[vertical]}</span>
+      <span class="label-s savings-pill">{copy.pill}</span>
     </div>
   </div>
 </section>

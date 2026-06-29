@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { verticalMeta } from '../lib/vertical';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Comparison from '../components/Comparison.astro';
+import Savings from '../components/Savings.astro';
+import Services from '../components/Services.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import Testimonials from '../components/Testimonials.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Footer from '../components/Footer.astro';
+
+const meta = verticalMeta.telecom;
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <Header vertical="telecom" />
+  <Hero vertical="telecom" />
+  <Comparison />
+  <Savings vertical="telecom" />
+  <Services vertical="telecom" />
+  <HowItWorks />
+  <Testimonials vertical="telecom" />
+  <ContactForm vertical="telecom" />
+  <Footer contactHref="/movil-internet#contacto" />
+</BaseLayout>

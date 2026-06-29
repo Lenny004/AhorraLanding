@@ -1,4 +1,31 @@
 ---
+import type { Vertical } from '../lib/vertical';
+
+interface Props {
+  vertical?: Vertical;
+}
+
+const { vertical = 'energy' } = Astro.props;
+
+const copy = {
+  energy: {
+    kicker: 'Elige tranquilidad',
+    title: 'Ahorra en luz y gas',
+    titleAccent: 'sin pelearte con las compañías.',
+    lead: 'Comparamos tarifas de luz y gas por ti. Te explicamos las opciones en claro y gestionamos el cambio sin líos, sin coste y sin compromiso.',
+    billTitle: 'Factura revisada',
+    billText: 'Detectamos oportunidades reales de ahorro en energía.',
+  },
+  telecom: {
+    kicker: 'Conecta sin pagar de más',
+    title: 'Ahorra en móvil e internet',
+    titleAccent: 'con el plan que realmente necesitas.',
+    lead: 'Comparamos fibra y tarifas móviles por ti. Sin servicios añadidos que encarecen la factura, sin líos y sin compromiso.',
+    billTitle: 'Tarifa revisada',
+    billText: 'Detectamos si pagas de más en fibra o datos móviles.',
+  },
+}[vertical];
+
 const metrics = [
   { value: '+15.000', label: 'Familias asesoradas' },
   { value: '22%', label: 'Ahorro medio anual' },
@@ -18,12 +45,12 @@ const heroImage =
   <div class="container">
     <div class="hero-grid">
       <div class="hero-content" data-reveal>
-        <span class="label-s hero-kicker">Elige tranquilidad</span>
+        <span class="label-s hero-kicker">{copy.kicker}</span>
         <h1 class="display-xl">
-          Ahorra en tus facturas <span class="text-gradient">sin pelearte con las compañías.</span>
+          {copy.title} <span class="text-gradient">{copy.titleAccent}</span>
         </h1>
         <p class="body-lg text-muted hero-lead">
-          Comparamos luz, gas, internet y móvil por ti. Te explicamos las opciones en claro y gestionamos el cambio sin líos, sin coste y sin compromiso.
+          {copy.lead}
         </p>
 
         <div class="hero-actions">
@@ -49,8 +76,8 @@ const heroImage =
           <div class="hero-card-icon hero-card-icon--light">
             <span class="material-symbols-outlined">receipt_long</span>
           </div>
-          <h3 class="label-s hero-card-title">Factura revisada</h3>
-          <p class="label-xs text-muted">Detectamos oportunidades reales de ahorro.</p>
+          <h3 class="label-s hero-card-title">{copy.billTitle}</h3>
+          <p class="label-xs text-muted">{copy.billText}</p>
         </div>
 
         <div class="hero-card hero-card--saving">

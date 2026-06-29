@@ -1,26 +1,245 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
-import Hero from '../components/Hero.astro';
-import Comparison from '../components/Comparison.astro';
-import Savings from '../components/Savings.astro';
-import Services from '../components/Services.astro';
-import HowItWorks from '../components/HowItWorks.astro';
-import Testimonials from '../components/Testimonials.astro';
-import Calculator from '../components/Calculator.astro';
-import ContactForm from '../components/ContactForm.astro';
+import Brand from '../components/Brand.astro';
 import Footer from '../components/Footer.astro';
+import { verticalLabels, verticalPaths } from '../lib/vertical';
+
+const options = [
+  {
+    vertical: 'energy' as const,
+    href: verticalPaths.energy,
+    label: verticalLabels.energy,
+    description: 'Comparamos tarifas de luz y gas, revisamos tu factura y gestionamos el cambio por ti.',
+    icon: 'bolt',
+    accent: 'hub-card--energy',
+  },
+  {
+    vertical: 'telecom' as const,
+    href: verticalPaths.telecom,
+    label: verticalLabels.telecom,
+    description: 'Fibra y móvil ajustados a tu consumo real, sin servicios de más ni letra pequeña.',
+    icon: 'wifi',
+    accent: 'hub-card--telecom',
+  },
+];
 ---
 
-<BaseLayout>
-  <Header />
-  <Hero />
-  <Comparison />
-  <Savings />
-  <Services />
-  <HowItWorks />
-  <Testimonials />
-  <Calculator />
-  <ContactForm />
-  <Footer />
+<BaseLayout
+  title="Ahorra Sin Líos - Elige tu servicio"
+  description="Comparamos luz, gas, internet y móvil por ti. Elige qué quieres optimizar y empieza a ahorrar sin líos."
+>
+  <header class="hub-header">
+    <div class="container hub-header-inner">
+      <a href="/" class="brand" aria-label="Ahorra Sin Líos">
+        <Brand />
+      </a>
+    </div>
+  </header>
+
+  <main class="hub">
+    <div class="hub-bg" aria-hidden="true">
+      <div class="hub-bg-blob hub-bg-blob--top"></div>
+      <div class="hub-bg-blob hub-bg-blob--bottom"></div>
+    </div>
+
+    <div class="container hub-inner">
+      <header class="hub-intro" data-reveal>
+        <span class="label-s hub-kicker">Sin líos, sin compromiso</span>
+        <h1 class="display-xl hub-title">
+          ¿Qué quieres <span class="text-gradient">optimizar hoy?</span>
+        </h1>
+        <p class="body-lg text-muted hub-lead">
+          Elige el servicio que quieres revisar. Te llevamos a una página dedicada con todo lo que necesitas.
+        </p>
+      </header>
+
+      <div class="hub-grid">
+        {options.map((option, i) => (
+          <a
+            href={option.href}
+            class={`hub-card card-lift ${option.accent}`}
+            data-reveal
+            style={`--reveal-delay: ${i * 100}ms`}
+          >
+            <div class="hub-card-icon">
+              <span class="material-symbols-outlined">{option.icon}</span>
+            </div>
+            <h2 class="headline-lg hub-card-title">{option.label}</h2>
+            <p class="body-md text-muted hub-card-text">{option.description}</p>
+            <span class="label-s hub-card-cta">
+              Empezar
+              <span class="material-symbols-outlined hub-card-arrow" aria-hidden="true">arrow_forward</span>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </main>
+
+  <Footer contactHref="/luz-gas#contacto" />
 </BaseLayout>
+
+<style>
+  .hub-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: rgba(247, 247, 244, 0.92);
+    backdrop-filter: blur(0.75rem);
+    border-bottom: 1px solid rgba(226, 226, 222, 0.72);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .hub-header-inner {
+    display: flex;
+    align-items: center;
+    padding-block: 1rem;
+  }
+
+  .hub {
+    position: relative;
+    overflow: hidden;
+    min-height: calc(100vh - 5rem);
+    padding-block: 6rem 4rem;
+    background: var(--color-bg);
+  }
+
+  .hub-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .hub-bg-blob {
+    position: absolute;
+    border-radius: var(--radius-full);
+    filter: blur(4rem);
+    opacity: 0.55;
+  }
+
+  .hub-bg-blob--top {
+    top: -10%;
+    right: -8%;
+    width: 55%;
+    height: 80%;
+    background: linear-gradient(to bottom left, rgba(121, 184, 42, 0.18), transparent);
+  }
+
+  .hub-bg-blob--bottom {
+    bottom: -8%;
+    left: -8%;
+    width: 48%;
+    height: 50%;
+    background: linear-gradient(to top right, rgba(231, 184, 46, 0.22), transparent);
+  }
+
+  .hub-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hub-intro {
+    max-width: 40rem;
+    margin-bottom: 3rem;
+  }
+
+  .hub-kicker {
+    display: inline-block;
+    margin-bottom: 1.25rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: var(--radius-full);
+    color: var(--color-night);
+    background: var(--color-cream);
+    border: 1px solid var(--color-border);
+  }
+
+  .hub-title {
+    margin-bottom: 1rem;
+    color: var(--color-night);
+  }
+
+  .hub-lead {
+    max-width: 34rem;
+  }
+
+  .hub-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .hub-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem;
+    border-radius: var(--radius-brand);
+    background: #ffffff;
+    border: 1px solid var(--color-border);
+    color: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .hub-card:hover {
+    border-color: rgba(121, 184, 42, 0.35);
+  }
+
+  .hub-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: var(--radius-full);
+    color: var(--color-gold);
+    background: var(--color-cream);
+  }
+
+  .hub-card-icon .material-symbols-outlined {
+    font-size: var(--size-lg);
+    font-variation-settings: 'FILL' 1;
+  }
+
+  .hub-card--telecom .hub-card-icon {
+    color: var(--color-night);
+    background: rgba(231, 184, 46, 0.28);
+  }
+
+  .hub-card-title {
+    color: var(--color-night);
+  }
+
+  .hub-card-text {
+    flex: 1;
+  }
+
+  .hub-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--color-green);
+    font-weight: 700;
+  }
+
+  .hub-card-arrow {
+    font-size: var(--size-m);
+    transition: translate 0.2s ease;
+  }
+
+  .hub-card:hover .hub-card-arrow {
+    translate: 0.25rem 0;
+  }
+
+  @media (min-width: 48rem) {
+    .hub-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .hub-intro {
+      margin-bottom: 4rem;
+    }
+  }
+</style>

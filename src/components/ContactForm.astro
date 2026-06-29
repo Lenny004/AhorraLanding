@@ -1,4 +1,12 @@
 ---
+import type { Vertical } from '../lib/vertical';
+
+interface Props {
+  vertical?: Vertical;
+}
+
+const { vertical = 'energy' } = Astro.props;
+
 const perks = [
   'Revisión gratuita',
   'Sin compromiso',
@@ -13,6 +21,9 @@ const clientTypes = [
 
 const crmEndpoint = import.meta.env.PUBLIC_CRM_LANDING_LEADS_ENDPOINT ?? 'https://TU_DOMINIO_CRM/PTR-Sales/api/public/api_landing_leads.php?action=create';
 const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
+
+const consumptionPlaceholder =
+  vertical === 'energy' ? 'Ej. 120€/mes o 2.800 kWh/año' : 'Ej. 45€/mes fibra o 25€/línea móvil';
 ---
 
 <section class="contact section" id="contacto">
@@ -46,6 +57,7 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
             data-endpoint={crmEndpoint}
             data-api-key={crmApiKey}
             data-source="ahorrasinlios"
+            data-vertical={vertical}
           >
             <div class="contact-field">
               <label class="label-s contact-label" for="contact-name">Nombre completo</label>
@@ -101,21 +113,36 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
                 id="contact-consumption"
                 name="approximate_consumption"
                 type="text"
-                placeholder="Ej. 120€/mes o 2.800 kWh/año"
+                placeholder={consumptionPlaceholder}
               />
             </div>
 
             <fieldset class="contact-field contact-fieldset">
               <legend class="label-s contact-label">Servicios de interés</legend>
               <div class="contact-checks">
-                <label class="contact-check">
-                  <input type="checkbox" name="service_luz" value="1" />
-                  <span>Luz</span>
-                </label>
-                <label class="contact-check">
-                  <input type="checkbox" name="service_gas" value="1" />
-                  <span>Gas</span>
-                </label>
+                {vertical === 'energy' ? (
+                  <>
+                    <label class="contact-check">
+                      <input type="checkbox" name="service_luz" value="1" />
+                      <span>Luz</span>
+                    </label>
+                    <label class="contact-check">
+                      <input type="checkbox" name="service_gas" value="1" />
+                      <span>Gas</span>
+                    </label>
+                  </>
+                ) : (
+                  <>
+                    <label class="contact-check">
+                      <input type="checkbox" name="service_internet" value="1" />
+                      <span>Internet</span>
+                    </label>
+                    <label class="contact-check">
+                      <input type="checkbox" name="service_movil" value="1" />
+                      <span>Móvil</span>
+                    </label>
+                  </>
+                )}
               </div>
             </fieldset>
 
@@ -704,6 +731,9 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
         approximateConsumption: consumption || calcFields?.approximateConsumption,
         serviceLuz: Boolean(data.get('service_luz')) || Boolean(calcFields?.serviceLuz),
         serviceGas: Boolean(data.get('service_gas')) || Boolean(calcFields?.serviceGas),
+        serviceInternet: Boolean(data.get('service_internet')),
+        serviceMovil: Boolean(data.get('service_movil')),
+        vertical: form.dataset.vertical || 'energy',
         postalCode: calcFields?.postalCode,
         monthlyBill: calcFields?.monthlyBill,
         savingsPercent: calcFields?.savingsPercent,

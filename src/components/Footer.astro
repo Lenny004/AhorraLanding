@@ -1,10 +1,16 @@
 ---
 import Brand from './Brand.astro';
 
+interface Props {
+  contactHref?: string;
+}
+
+const { contactHref = '/luz-gas#contacto' } = Astro.props;
+
 const legalLinks = [
   { href: '/privacidad', label: 'Privacidad' },
   { href: '/aviso-legal', label: 'Aviso Legal' },
-  { href: '/#contacto', label: 'Contacto' },
+  { href: contactHref, label: 'Contacto' },
 ];
 ---
 

@@ -1,27 +1,62 @@
 ---
-const testimonials = [
-  {
-    quote: 'Me revisaron la factura de luz y en una llamada entendí por fin qué estaba pagando. El cambio fue sencillo y sin presión.',
-    initial: 'M',
-    name: 'María G.',
-    role: 'Cliente, Madrid',
-    tone: 'testimonials-avatar--green',
-  },
-  {
-    quote: 'Tenía internet, móvil y luz por separado. Me propusieron una alternativa clara y ahora tengo todo controlado.',
-    initial: 'J',
-    name: 'Javier R.',
-    role: 'Cliente, Valencia',
-    tone: 'testimonials-avatar--gold',
-  },
-  {
-    quote: 'Lo mejor fue no tener que llamar a ninguna compañía. Me explicaron la oferta y ellos gestionaron el cambio.',
-    initial: 'L',
-    name: 'Laura P.',
-    role: 'Cliente, Sevilla',
-    tone: 'testimonials-avatar--cream',
-  },
-];
+import type { Vertical } from '../lib/vertical';
+
+interface Props {
+  vertical?: Vertical;
+}
+
+const { vertical = 'energy' } = Astro.props;
+
+const allTestimonials = {
+  energy: [
+    {
+      quote: 'Me revisaron la factura de luz y en una llamada entendí por fin qué estaba pagando. El cambio fue sencillo y sin presión.',
+      initial: 'M',
+      name: 'María G.',
+      role: 'Cliente, Madrid',
+      tone: 'testimonials-avatar--green',
+    },
+    {
+      quote: 'Tenía luz y gas por separado y pagaba de más. Me propusieron una tarifa clara y ahora ahorro cada mes.',
+      initial: 'J',
+      name: 'Javier R.',
+      role: 'Cliente, Valencia',
+      tone: 'testimonials-avatar--gold',
+    },
+    {
+      quote: 'Lo mejor fue no tener que llamar a ninguna compañía de energía. Me explicaron la oferta y ellos gestionaron el cambio.',
+      initial: 'L',
+      name: 'Laura P.',
+      role: 'Cliente, Sevilla',
+      tone: 'testimonials-avatar--cream',
+    },
+  ],
+  telecom: [
+    {
+      quote: 'Pagaba por fibra de 1 Gb y apenas la usaba. Me ajustaron el plan y ahora pago la mitad sin notar diferencia.',
+      initial: 'A',
+      name: 'Ana S.',
+      role: 'Cliente, Barcelona',
+      tone: 'testimonials-avatar--green',
+    },
+    {
+      quote: 'Tenía internet, móvil y líneas extra que no usábamos. Me propusieron una alternativa clara y ahora tengo todo controlado.',
+      initial: 'J',
+      name: 'Javier R.',
+      role: 'Cliente, Valencia',
+      tone: 'testimonials-avatar--gold',
+    },
+    {
+      quote: 'Lo mejor fue no tener que comparar operadoras. Me explicaron las opciones y ellos gestionaron el cambio sin líos.',
+      initial: 'L',
+      name: 'Laura P.',
+      role: 'Cliente, Sevilla',
+      tone: 'testimonials-avatar--cream',
+    },
+  ],
+};
+
+const testimonials = allTestimonials[vertical];
 ---
 
 <section class="testimonials section" id="testimonios">

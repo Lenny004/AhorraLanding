@@ -61,6 +61,9 @@ export function buildLeadBody(options: {
   approximateConsumption?: string;
   serviceLuz?: boolean;
   serviceGas?: boolean;
+  serviceInternet?: boolean;
+  serviceMovil?: boolean;
+  vertical?: string;
   postalCode?: string;
   monthlyBill?: number;
   savingsPercent?: number;
@@ -86,6 +89,9 @@ export function buildLeadBody(options: {
   if (options.monthlySaving != null) body.set('estimated_monthly_saving', options.monthlySaving.toFixed(2));
 
   const extra: Record<string, unknown> = {};
+  if (options.vertical) extra.vertical = options.vertical;
+  if (options.serviceInternet) extra.service_internet = true;
+  if (options.serviceMovil) extra.service_movil = true;
   if (options.calculatorData) {
     extra.calculator = options.calculatorData;
     if (options.leadOrigin === 'both' && options.calculatorData.submittedToCrm) {

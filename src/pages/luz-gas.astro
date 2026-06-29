@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { verticalMeta } from '../lib/vertical';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Comparison from '../components/Comparison.astro';
+import Savings from '../components/Savings.astro';
+import Services from '../components/Services.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import Testimonials from '../components/Testimonials.astro';
+import Calculator from '../components/Calculator.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Footer from '../components/Footer.astro';
+
+const meta = verticalMeta.energy;
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <Header vertical="energy" />
+  <Hero vertical="energy" />
+  <Comparison />
+  <Savings vertical="energy" />
+  <Services vertical="energy" />
+  <HowItWorks />
+  <Testimonials vertical="energy" />
+  <Calculator />
+  <ContactForm vertical="energy" />
+  <Footer contactHref="/luz-gas#contacto" />
+</BaseLayout>

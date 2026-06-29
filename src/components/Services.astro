@@ -1,36 +1,62 @@
 ---
-const services = [
-  {
-    title: 'Luz',
-    description: 'Revisamos tu potencia y consumo para encontrar la tarifa que mejor se adapte a tus horas de mayor uso.',
-    icon: 'lightbulb',
+import type { Vertical } from '../lib/vertical';
+
+interface Props {
+  vertical?: Vertical;
+}
+
+const { vertical = 'energy' } = Astro.props;
+
+const allServices = {
+  energy: [
+    {
+      title: 'Luz',
+      description: 'Revisamos tu potencia y consumo para encontrar la tarifa que mejor se adapte a tus horas de mayor uso.',
+      icon: 'lightbulb',
+    },
+    {
+      title: 'Gas',
+      description: 'Aseguramos que no pagues de más en calefacción y agua caliente, comparando ofertas reales del mercado.',
+      icon: 'local_fire_department',
+    },
+  ],
+  telecom: [
+    {
+      title: 'Internet',
+      description: 'Fibra óptica a la velocidad que realmente necesitas, sin servicios añadidos que encarecen la factura.',
+      icon: 'wifi',
+    },
+    {
+      title: 'Móvil',
+      description: 'Planes de datos y llamadas ajustados a tu consumo real para toda la familia.',
+      icon: 'smartphone',
+    },
+  ],
+};
+
+const headers = {
+  energy: {
+    title: 'Optimizamos tu energía en casa',
+    subtitle: 'Análisis de luz y gas para maximizar tu ahorro.',
   },
-  {
-    title: 'Gas',
-    description: 'Aseguramos que no pagues de más en calefacción y agua caliente, comparando ofertas reales del mercado.',
-    icon: 'local_fire_department',
+  telecom: {
+    title: 'Optimizamos tu conectividad',
+    subtitle: 'Fibra y móvil ajustados a lo que realmente usas.',
   },
-  {
-    title: 'Internet',
-    description: 'Fibra óptica a la velocidad que realmente necesitas, sin servicios añadidos que encarecen la factura.',
-    icon: 'wifi',
-  },
-  {
-    title: 'Móvil',
-    description: 'Planes de datos y llamadas ajustados a tu consumo real para toda la familia.',
-    icon: 'smartphone',
-  },
-];
+};
+
+const services = allServices[vertical];
+const header = headers[vertical];
 ---
 
 <section class="services section" id="servicios">
   <div class="container">
     <header class="section-header" data-reveal>
-      <h2 class="display-xl">Optimizamos todos tus servicios</h2>
-      <p class="body-lg text-muted">Análisis integral para maximizar tu ahorro en casa.</p>
+      <h2 class="display-xl">{header.title}</h2>
+      <p class="body-lg text-muted">{header.subtitle}</p>
     </header>
 
-    <div class="services-grid">
+    <div class="services-grid services-grid--duo">
       {services.map((service, i) => (
         <article class="services-card card-lift" data-reveal style={`--reveal-delay: ${i * 100}ms`}>
           <div class="services-icon">
@@ -106,8 +132,10 @@ const services = [
   }
 
   @media (min-width: 64rem) {
-    .services-grid {
-      grid-template-columns: repeat(4, 1fr);
+    .services-grid--duo {
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 56rem;
+      margin-inline: auto;
     }
   }
 </style>

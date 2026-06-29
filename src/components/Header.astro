@@ -1,12 +1,23 @@
 ---
 import Brand from './Brand.astro';
+import type { Vertical } from '../lib/vertical';
+import { verticalLabels, verticalPaths } from '../lib/vertical';
+
+interface Props {
+  vertical?: Vertical;
+}
+
+const { vertical = 'energy' } = Astro.props;
+
+const otherVertical: Vertical = vertical === 'energy' ? 'telecom' : 'energy';
 
 const navLinks = [
   { href: '#servicios', label: 'Servicios' },
   { href: '#como-funciona', label: 'Cómo funciona' },
   { href: '#testimonios', label: 'Opiniones' },
   { href: '#comparativa', label: 'Comparativa' },
-  { href: '#calculadora', label: 'Calculadora' },
+  ...(vertical === 'energy' ? [{ href: '#calculadora', label: 'Calculadora' }] : []),
+  { href: verticalPaths[otherVertical], label: verticalLabels[otherVertical] },
 ];
 ---
 
