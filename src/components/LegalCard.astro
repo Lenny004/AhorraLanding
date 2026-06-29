@@ -1,0 +1,17 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<article class="legal-card">
+  <header class="legal-card-header">
+    <a href="/" class="legal-card-back">← Volver al inicio</a>
+    <h1 class="display-xl">{title}</h1>
+  </header>
+  <div class="legal-card-body">
+    <slot />
+  </div>
+</article>

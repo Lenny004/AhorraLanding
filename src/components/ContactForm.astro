@@ -1,0 +1,289 @@
+---
+const perks = [
+  'Revisión gratuita',
+  'Sin compromiso',
+  'Gestión completa del cambio',
+];
+
+const services = ['Luz', 'Gas', 'Internet', 'Móvil', 'Varios servicios'];
+---
+
+<section class="contact section" id="contacto">
+  <div class="container">
+    <div class="contact-panel" data-reveal>
+      <div class="contact-glow" aria-hidden="true"></div>
+
+      <div class="contact-grid">
+        <div class="contact-intro">
+          <h2 class="display-xl contact-title">Revisamos tu factura gratis</h2>
+          <p class="body-lg text-inverse contact-lead">
+            Déjanos tus datos y un asesor se pondrá en contacto contigo para analizar tu caso y explicarte cómo podrías ahorrar.
+          </p>
+
+          <ul class="contact-perks">
+            {perks.map((perk) => (
+              <li class="contact-perk">
+                <span class="material-symbols-outlined contact-perk-icon" aria-hidden="true">check_circle</span>
+                <span class="body-md">{perk}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="contact-form-wrap">
+          <form class="contact-form" method="post" data-contact-form>
+            <div class="contact-field">
+              <label class="label-s contact-label" for="contact-name">Nombre completo</label>
+              <input
+                class="contact-input"
+                id="contact-name"
+                name="name"
+                type="text"
+                placeholder="Ej. Ana Pérez"
+                required
+              />
+            </div>
+
+            <div class="contact-row">
+              <div class="contact-field">
+                <label class="label-s contact-label" for="contact-phone">Teléfono</label>
+                <input
+                  class="contact-input"
+                  id="contact-phone"
+                  name="phone"
+                  type="tel"
+                  placeholder="+34 600 000 000"
+                  required
+                />
+              </div>
+              <div class="contact-field">
+                <label class="label-s contact-label" for="contact-email">Email</label>
+                <input
+                  class="contact-input"
+                  id="contact-email"
+                  name="email"
+                  type="email"
+                  placeholder="ana@email.com"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="contact-field">
+              <label class="label-s contact-label" for="contact-service">Servicio principal</label>
+              <select class="contact-input" id="contact-service" name="service" required>
+                {services.map((service) => (
+                  <option value={service}>{service}</option>
+                ))}
+              </select>
+            </div>
+
+            <button class="btn-primary contact-submit" type="submit">Solicitar revisión</button>
+
+            <p class="label-s contact-status" data-form-status aria-live="polite"></p>
+
+            <p class="label-xs text-muted contact-disclaimer">
+              Al enviar aceptas nuestra <a class="label-xs" href="/privacidad">política de privacidad</a>.
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    position: relative;
+    z-index: 2;
+    background: var(--color-bg);
+    border-radius: var(--radius-2xl);
+    margin-bottom: -5rem;
+  }
+
+  .contact-panel {
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
+    border-radius: var(--radius-2xl);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: var(--color-night);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .contact-glow {
+    position: absolute;
+    top: -6rem;
+    right: -6rem;
+    width: 24rem;
+    height: 24rem;
+    border-radius: var(--radius-full);
+    background: rgba(121, 184, 42, 0.32);
+    filter: blur(5rem);
+    pointer-events: none;
+  }
+
+  .contact-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+
+  .contact-title {
+    margin-bottom: 1.5rem;
+    color: #ffffff;
+  }
+
+  .contact-lead {
+    margin-bottom: 2rem;
+  }
+
+  .contact-perks {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .contact-perk {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: #ffffff;
+  }
+
+  .contact-perk-icon {
+    font-size: var(--size-lg);
+    color: var(--color-green);
+    font-variation-settings: 'FILL' 1;
+  }
+
+  .contact-form-wrap {
+    padding: 2rem;
+    border-radius: var(--radius-xl);
+    background: #ffffff;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .contact-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .contact-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .contact-label {
+    color: var(--color-night);
+  }
+
+  .contact-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg);
+    color: var(--color-night);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .contact-input:focus {
+    outline: none;
+    border-color: var(--color-green);
+    box-shadow: 0 0 0 0.2rem rgba(121, 184, 42, 0.14);
+  }
+
+  .contact-submit {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding-block: 1rem;
+  }
+
+  .contact-status {
+    display: none;
+    margin: 0;
+    text-align: center;
+  }
+
+  .contact-status.is-visible {
+    display: block;
+  }
+
+  .contact-status.is-success {
+    color: #1b7f45;
+  }
+
+  .contact-disclaimer {
+    text-align: center;
+  }
+
+  .contact-disclaimer a {
+    color: var(--color-green);
+    text-decoration: underline;
+  }
+
+  .contact-disclaimer a:hover {
+    color: var(--color-night);
+  }
+
+  @media (min-width: 48rem) {
+    .contact-panel {
+      padding: 4rem;
+    }
+
+    .contact-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .contact-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>
+
+<script>
+  const form = document.querySelector('[data-contact-form]');
+
+  if (form instanceof HTMLFormElement) {
+    const status = form.querySelector('[data-form-status]');
+    const submit = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      if (submit instanceof HTMLButtonElement) {
+        submit.disabled = true;
+        submit.textContent = 'Solicitud enviada';
+      }
+
+      if (status instanceof HTMLElement) {
+        status.textContent = 'Gracias. Te contactaremos en breve para revisar tu factura.';
+        status.className = 'label-s contact-status is-visible is-success';
+      }
+
+      form.reset();
+
+      window.setTimeout(() => {
+        if (submit instanceof HTMLButtonElement) {
+          submit.disabled = false;
+          submit.textContent = 'Solicitar revisión';
+        }
+      }, 1800);
+    });
+  }
+</script>

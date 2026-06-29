@@ -1,0 +1,110 @@
+---
+const steps = [
+  {
+    title: 'Envíanos tu factura',
+    text: 'Sube una foto o PDF de tu última factura a nuestra web segura.',
+  },
+  {
+    title: 'Analizamos opciones',
+    text: 'Comparamos entre las principales compañías para encontrar el mayor ahorro.',
+  },
+  {
+    title: 'Te proponemos',
+    text: 'Te explicamos la propuesta de forma clara, sin tecnicismos.',
+  },
+  {
+    title: 'Gestionamos el cambio',
+    text: 'Si aceptas, tramitamos todo. Tú solo empiezas a pagar menos.',
+  },
+];
+---
+
+<section class="steps section" id="como-funciona">
+  <div class="container">
+    <header class="section-header" data-reveal>
+      <h2 class="display-xl">Un proceso sencillo y transparente</h2>
+      <p class="body-lg text-muted">Nosotros hacemos el trabajo pesado.</p>
+    </header>
+
+    <div class="steps-grid">
+      {steps.map((step, i) => (
+        <article class="steps-item" data-reveal style={`--reveal-delay: ${i * 100}ms`}>
+          <div class={`steps-number ${i === steps.length - 1 ? 'steps-number--done' : ''}`}>
+            {i === steps.length - 1 ? <span class="material-symbols-outlined">check</span> : i + 1}
+          </div>
+          <h3 class="headline-lg steps-title">{step.title}</h3>
+          <p class="body-md text-muted">{step.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .steps {
+    background: var(--color-surface-soft);
+    border-radius: var(--radius-2xl);
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .steps-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .steps-number {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    margin-bottom: 1rem;
+    border-radius: var(--radius-full);
+    color: var(--color-night);
+    background: var(--color-cream);
+    border: 2px solid var(--color-gold);
+    font-size: var(--size-lg);
+    font-weight: 800;
+  }
+
+  .steps-number--done {
+    color: #ffffff;
+    background: var(--color-green);
+    border-color: var(--color-green);
+  }
+
+  .steps-number--done .material-symbols-outlined {
+    font-variation-settings: 'FILL' 1;
+  }
+
+  .steps-title {
+    margin-bottom: 0.5rem;
+  }
+
+  @media (min-width: 48rem) {
+    .steps-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2.5rem;
+    }
+
+    .steps-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 2rem;
+      left: calc(50% + 2.5rem);
+      width: calc(100% - 1rem);
+      height: 2px;
+      background: var(--color-border);
+    }
+  }
+</style>

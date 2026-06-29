@@ -1,0 +1,165 @@
+---
+const problems = [
+  'Horas buscando ofertas y leyendo letra pequeña.',
+  'Llamadas comerciales agresivas e insistentes.',
+  'Dudas sobre si realmente estás ahorrando a largo plazo.',
+];
+
+const solutions = [
+  'Un asesor analiza tu caso en minutos.',
+  'Gestión completa del cambio de compañía sin que tú hagas nada.',
+  'Tranquilidad de tener siempre la mejor tarifa vigente.',
+];
+---
+
+<section class="comparison section" id="comparativa">
+  <div class="container">
+    <header class="section-header" data-reveal>
+      <h2 class="display-xl">De la frustración al control</h2>
+      <p class="body-lg text-muted">Deja de perder tiempo en llamadas interminables y ofertas confusas.</p>
+    </header>
+
+    <div class="comparison-grid">
+      <article class="comparison-card card-lift" data-reveal>
+        <div class="comparison-title-row">
+          <div class="comparison-icon comparison-icon--problem">
+            <span class="material-symbols-outlined">cancel</span>
+          </div>
+          <h3 class="headline-lg">Hacerlo solo</h3>
+        </div>
+
+        <ul class="comparison-list">
+          {problems.map((item) => (
+            <li>
+              <span class="material-symbols-outlined comparison-list-icon comparison-list-icon--problem">remove</span>
+              <span class="body-md">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </article>
+
+      <article class="comparison-card comparison-card--solution card-lift" data-reveal style="--reveal-delay: 100ms">
+        <div class="comparison-card-glow" aria-hidden="true"></div>
+        <div class="comparison-title-row">
+          <div class="comparison-icon comparison-icon--solution">
+            <span class="material-symbols-outlined">check_circle</span>
+          </div>
+          <h3 class="headline-lg">Con Ahorra Sin Líos</h3>
+        </div>
+
+        <ul class="comparison-list">
+          {solutions.map((item) => (
+            <li>
+              <span class="material-symbols-outlined comparison-list-icon comparison-list-icon--solution">check</span>
+              <span class="body-md">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .comparison {
+    background: #ffffff;
+  }
+
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .comparison-card {
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
+    border-radius: var(--radius-brand);
+    background: #ffffff;
+    border: 1px solid var(--color-border);
+  }
+
+  .comparison-card--solution {
+    background: var(--color-cream);
+    border-color: var(--color-gold);
+  }
+
+  .comparison-card-glow {
+    position: absolute;
+    top: -4rem;
+    right: -4rem;
+    width: 12rem;
+    height: 12rem;
+    border-radius: var(--radius-full);
+    background: rgba(231, 184, 46, 0.22);
+    pointer-events: none;
+  }
+
+  .comparison-title-row {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .comparison-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--radius-full);
+  }
+
+  .comparison-icon .material-symbols-outlined {
+    font-variation-settings: 'FILL' 1;
+  }
+
+  .comparison-icon--problem {
+    color: var(--color-error);
+    background: var(--color-error-bg);
+  }
+
+  .comparison-icon--solution {
+    color: var(--color-green);
+    background: rgba(121, 184, 42, 0.18);
+  }
+
+  .comparison-list {
+    position: relative;
+    z-index: 1;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .comparison-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .comparison-list-icon {
+    flex: 0 0 auto;
+    margin-top: 0.2rem;
+    font-size: var(--size-s);
+  }
+
+  .comparison-list-icon--problem {
+    color: var(--color-muted-soft);
+  }
+
+  .comparison-list-icon--solution {
+    color: var(--color-green);
+  }
+
+  @media (min-width: 48rem) {
+    .comparison-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

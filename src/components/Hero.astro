@@ -1,0 +1,356 @@
+---
+const metrics = [
+  { value: '300€', label: 'Ahorro medio anual' },
+  { value: '4', label: 'Servicios optimizados' },
+  { value: '0€', label: 'Coste de revisión' },
+];
+
+const heroImage =
+  'https://lh3.googleusercontent.com/aida-public/AB6AXuDmDB6HNeJWpIdsT5_LRrfZWfBR8I1YOHUIqfJhjOnA9Vdyia9PQFIpp3gmZIreoTrv6OnhAYgfvfw7s-kcIzGrnT0iTuo08iwzIxW_2WU5V84rv6zHHiXMLf6Fk2RFCh_KeG2XYd2FMXHKNuoe4X1PcVn0k_7d_dNVXeWVvpvBRwrS5HONn9f8BOZ_jld7bRSuJukWEWqGxYnlR3ZpIbBCBd_2CJn-uIT1j1FJVeosAlJlIV0gnqOMQK9GeRWR9p6Dsv8';
+---
+
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="hero-bg-blob hero-bg-blob--top"></div>
+    <div class="hero-bg-blob hero-bg-blob--bottom"></div>
+  </div>
+
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-content" data-reveal>
+        <span class="label-s hero-kicker">Elige tranquilidad</span>
+        <h1 class="display-xl">
+          Ahorra en tus facturas <span class="text-gradient">sin pelearte con las compañías.</span>
+        </h1>
+        <p class="body-lg text-muted hero-lead">
+          Comparamos luz, gas, internet y móvil por ti. Te explicamos las opciones en claro y gestionamos el cambio sin líos, sin coste y sin compromiso.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#contacto" class="btn-primary">
+            <span class="material-symbols-outlined hero-action-icon" aria-hidden="true">attach_money</span>
+            Quiero que revisen mi factura
+          </a>
+          <a href="#como-funciona" class="btn-secondary">Ver cómo funciona</a>
+        </div>
+
+        <div class="hero-metrics">
+          {metrics.map((metric, i) => (
+            <div class="hero-metric" data-reveal style={`--reveal-delay: ${(i + 1) * 100}ms`}>
+              <div class="headline-lg hero-metric-value" data-count={metric.value}>{metric.value}</div>
+              <div class="label-xs text-muted-soft hero-metric-label">{metric.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="hero-visual" data-reveal style="--reveal-delay: 150ms">
+        <div class="hero-card hero-card--bill glass-panel">
+          <div class="hero-card-icon hero-card-icon--light">
+            <span class="material-symbols-outlined">receipt_long</span>
+          </div>
+          <h3 class="label-s hero-card-title">Factura revisada</h3>
+          <p class="label-xs text-muted">Detectamos oportunidades reales de ahorro.</p>
+        </div>
+
+        <div class="hero-card hero-card--saving">
+          <div class="hero-saving-header">
+            <div class="hero-card-icon hero-card-icon--dark">
+              <span class="material-symbols-outlined">trending_down</span>
+            </div>
+            <div>
+              <div class="label-xs hero-saving-label">Ahorro estimado</div>
+              <div class="headline-lg hero-saving-value">300€</div>
+            </div>
+          </div>
+          <div class="hero-saving-bars" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+
+        <div class="hero-image-wrap">
+          <img class="hero-image" src={heroImage} alt="Hucha verde junto a una factura y monedas" loading="eager" />
+          <div class="hero-image-overlay"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => {
+      const target = el.dataset.count ?? '';
+      const match = target.match(/^(\D*)(\d+)(.*)$/);
+
+      if (!match) return;
+
+      const prefix = match[1];
+      const max = Number(match[2]);
+      const suffix = match[3];
+      const step = Math.max(1, Math.round(max / 40));
+      let n = 0;
+
+      el.textContent = `${prefix}0${suffix}`;
+
+      const timer = setInterval(() => {
+        n = Math.min(n + step, max);
+        el.textContent = `${prefix}${n}${suffix}`;
+        if (n >= max) clearInterval(timer);
+      }, 40);
+    });
+  }
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: 6rem 8rem;
+    background: var(--color-bg);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero-bg-blob {
+    position: absolute;
+    border-radius: var(--radius-full);
+    filter: blur(4rem);
+    opacity: 0.55;
+  }
+
+  .hero-bg-blob--top {
+    top: -10%;
+    right: -8%;
+    width: 55%;
+    height: 80%;
+    background: linear-gradient(to bottom left, rgba(121, 184, 42, 0.18), transparent);
+  }
+
+  .hero-bg-blob--bottom {
+    bottom: -8%;
+    left: -8%;
+    width: 48%;
+    height: 50%;
+    background: linear-gradient(to top right, rgba(231, 184, 46, 0.22), transparent);
+  }
+
+  .hero-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .hero-kicker {
+    width: fit-content;
+    padding: 0.35rem 0.9rem;
+    border-radius: var(--radius-full);
+    color: var(--color-night);
+    background: var(--color-cream);
+    border: 1px solid var(--color-border);
+  }
+
+  .hero-lead {
+    max-width: 38rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 0.5rem;
+  }
+
+  .hero-action-icon {
+    font-size: var(--size-m);
+    font-variation-settings: 'FILL' 1;
+  }
+
+  .hero-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .hero-metric {
+    transition: transform 0.3s ease;
+  }
+
+  .hero-metric:hover {
+    transform: translateY(-0.125rem);
+  }
+
+  .hero-metric-value {
+    color: var(--color-night);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hero-visual {
+    position: relative;
+    height: 37.5rem;
+    width: 100%;
+    max-width: 36rem;
+    margin-inline: auto;
+  }
+
+  .hero-card {
+    position: absolute;
+    border-radius: var(--radius-xl);
+    z-index: 20;
+  }
+
+  .hero-card--bill {
+    top: 2.5rem;
+    right: 0;
+    width: 16rem;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-soft);
+    animation: hero-float 4s ease-in-out infinite;
+  }
+
+  .hero-card--saving {
+    bottom: 5rem;
+    left: 0;
+    width: 18rem;
+    padding: 1.5rem;
+    color: #ffffff;
+    background: var(--color-night);
+    box-shadow: var(--shadow-lift);
+    z-index: 30;
+    animation: hero-float 5s ease-in-out infinite;
+  }
+
+  .hero-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-full);
+  }
+
+  .hero-card-icon--light {
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 1rem;
+    color: var(--color-gold);
+    background: var(--color-cream);
+  }
+
+  .hero-card-icon--dark {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .hero-card-icon .material-symbols-outlined {
+    font-size: var(--size-lg);
+  }
+
+  .hero-card-title {
+    margin-bottom: 0.25rem;
+    color: var(--color-night);
+  }
+
+  .hero-saving-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .hero-saving-label {
+    color: rgba(255, 255, 255, 0.68);
+  }
+
+  .hero-saving-value {
+    color: var(--color-green);
+  }
+
+  .hero-saving-bars {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    align-items: end;
+    height: 4rem;
+  }
+
+  .hero-saving-bars span {
+    display: block;
+    border-radius: var(--radius-full) var(--radius-full) 0 0;
+    background: linear-gradient(to top, var(--color-green), var(--color-gold));
+    opacity: 0.85;
+  }
+
+  .hero-saving-bars span:nth-child(1) { height: 45%; }
+  .hero-saving-bars span:nth-child(2) { height: 65%; }
+  .hero-saving-bars span:nth-child(3) { height: 82%; }
+  .hero-saving-bars span:nth-child(4) { height: 100%; }
+
+  .hero-image-wrap {
+    position: absolute;
+    top: 5rem;
+    left: 50%;
+    translate: -50% 0;
+    width: 80%;
+    height: calc(100% - 5rem);
+    border-radius: var(--radius-brand);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(21, 23, 27, 0.66), transparent);
+    mix-blend-mode: multiply;
+  }
+
+  @keyframes hero-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-0.625rem);
+    }
+  }
+
+  @media (min-width: 40rem) {
+    .hero-actions {
+      flex-direction: row;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .hero-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+  }
+</style>

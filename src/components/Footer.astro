@@ -1,0 +1,79 @@
+---
+import Brand from './Brand.astro';
+
+const legalLinks = [
+  { href: '/privacidad', label: 'Privacidad' },
+  { href: '/aviso-legal', label: 'Aviso Legal' },
+  { href: '/#contacto', label: 'Contacto' },
+];
+---
+
+<footer class="site-footer">
+  <div class="container site-footer-inner" data-reveal="fade">
+    <a href="/" class="brand site-footer-brand" aria-label="Ahorra Sin Líos">
+      <Brand />
+    </a>
+
+    <nav class="site-footer-nav" aria-label="Legal">
+      {legalLinks.map((link) => (
+        <a href={link.href} class="site-footer-link">{link.label}</a>
+      ))}
+    </nav>
+
+    <p class="label-xs site-footer-copy">
+      © 2026 Ahorra Sin Líos. Tu aliado en el ahorro doméstico.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    z-index: 1;
+    padding-top: 8rem;
+    background: var(--color-night);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .site-footer-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding-block: 3rem;
+    text-align: center;
+  }
+
+  .site-footer-brand {
+    color: #ffffff;
+  }
+
+  .site-footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .site-footer-link {
+    color: rgba(255, 255, 255, 0.72);
+    transition: color 0.2s ease, opacity 0.2s ease;
+  }
+
+  .site-footer-link:hover {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+
+  .site-footer-copy {
+    color: rgba(255, 255, 255, 0.52);
+  }
+
+  @media (min-width: 48rem) {
+    .site-footer-inner {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+    }
+  }
+</style>

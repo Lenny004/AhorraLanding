@@ -1,0 +1,113 @@
+---
+const services = [
+  {
+    title: 'Luz',
+    description: 'Revisamos tu potencia y consumo para encontrar la tarifa que mejor se adapte a tus horas de mayor uso.',
+    icon: 'lightbulb',
+  },
+  {
+    title: 'Gas',
+    description: 'Aseguramos que no pagues de más en calefacción y agua caliente, comparando ofertas reales del mercado.',
+    icon: 'local_fire_department',
+  },
+  {
+    title: 'Internet',
+    description: 'Fibra óptica a la velocidad que realmente necesitas, sin servicios añadidos que encarecen la factura.',
+    icon: 'wifi',
+  },
+  {
+    title: 'Móvil',
+    description: 'Planes de datos y llamadas ajustados a tu consumo real para toda la familia.',
+    icon: 'smartphone',
+  },
+];
+---
+
+<section class="services section" id="servicios">
+  <div class="container">
+    <header class="section-header" data-reveal>
+      <h2 class="display-xl">Optimizamos todos tus servicios</h2>
+      <p class="body-lg text-muted">Análisis integral para maximizar tu ahorro en casa.</p>
+    </header>
+
+    <div class="services-grid">
+      {services.map((service, i) => (
+        <article class="services-card card-lift" data-reveal style={`--reveal-delay: ${i * 100}ms`}>
+          <div class="services-icon">
+            <span class="material-symbols-outlined">{service.icon}</span>
+          </div>
+          <h3 class="headline-lg services-title">{service.title}</h3>
+          <p class="body-md text-muted">{service.description}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .services {
+    background: #ffffff;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .services-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 20rem;
+    padding: 2rem;
+    border-radius: var(--radius-brand);
+    background:
+      radial-gradient(circle at top right, rgba(255, 248, 220, 0.85), transparent 40%),
+      #ffffff;
+    border: 1px solid var(--color-border);
+  }
+
+  .services-card::after {
+    content: '';
+    position: absolute;
+    right: -3rem;
+    bottom: -3rem;
+    width: 10rem;
+    height: 10rem;
+    border-radius: var(--radius-full);
+    background: rgba(121, 184, 42, 0.08);
+  }
+
+  .services-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: var(--radius-full);
+    color: var(--color-gold);
+    background: var(--color-cream);
+  }
+
+  .services-icon .material-symbols-outlined {
+    font-variation-settings: 'FILL' 1;
+  }
+
+  .services-title {
+    margin-bottom: 0.75rem;
+    color: var(--color-night);
+  }
+
+  @media (min-width: 40rem) {
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .services-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

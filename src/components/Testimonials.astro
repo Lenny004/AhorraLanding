@@ -1,0 +1,117 @@
+---
+const testimonials = [
+  {
+    quote: 'Me revisaron la factura de luz y en una llamada entendí por fin qué estaba pagando. El cambio fue sencillo y sin presión.',
+    initial: 'M',
+    name: 'María G.',
+    role: 'Cliente, Madrid',
+    tone: 'testimonials-avatar--green',
+  },
+  {
+    quote: 'Tenía internet, móvil y luz por separado. Me propusieron una alternativa clara y ahora tengo todo controlado.',
+    initial: 'J',
+    name: 'Javier R.',
+    role: 'Cliente, Valencia',
+    tone: 'testimonials-avatar--gold',
+  },
+  {
+    quote: 'Lo mejor fue no tener que llamar a ninguna compañía. Me explicaron la oferta y ellos gestionaron el cambio.',
+    initial: 'L',
+    name: 'Laura P.',
+    role: 'Cliente, Sevilla',
+    tone: 'testimonials-avatar--cream',
+  },
+];
+---
+
+<section class="testimonials section" id="testimonios">
+  <div class="container">
+    <header class="section-header" data-reveal>
+      <h2 class="display-xl">Personas que ya ahorran sin líos</h2>
+      <p class="body-lg text-muted">Historias reales de hogares que dejaron de pelearse con sus facturas.</p>
+    </header>
+
+    <div class="testimonials-grid">
+      {testimonials.map((item, i) => (
+        <article class="testimonials-card card-lift" data-reveal style={`--reveal-delay: ${i * 100}ms`}>
+          <blockquote class="body-md text-muted testimonials-text">"{item.quote}"</blockquote>
+          <footer class="testimonials-author">
+            <div class={`testimonials-avatar ${item.tone}`}>{item.initial}</div>
+            <div>
+              <div class="label-s testimonials-name">{item.name}</div>
+              <div class="label-xs text-muted-soft">{item.role}</div>
+            </div>
+          </footer>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonials {
+    background: #ffffff;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .testimonials-card {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    border-radius: var(--radius-xl);
+    background: #ffffff;
+    border: 1px solid rgba(226, 226, 222, 0.72);
+  }
+
+  .testimonials-text {
+    flex: 1;
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+
+  .testimonials-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .testimonials-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--radius-full);
+    font-weight: 800;
+  }
+
+  .testimonials-avatar--green {
+    color: #ffffff;
+    background: var(--color-green);
+  }
+
+  .testimonials-avatar--gold {
+    color: var(--color-night);
+    background: var(--color-gold);
+  }
+
+  .testimonials-avatar--cream {
+    color: var(--color-night);
+    background: var(--color-cream);
+  }
+
+  .testimonials-name {
+    color: var(--color-night);
+  }
+
+  @media (min-width: 48rem) {
+    .testimonials-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

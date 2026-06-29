@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ahorra Sin Líos - Ahorra en tus facturas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#0f2000",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f4f4f1",
+                        "surface-container-high": "#e8e8e5",
+                        "inverse-surface": "#2f312f",
+                        "tertiary-fixed-dim": "#efc136",
+                        "on-background": "#1a1c1b",
+                        "primary-container": "#1a1c20",
+                        "primary-fixed": "#e2e2e8",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#437000",
+                        "surface-dim": "#dadad7",
+                        "secondary": "#3f6900",
+                        "primary-fixed-dim": "#c6c6cc",
+                        "on-tertiary-fixed-variant": "#594400",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#241a00",
+                        "secondary-fixed": "#b2f662",
+                        "on-surface-variant": "#45474b",
+                        "on-secondary-fixed-variant": "#2e4f00",
+                        "secondary-container": "#b2f662",
+                        "surface-tint": "#5d5e63",
+                        "on-tertiary-container": "#503d00",
+                        "secondary-fixed-dim": "#97d949",
+                        "inverse-primary": "#c6c6cc",
+                        "on-primary-container": "#828489",
+                        "surface-container": "#eeeeeb",
+                        "tertiary": "#755b00",
+                        "outline": "#76777b",
+                        "tertiary-container": "#d2a617",
+                        "on-surface": "#1a1c1b",
+                        "background": "#f9f9f6",
+                        "on-primary-fixed": "#1a1c20",
+                        "outline-variant": "#c6c6cb",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e2e3e0",
+                        "surface": "#f9f9f6",
+                        "inverse-on-surface": "#f1f1ee",
+                        "on-primary-fixed-variant": "#45474b",
+                        "primary": "#000000",
+                        "on-tertiary": "#ffffff",
+                        "surface-bright": "#f9f9f6",
+                        "surface-container-highest": "#e2e3e0",
+                        "tertiary-fixed": "#ffdf92",
+                        
+                        "brand-night": "#15171B",
+                        "brand-gold": "#E7B82E",
+                        "brand-green": "#79B82A",
+                        "brand-cream": "#FFF8DC",
+                        "brand-warm-white": "#F7F7F4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "brand": "20px"
+                    },
+                    "spacing": {
+                        "xl": "80px",
+                        "base": "8px",
+                        "md": "24px",
+                        "lg": "48px",
+                        "margin-desktop": "120px",
+                        "sm": "12px",
+                        "margin-mobile": "20px",
+                        "gutter": "24px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Manrope", "sans-serif"],
+                        "headline-lg-mobile": ["Manrope", "sans-serif"],
+                        "body-md": ["Manrope", "sans-serif"],
+                        "headline-md": ["Manrope", "sans-serif"],
+                        "label-sm": ["Manrope", "sans-serif"],
+                        "headline-lg": ["Manrope", "sans-serif"],
+                        "label-md": ["Manrope", "sans-serif"],
+                        "body-lg": ["Manrope", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    },
+                    "boxShadow": {
+                        'soft-bloom': '0px 10px 30px rgba(21, 23, 27, 0.04)',
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; background-color: #F7F7F4; color: #1a1c1b; }
+        .bg-night { background-color: #15171B; }
+        .text-night { color: #15171B; }
+        .bg-gold { background-color: #E7B82E; }
+        .text-gold { color: #E7B82E; }
+        .bg-green { background-color: #79B82A; }
+        .text-green { color: #79B82A; }
+        .bg-cream { background-color: #FFF8DC; }
+    </style>
+</head>
+<body class="antialiased font-body-md text-on-surface">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/90 dark:bg-surface-container/90 backdrop-blur-md border-b border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto">
+<div class="font-display-lg text-headline-md font-extrabold text-primary dark:text-inverse-primary">
+                Ahorra Sin Líos
+            </div>
+<div class="hidden md:flex gap-gutter items-center">
+<a class="font-body-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors scale-95 active:scale-90 transition-transform duration-200" href="#servicios">Servicios</a>
+<a class="font-body-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors scale-95 active:scale-90 transition-transform duration-200" href="#como-funciona">Cómo Funciona</a>
+<a class="font-body-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors scale-95 active:scale-90 transition-transform duration-200" href="#testimonios">Testimonios</a>
+<a class="font-body-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors scale-95 active:scale-90 transition-transform duration-200" href="#comparativa">Comparativa</a>
+</div>
+<button class="bg-night text-white font-label-md px-md py-sm rounded-[12px] hover:bg-opacity-90 transition-all shadow-soft-bloom scale-95 active:scale-90">
+                Contactar
+            </button>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="pt-[140px] pb-xl px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-lg items-center">
+<div class="flex flex-col gap-md">
+<span class="bg-cream text-night font-label-md px-sm py-xs rounded-full w-fit border border-[#E2E2DE]">Elige tranquilidad</span>
+<h1 class="font-display-lg text-display-lg text-night">Ahorra en tus facturas sin pelearte con las compañías.</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Comparamos luz, gas, internet y móvil por ti. Te explicamos las opciones en claro y gestionamos el cambio sin líos, sin coste y sin compromiso.</p>
+<div class="flex flex-col sm:flex-row gap-sm mt-sm">
+<button class="bg-green text-white font-label-md px-lg py-sm rounded-[12px] shadow-soft-bloom hover:bg-opacity-90 transition-all flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">attach_money</span>
+                    Quiero que revisen mi factura
+                </button>
+<button class="bg-transparent border border-night text-night font-label-md px-lg py-sm rounded-[12px] hover:bg-surface-container-low transition-all">
+                    Ver cómo funciona
+                </button>
+</div>
+</div>
+<div class="relative h-[400px] md:h-[500px] rounded-brand overflow-hidden shadow-soft-bloom">
+<!-- Using the placeholder provided in instructions -->
+<img class="w-full h-full object-cover" data-alt="A brightly lit, high-quality 3D render of a glossy green piggy bank sitting next to a generic utility bill and some gold coins. The background is a soft, warm cream color. The lighting is soft and studio-like, emphasizing a modern, friendly, and trustworthy financial aesthetic. The overall mood is positive and reassuring." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmDB6HNeJWpIdsT5_LRrfZWfBR8I1YOHUIqfJhjOnA9Vdyia9PQFIpp3gmZIreoTrv6OnhAYgfvfw7s-kcIzGrnT0iTuo08iwzIxW_2WU5V84rv6zHHiXMLf6Fk2RFCh_KeG2XYd2FMXHKNuoe4X1PcVn0k_7d_dNVXeWVvpvBRwrS5HONn9f8BOZ_jld7bRSuJukWEWqGxYnlR3ZpIbBCBd_2CJn-uIT1j1FJVeosAlJlIV0gnqOMQK9GeRWR9p6Dsv8"/>
+</div>
+</section>
+<!-- Problem vs Solution -->
+<section class="py-xl px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto" id="comparativa">
+<div class="text-center mb-lg">
+<h2 class="font-headline-lg text-headline-lg text-night mb-sm">De la frustración al control</h2>
+<p class="font-body-md text-on-surface-variant max-w-2xl mx-auto">Deja de perder tiempo en llamadas interminables y ofertas confusas.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Problem -->
+<div class="bg-white rounded-brand p-lg border border-[#E2E2DE] shadow-soft-bloom">
+<div class="flex items-center gap-sm mb-md">
+<div class="w-10 h-10 rounded-full bg-error-container flex items-center justify-center">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">cancel</span>
+</div>
+<h3 class="font-headline-md text-headline-md">Hacerlo solo</h3>
+</div>
+<ul class="flex flex-col gap-md">
+<li class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-outline mt-1">remove</span>
+<span class="font-body-md">Horas buscando ofertas y leyendo letra pequeña.</span>
+</li>
+<li class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-outline mt-1">remove</span>
+<span class="font-body-md">Llamadas comerciales agresivas e insistentes.</span>
+</li>
+<li class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-outline mt-1">remove</span>
+<span class="font-body-md">Dudas sobre si realmente estás ahorrando a largo plazo.</span>
+</li>
+</ul>
+</div>
+<!-- Solution -->
+<div class="bg-cream rounded-brand p-lg border border-gold shadow-soft-bloom relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-gold/10 rounded-bl-full"></div>
+<div class="flex items-center gap-sm mb-md relative z-10">
+<div class="w-10 h-10 rounded-full bg-green/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-green" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<h3 class="font-headline-md text-headline-md">Con Ahorra Sin Líos</h3>
+</div>
+<ul class="flex flex-col gap-md relative z-10">
+<li class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-green mt-1">check</span>
+<span class="font-body-md">Un asesor analiza tu caso en minutos.</span>
+</li>
+<li class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-green mt-1">check</span>
+<span class="font-body-md">Gestión completa del cambio de compañía sin que tú hagas nada.</span>
+</li>
+<li class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-green mt-1">check</span>
+<span class="font-body-md">Tranquilidad de tener siempre la mejor tarifa vigente.</span>
+</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Estimated Savings -->
+<section class="py-xl bg-night text-white mt-lg">
+<div class="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto text-center">
+<h2 class="font-headline-lg text-headline-lg mb-sm">¿Cuánto podrías ahorrar al año?</h2>
+<p class="font-body-md text-inverse-surface mb-lg">Nuestros usuarios ahorran de media hasta 300€ anuales agrupando sus servicios.</p>
+<div class="inline-flex flex-col items-center justify-center bg-white text-night rounded-brand p-lg shadow-soft-bloom">
+<span class="font-label-sm text-outline tracking-wider uppercase mb-xs">Ahorro Medio Estimado</span>
+<span class="font-display-lg text-[64px] font-extrabold text-green leading-none mb-sm">300€</span>
+<span class="bg-gold text-night font-label-md px-sm py-xs rounded-full">Al año en tu hogar</span>
+</div>
+</div>
+</section>
+<!-- Services Grid -->
+<section class="py-xl px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto" id="servicios">
+<div class="mb-lg">
+<h2 class="font-headline-lg text-headline-lg text-night mb-sm">Optimizamos todos tus servicios</h2>
+<p class="font-body-md text-on-surface-variant">Análisis integral para maximizar tu ahorro en casa.</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Luz -->
+<div class="bg-white rounded-brand p-md border border-[#E2E2DE] hover:shadow-soft-bloom transition-shadow">
+<div class="w-12 h-12 rounded-full bg-cream flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-gold" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-xs">Luz</h3>
+<p class="font-body-md text-on-surface-variant">Revisamos tu potencia y consumo para encontrar la tarifa que mejor se adapte a tus horas de mayor uso.</p>
+</div>
+<!-- Gas -->
+<div class="bg-white rounded-brand p-md border border-[#E2E2DE] hover:shadow-soft-bloom transition-shadow">
+<div class="w-12 h-12 rounded-full bg-cream flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-gold" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-xs">Gas</h3>
+<p class="font-body-md text-on-surface-variant">Aseguramos que no pagues de más en calefacción y agua caliente, comparando ofertas reales del mercado.</p>
+</div>
+<!-- Internet -->
+<div class="bg-white rounded-brand p-md border border-[#E2E2DE] hover:shadow-soft-bloom transition-shadow">
+<div class="w-12 h-12 rounded-full bg-cream flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-gold" style="font-variation-settings: 'FILL' 1;">wifi</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-xs">Internet</h3>
+<p class="font-body-md text-on-surface-variant">Fibra óptica a la velocidad que realmente necesitas, sin servicios añadidos que encarecen la factura.</p>
+</div>
+<!-- Móvil -->
+<div class="bg-white rounded-brand p-md border border-[#E2E2DE] hover:shadow-soft-bloom transition-shadow">
+<div class="w-12 h-12 rounded-full bg-cream flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-gold" style="font-variation-settings: 'FILL' 1;">smartphone</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-xs">Móvil</h3>
+<p class="font-body-md text-on-surface-variant">Planes de datos y llamadas ajustados a tu consumo real para toda la familia.</p>
+</div>
+</div>
+</section>
+<!-- How it Works -->
+<section class="py-xl bg-surface-container-low" id="como-funciona">
+<div class="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto">
+<div class="text-center mb-lg">
+<h2 class="font-headline-lg text-headline-lg text-night mb-sm">Un proceso sencillo y transparente</h2>
+<p class="font-body-md text-on-surface-variant">Nosotros hacemos el trabajo pesado.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-lg">
+<!-- Step 1 -->
+<div class="flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-cream text-night font-headline-md flex items-center justify-center border-2 border-gold mb-sm relative">
+                        1
+                        <div class="hidden md:block absolute top-1/2 left-full w-full h-[2px] bg-[#E2E2DE] -z-10"></div>
+</div>
+<h3 class="font-headline-md text-body-lg font-bold mb-xs">Envíanos tu factura</h3>
+<p class="font-body-md text-on-surface-variant text-sm">Sube una foto o PDF de tu última factura a nuestra web segura.</p>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-cream text-night font-headline-md flex items-center justify-center border-2 border-gold mb-sm relative">
+                        2
+                        <div class="hidden md:block absolute top-1/2 left-full w-full h-[2px] bg-[#E2E2DE] -z-10"></div>
+</div>
+<h3 class="font-headline-md text-body-lg font-bold mb-xs">Analizamos opciones</h3>
+<p class="font-body-md text-on-surface-variant text-sm">Comparamos entre las principales compañías para encontrar el mayor ahorro.</p>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-cream text-night font-headline-md flex items-center justify-center border-2 border-gold mb-sm relative">
+                        3
+                        <div class="hidden md:block absolute top-1/2 left-full w-full h-[2px] bg-[#E2E2DE] -z-10"></div>
+</div>
+<h3 class="font-headline-md text-body-lg font-bold mb-xs">Te proponemos</h3>
+<p class="font-body-md text-on-surface-variant text-sm">Te explicamos la propuesta de forma clara, sin tecnicismos.</p>
+</div>
+<!-- Step 4 -->
+<div class="flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-green text-white font-headline-md flex items-center justify-center border-2 border-green mb-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<h3 class="font-headline-md text-body-lg font-bold mb-xs">Gestionamos el cambio</h3>
+<p class="font-body-md text-on-surface-variant text-sm">Si aceptas, tramitamos todo. Tú solo empiezas a pagar menos.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer from JSON -->
+<footer class="w-full py-lg mt-xl bg-primary-container dark:bg-primary-container">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:flex lg:justify-between items-start px-margin-mobile md:px-margin-desktop gap-md max-w-[1440px] mx-auto">
+<!-- Brand & Copyright -->
+<div class="flex flex-col gap-sm">
+<span class="font-display-lg text-headline-md font-bold text-on-primary-container">Ahorra Sin Líos</span>
+<p class="font-body-md text-body-md text-on-primary-fixed-variant">© 2024 Ahorra Sin Líos. Tu aliado en el ahorro doméstico.</p>
+</div>
+<!-- Links -->
+<div class="flex flex-wrap gap-md">
+<a class="font-body-md text-body-md text-on-primary-fixed-variant hover:text-on-primary-container transition-colors hover:underline decoration-tertiary-container decoration-2 underline-offset-4 transition-opacity duration-300 hover:opacity-80" href="#">Privacidad</a>
+<a class="font-body-md text-body-md text-on-primary-fixed-variant hover:text-on-primary-container transition-colors hover:underline decoration-tertiary-container decoration-2 underline-offset-4 transition-opacity duration-300 hover:opacity-80" href="#">Aviso Legal</a>
+<a class="font-body-md text-body-md text-on-primary-fixed-variant hover:text-on-primary-container transition-colors hover:underline decoration-tertiary-container decoration-2 underline-offset-4 transition-opacity duration-300 hover:opacity-80" href="#">Cookies</a>
+<a class="font-body-md text-body-md text-on-primary-fixed-variant hover:text-on-primary-container transition-colors hover:underline decoration-tertiary-container decoration-2 underline-offset-4 transition-opacity duration-300 hover:opacity-80" href="#">Contacto</a>
+<a class="font-body-md text-body-md text-on-primary-fixed-variant hover:text-on-primary-container transition-colors hover:underline decoration-tertiary-container decoration-2 underline-offset-4 transition-opacity duration-300 hover:opacity-80" href="#">Preguntas Frecuentes</a>
+</div>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,91 @@
+<section class="savings section">
+  <div class="savings-glow" aria-hidden="true"></div>
+  <div class="container savings-inner" data-reveal>
+    <h2 class="display-xl savings-title">¿Cuánto podrías ahorrar al año?</h2>
+    <p class="body-lg text-inverse savings-lead">
+      Nuestros usuarios ahorran de media hasta 300€ anuales agrupando sus servicios.
+    </p>
+
+    <div class="savings-card">
+      <span class="label-xs savings-label">Ahorro medio estimado</span>
+      <span class="savings-amount">300€</span>
+      <span class="label-s savings-pill">Al año en tu hogar</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .savings {
+    position: relative;
+    overflow: hidden;
+    color: #ffffff;
+    background: var(--color-night);
+    border-radius: var(--radius-2xl);
+  }
+
+  .savings-glow {
+    position: absolute;
+    top: 50%;
+    right: -10rem;
+    width: 34rem;
+    height: 34rem;
+    border-radius: var(--radius-full);
+    background: rgba(121, 184, 42, 0.24);
+    filter: blur(6rem);
+    translate: 0 -50%;
+  }
+
+  .savings-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .savings-title {
+    margin-bottom: 1rem;
+    color: #ffffff;
+  }
+
+  .savings-lead {
+    max-width: 42rem;
+    margin-bottom: 3rem;
+  }
+
+  .savings-card {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    border-radius: var(--radius-brand);
+    color: var(--color-night);
+    background: #ffffff;
+    box-shadow: var(--shadow-lift);
+  }
+
+  .savings-label {
+    margin-bottom: 0.35rem;
+    color: var(--color-muted-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .savings-amount {
+    margin-bottom: 0.75rem;
+    color: var(--color-green);
+    font-size: clamp(4rem, 12vw, 6rem);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+
+  .savings-pill {
+    padding: 0.35rem 0.9rem;
+    border-radius: var(--radius-full);
+    color: var(--color-night);
+    background: var(--color-gold);
+  }
+</style>
