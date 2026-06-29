@@ -120,14 +120,27 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
             </fieldset>
 
             <div class="contact-field">
-              <label class="label-s contact-label" for="contact-invoice">Subir factura</label>
-              <input
-                class="contact-input contact-file"
-                id="contact-invoice"
-                name="invoice"
-                type="file"
-                accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
-              />
+              <span class="label-s contact-label" id="contact-invoice-label">Subir factura</span>
+              <div class="contact-file-wrap" data-file-wrap>
+                <input
+                  class="contact-file-input"
+                  id="contact-invoice"
+                  name="invoice"
+                  type="file"
+                  accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
+                  aria-labelledby="contact-invoice-label contact-invoice-name"
+                  data-contact-file
+                />
+                <label class="contact-file-dropzone" for="contact-invoice" data-file-dropzone>
+                  <span class="material-symbols-outlined contact-file-icon" aria-hidden="true">upload_file</span>
+                  <span class="contact-file-copy">
+                    <span class="label-s contact-file-cta">Seleccionar archivo</span>
+                    <span class="label-xs text-muted contact-file-name" id="contact-invoice-name" data-file-name>
+                      o arrastra aquí
+                    </span>
+                  </span>
+                </label>
+              </div>
               <p class="label-xs text-muted contact-file-hint">PDF, JPG o PNG. Máximo 10 MB.</p>
             </div>
 
@@ -150,7 +163,6 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     position: relative;
     z-index: 2;
     background: var(--color-bg);
-    border-radius: var(--radius-2xl);
     margin-bottom: -5rem;
   }
 
@@ -158,7 +170,6 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     position: relative;
     overflow: hidden;
     padding: 2rem;
-    border-radius: var(--radius-2xl);
     border: 1px solid rgba(255, 255, 255, 0.15);
     background: var(--color-night);
     box-shadow: var(--shadow-lift);
@@ -285,10 +296,103 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     box-shadow: 0 0 0 0.2rem rgba(121, 184, 42, 0.14);
   }
 
-  .contact-file {
-    padding: 0.5rem 0;
-    border: none;
-    background: transparent;
+  .contact-file-wrap {
+    position: relative;
+  }
+
+  .contact-file-input {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .contact-file-dropzone {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: 4.5rem;
+    padding: 0.875rem 1rem;
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .contact-file-icon {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-lg);
+    background: #ffffff;
+    border: 1px solid var(--color-border);
+    font-family: 'Material Symbols Outlined';
+    font-size: 1.375rem;
+    color: var(--color-green);
+    transition:
+      border-color 0.2s ease,
+      color 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .contact-file-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 0;
+  }
+
+  .contact-file-cta {
+    color: var(--color-night);
+  }
+
+  .contact-file-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .contact-file-wrap:hover .contact-file-dropzone,
+  .contact-file-wrap.is-dragover .contact-file-dropzone {
+    border-color: var(--color-green);
+    background: #ffffff;
+  }
+
+  .contact-file-wrap:hover .contact-file-icon,
+  .contact-file-wrap.is-dragover .contact-file-icon {
+    border-color: rgba(121, 184, 42, 0.35);
+    color: var(--color-night);
+  }
+
+  .contact-file-input:focus-visible + .contact-file-dropzone {
+    border-color: var(--color-green);
+    background: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(121, 184, 42, 0.14);
+  }
+
+  .contact-file-wrap.is-filled .contact-file-dropzone {
+    border-style: solid;
+    border-color: rgba(121, 184, 42, 0.45);
+    background: #ffffff;
+  }
+
+  .contact-file-wrap.is-filled .contact-file-icon {
+    border-color: rgba(121, 184, 42, 0.35);
+    background: rgba(121, 184, 42, 0.08);
+    color: var(--color-night);
+  }
+
+  .contact-file-wrap.is-filled .contact-file-name {
+    color: var(--color-night);
   }
 
   .contact-file-hint {
@@ -356,6 +460,53 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     const status = form.querySelector('[data-form-status]');
     const submit = form.querySelector('button[type="submit"]');
     const submitLabel = submit instanceof HTMLButtonElement ? submit.textContent : 'Enviar';
+    const fileInput = form.querySelector('[data-contact-file]');
+    const fileWrap = form.querySelector('[data-file-wrap]');
+    const fileName = form.querySelector('[data-file-name]');
+    const filePlaceholder = fileName instanceof HTMLElement ? fileName.textContent : 'o arrastra aquí';
+
+    const syncFileField = () => {
+      if (!(fileInput instanceof HTMLInputElement) || !(fileWrap instanceof HTMLElement)) return;
+
+      const file = fileInput.files?.[0];
+      fileWrap.classList.toggle('is-filled', Boolean(file));
+
+      if (fileName instanceof HTMLElement) {
+        fileName.textContent = file ? file.name : filePlaceholder;
+      }
+    };
+
+    if (fileInput instanceof HTMLInputElement && fileWrap instanceof HTMLElement) {
+      fileInput.addEventListener('change', syncFileField);
+
+      ['dragenter', 'dragover'].forEach((eventName) => {
+        fileWrap.addEventListener(eventName, (event) => {
+          event.preventDefault();
+          fileWrap.classList.add('is-dragover');
+        });
+      });
+
+      ['dragleave', 'drop'].forEach((eventName) => {
+        fileWrap.addEventListener(eventName, () => {
+          fileWrap.classList.remove('is-dragover');
+        });
+      });
+
+      fileWrap.addEventListener('drop', (event) => {
+        event.preventDefault();
+        const file = event.dataTransfer?.files?.[0];
+        if (!file) return;
+
+        const transfer = new DataTransfer();
+        transfer.items.add(file);
+        fileInput.files = transfer.files;
+        syncFileField();
+      });
+
+      form.addEventListener('reset', () => {
+        window.requestAnimationFrame(syncFileField);
+      });
+    }
 
     const setStatus = (message, type) => {
       if (!(status instanceof HTMLElement)) return;
@@ -412,6 +563,7 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
         }
 
         form.reset();
+        syncFileField();
         setStatus('Solicitud enviada correctamente. Te contactaremos en breve.', 'success');
       } catch (error) {
         setStatus(error instanceof Error ? error.message : 'No se pudo enviar el formulario', 'error');
