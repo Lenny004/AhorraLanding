@@ -33,6 +33,9 @@ const livingOptions = [
   'Con otros familiares',
   'Con compañeros de piso',
 ];
+
+const crmEndpoint = import.meta.env.PUBLIC_CRM_LANDING_LEADS_ENDPOINT ?? 'https://TU_DOMINIO_CRM/PTR-Sales/api/public/api_landing_leads.php?action=create';
+const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
 ---
 
 <section class="calculator section" id="calculadora">
@@ -42,7 +45,14 @@ const livingOptions = [
       <p class="body-lg text-muted">Luz y gas, cuánto puedes ahorrar con la mejor tarifa.</p>
     </header>
 
-    <div class="calculator-panel card-lift" data-calc-root data-reveal>
+    <div
+      class="calculator-panel card-lift"
+      data-calc-root
+      data-endpoint={crmEndpoint}
+      data-api-key={crmApiKey}
+      data-source="ahorrasinlios"
+      data-reveal
+    >
       <!-- Intro -->
       <div class="calc-view" data-calc-view="intro">
         <span class="calc-badge label-xs">Calculadora gratuita</span>
@@ -51,7 +61,7 @@ const livingOptions = [
           Responde unas preguntas y descubre si estás pagando de más — y qué tarifa te conviene.
         </p>
         <p class="calc-highlight label-s">
-          <span aria-hidden="true">💰</span> Ahorro medio: <strong>35€/mes</strong>
+          Ahorro medio: <strong>35€/mes</strong>
         </p>
 
         <ul class="calc-benefits">
@@ -62,15 +72,6 @@ const livingOptions = [
             </li>
           ))}
         </ul>
-
-        <p class="calc-social label-xs text-muted-soft">
-          <span class="calc-avatars" aria-hidden="true">
-            <span class="calc-avatar">A</span>
-            <span class="calc-avatar">M</span>
-            <span class="calc-avatar">L</span>
-          </span>
-          +8.500 personas ya lo han calculado
-        </p>
 
         <button type="button" class="calc-cta btn-primary" data-calc-start>
           <span class="calc-cta-main">Empezar el análisis</span>
@@ -237,7 +238,7 @@ const livingOptions = [
           </div>
         </div>
 
-        <p class="calc-comparison-label label-xs text-muted-soft">⚡ Factura de luz</p>
+        <p class="calc-comparison-label label-xs text-muted-soft">Factura de luz</p>
         <div class="calc-comparison card-lift">
           <div class="calc-comparison-row">
             <div>
@@ -276,6 +277,13 @@ const livingOptions = [
 </section>
 
 <script>
+  import {
+    buildLeadBody,
+    calculatorToLeadFields,
+    saveCalculatorData,
+    submitLandingLead,
+  } from '../lib/landingLead';
+
   const root = document.querySelector<HTMLElement>('[data-calc-root]');
   if (!root) throw new Error('Calculator root not found');
 
@@ -369,7 +377,7 @@ const livingOptions = [
     finishWizard();
   };
 
-  const finishWizard = () => {
+  const finishWizard = async () => {
     if (!validateStep(currentStep)) return;
     const data = getFormData();
     const result = calculateSavings(data);
@@ -380,7 +388,37 @@ const livingOptions = [
     root.querySelector('[data-calc-result-current]')!.textContent = formatEuro(result.bill);
     root.querySelector('[data-calc-result-new]')!.textContent = formatEuro(result.newBill);
 
+    const payload = { answers: data, result };
+    saveCalculatorData(payload);
     showView('results');
+
+    const endpoint = root.dataset.endpoint;
+    const apiKey = root.dataset.apiKey;
+    const source = root.dataset.source || 'ahorrasinlios';
+
+    if (!endpoint || !apiKey) return;
+
+    try {
+      const fields = calculatorToLeadFields(payload);
+      const body = buildLeadBody({
+        source,
+        leadOrigin: 'calculator',
+        fullName: fields.fullName,
+        phone: fields.phone,
+        postalCode: fields.postalCode,
+        monthlyBill: fields.monthlyBill,
+        savingsPercent: fields.savingsPercent,
+        monthlySaving: fields.monthlySaving,
+        approximateConsumption: fields.approximateConsumption,
+        serviceLuz: fields.serviceLuz,
+        serviceGas: fields.serviceGas,
+        calculatorData: payload,
+      });
+      await submitLandingLead(endpoint, apiKey, body);
+      saveCalculatorData({ ...payload, submittedToCrm: true, submittedAt: new Date().toISOString() });
+    } catch {
+      // El usuario ve el resultado aunque falle el envío; contacto puede reenviar los datos.
+    }
   };
 
   root.querySelector('[data-calc-start]')?.addEventListener('click', () => {
@@ -505,37 +543,6 @@ const livingOptions = [
   .calc-benefit-icon {
     font-size: 1.25rem;
     color: var(--color-green);
-  }
-
-  .calc-social {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-  }
-
-  .calc-avatars {
-    display: inline-flex;
-  }
-
-  .calc-avatar {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.75rem;
-    height: 1.75rem;
-    margin-left: -0.4rem;
-    border-radius: 50%;
-    border: 2px solid #ffffff;
-    background: var(--color-surface-soft);
-    font-size: 0.65rem;
-    font-weight: 700;
-    color: var(--color-night);
-  }
-
-  .calc-avatar:first-child {
-    margin-left: 0;
   }
 
   .calc-cta {

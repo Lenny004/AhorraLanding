@@ -152,6 +152,47 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
               Al enviar aceptas nuestra <a class="label-xs" href="/privacidad">política de privacidad</a>.
             </p>
           </form>
+
+          <div class="contact-success" data-contact-success hidden>
+            <div class="contact-success-icon" aria-hidden="true">
+              <span class="material-symbols-outlined">check</span>
+            </div>
+            <h3 class="display-xl contact-success-title">¡Solicitud recibida!</h3>
+            <p class="body-lg text-muted contact-success-lead">
+              Gracias por confiar en nosotros. Un asesor experto se pondrá en contacto contigo en las próximas horas.
+            </p>
+
+            <div class="contact-success-card">
+              <h4 class="headline-lg contact-success-card-title">¿Qué pasa ahora?</h4>
+              <ol class="contact-success-steps">
+                <li class="contact-success-step">
+                  <span class="contact-success-step-num">1</span>
+                  <div>
+                    <p class="label-s contact-success-step-title">Revisamos tu perfil</p>
+                    <p class="body-md text-muted">Analizamos tu situación para encontrar las mejores opciones del mercado para ti.</p>
+                  </div>
+                </li>
+                <li class="contact-success-step">
+                  <span class="contact-success-step-num">2</span>
+                  <div>
+                    <p class="label-s contact-success-step-title">Te llamamos</p>
+                    <p class="body-md text-muted">Un asesor especializado te contactará para presentarte la mejor opción. Sin presiones ni compromiso.</p>
+                  </div>
+                </li>
+                <li class="contact-success-step">
+                  <span class="contact-success-step-num">3</span>
+                  <div>
+                    <p class="label-s contact-success-step-title">Tú decides</p>
+                    <p class="body-md text-muted">Si te convence, nos encargamos de todo el papeleo. Si no, tan amigos.</p>
+                  </div>
+                </li>
+              </ol>
+            </div>
+
+            <p class="label-xs text-muted-soft contact-success-trust">
+              Más de 50.000 usuarios ya confían en nosotros
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -436,6 +477,95 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     color: var(--color-night);
   }
 
+  .contact-success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    text-align: center;
+  }
+
+  .contact-success[hidden] {
+    display: none;
+  }
+
+  .contact-form.is-hidden {
+    display: none;
+  }
+
+  .contact-success-icon {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    background: rgba(121, 184, 42, 0.15);
+    color: var(--color-green);
+  }
+
+  .contact-success-icon .material-symbols-outlined {
+    font-size: 1.5rem;
+    font-variation-settings: 'FILL' 1;
+  }
+
+  .contact-success-title {
+    font-size: calc(var(--size-xl) * 0.55);
+    color: var(--color-night);
+  }
+
+  .contact-success-lead {
+    max-width: 28rem;
+  }
+
+  .contact-success-card {
+    width: 100%;
+    padding: 1.5rem;
+    border-radius: var(--radius-xl);
+    background: var(--color-bg);
+    text-align: left;
+  }
+
+  .contact-success-card-title {
+    margin-bottom: 1.25rem;
+    color: var(--color-night);
+    text-align: center;
+  }
+
+  .contact-success-steps {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .contact-success-step {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .contact-success-step-num {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: rgba(121, 184, 42, 0.12);
+    color: var(--color-green);
+    font-size: var(--size-s);
+    font-weight: 700;
+  }
+
+  .contact-success-step-title {
+    margin-bottom: 0.25rem;
+    color: var(--color-night);
+  }
+
+  .contact-success-trust {
+    margin-top: 0.5rem;
+  }
+
   @media (min-width: 48rem) {
     .contact-panel {
       padding: 4rem;
@@ -454,16 +584,49 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
 </style>
 
 <script>
+  import {
+    buildLeadBody,
+    calculatorToLeadFields,
+    clearCalculatorData,
+    getCalculatorData,
+    submitLandingLead,
+  } from '../lib/landingLead';
+
   const form = document.querySelector('[data-contact-form]');
 
   if (form instanceof HTMLFormElement) {
     const status = form.querySelector('[data-form-status]');
+    const success = form.parentElement?.querySelector('[data-contact-success]');
     const submit = form.querySelector('button[type="submit"]');
     const submitLabel = submit instanceof HTMLButtonElement ? submit.textContent : 'Enviar';
     const fileInput = form.querySelector('[data-contact-file]');
     const fileWrap = form.querySelector('[data-file-wrap]');
     const fileName = form.querySelector('[data-file-name]');
     const filePlaceholder = fileName instanceof HTMLElement ? fileName.textContent : 'o arrastra aquí';
+
+    const calcData = getCalculatorData();
+    if (calcData) {
+      const fields = calculatorToLeadFields(calcData);
+      const nameInput = form.querySelector<HTMLInputElement>('[name="name"]');
+      const phoneInput = form.querySelector<HTMLInputElement>('[name="phone"]');
+      const consumptionInput = form.querySelector<HTMLInputElement>('[name="approximate_consumption"]');
+      const luzCheck = form.querySelector<HTMLInputElement>('[name="service_luz"]');
+      const gasCheck = form.querySelector<HTMLInputElement>('[name="service_gas"]');
+
+      if (nameInput && fields.fullName && !nameInput.value) nameInput.value = fields.fullName;
+      if (phoneInput && fields.phone && !phoneInput.value) phoneInput.value = fields.phone;
+      if (consumptionInput && fields.approximateConsumption && !consumptionInput.value) {
+        consumptionInput.value = fields.approximateConsumption;
+      }
+      if (luzCheck && fields.serviceLuz) luzCheck.checked = true;
+      if (gasCheck && fields.serviceGas) gasCheck.checked = true;
+    }
+
+    const showSuccess = () => {
+      form.classList.add('is-hidden');
+      if (success instanceof HTMLElement) success.hidden = false;
+      form.parentElement?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    };
 
     const syncFileField = () => {
       if (!(fileInput instanceof HTMLInputElement) || !(fileWrap instanceof HTMLElement)) return;
@@ -527,23 +690,29 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
       }
 
       const data = new FormData(form);
-      const body = new FormData();
-      body.set('source', source);
-      body.set('full_name', String(data.get('name') ?? '').trim());
-      body.set('phone', String(data.get('phone') ?? '').trim());
-      body.set('email', String(data.get('email') ?? '').trim());
-      body.set('client_type', String(data.get('client_type') ?? '').trim());
-
+      const calculatorData = getCalculatorData();
+      const calcFields = calculatorData ? calculatorToLeadFields(calculatorData) : null;
       const consumption = String(data.get('approximate_consumption') ?? '').trim();
-      if (consumption) body.set('approximate_consumption', consumption);
 
-      if (data.get('service_luz')) body.set('service_luz', '1');
-      if (data.get('service_gas')) body.set('service_gas', '1');
-
-      const invoice = data.get('invoice');
-      if (invoice instanceof File && invoice.size > 0) {
-        body.set('invoice', invoice);
-      }
+      const body = buildLeadBody({
+        source,
+        leadOrigin: calculatorData ? 'both' : 'contact',
+        fullName: String(data.get('name') ?? '').trim(),
+        phone: String(data.get('phone') ?? '').trim(),
+        email: String(data.get('email') ?? '').trim(),
+        clientType: String(data.get('client_type') ?? '').trim(),
+        approximateConsumption: consumption || calcFields?.approximateConsumption,
+        serviceLuz: Boolean(data.get('service_luz')) || Boolean(calcFields?.serviceLuz),
+        serviceGas: Boolean(data.get('service_gas')) || Boolean(calcFields?.serviceGas),
+        postalCode: calcFields?.postalCode,
+        monthlyBill: calcFields?.monthlyBill,
+        savingsPercent: calcFields?.savingsPercent,
+        monthlySaving: calcFields?.monthlySaving,
+        calculatorData,
+        invoice: data.get('invoice') instanceof File && (data.get('invoice') as File).size > 0
+          ? (data.get('invoice') as File)
+          : undefined,
+      });
 
       if (submit instanceof HTMLButtonElement) {
         submit.disabled = true;
@@ -551,20 +720,12 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
       }
 
       try {
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'X-API-Key': apiKey },
-          body,
-        });
-        const result = await response.json().catch(() => null);
-
-        if (!response.ok || result?.estado !== 1) {
-          throw new Error(result?.exception || result?.message || 'No se pudo enviar el formulario');
-        }
+        await submitLandingLead(endpoint, apiKey, body);
 
         form.reset();
         syncFileField();
-        setStatus('Solicitud enviada correctamente. Te contactaremos en breve.', 'success');
+        clearCalculatorData();
+        showSuccess();
       } catch (error) {
         setStatus(error instanceof Error ? error.message : 'No se pudo enviar el formulario', 'error');
       } finally {
