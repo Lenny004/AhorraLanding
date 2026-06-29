@@ -1,0 +1,835 @@
+---
+const benefits = [
+  'Porcentaje de ahorro estimado',
+  'Ahorro en euros al mes y al año',
+  'Mejor tarifa disponible para ti',
+];
+
+const householdOptions = ['1 persona', '2 personas', '3 personas', '4 personas', '5 o más'];
+
+const providers = [
+  'Iberdrola',
+  'Endesa',
+  'Naturgy',
+  'Repsol',
+  'Plenitude (Aldro)',
+  'Holaluz',
+  'Gana Energía',
+  'Otra',
+];
+
+const economicOptions = [
+  'Llego justo a fin de mes',
+  'Cubro gastos y ahorro algo',
+  'Vivo con holgura',
+  'El dinero no es una preocupación',
+];
+
+const livingOptions = [
+  'Solo/a',
+  'Con mi pareja',
+  'Con mi pareja e hijos',
+  'Con mis hijos',
+  'Con otros familiares',
+  'Con compañeros de piso',
+];
+---
+
+<section class="calculator section" id="calculadora">
+  <div class="container">
+    <header class="section-header" data-reveal>
+      <h2 class="display-xl">Calculadora</h2>
+      <p class="body-lg text-muted">Luz y gas, cuánto puedes ahorrar con la mejor tarifa.</p>
+    </header>
+
+    <div class="calculator-panel card-lift" data-calc-root data-reveal>
+      <!-- Intro -->
+      <div class="calc-view" data-calc-view="intro">
+        <span class="calc-badge label-xs">Calculadora gratuita</span>
+        <h3 class="calc-title display-xl">¿Cuánto podrías ahorrar en tu factura de luz?</h3>
+        <p class="calc-lead body-lg text-muted">
+          Responde unas preguntas y descubre si estás pagando de más — y qué tarifa te conviene.
+        </p>
+        <p class="calc-highlight label-s">
+          <span aria-hidden="true">💰</span> Ahorro medio: <strong>35€/mes</strong>
+        </p>
+
+        <ul class="calc-benefits">
+          {benefits.map((item) => (
+            <li class="calc-benefit">
+              <span class="material-symbols-outlined calc-benefit-icon" aria-hidden="true">check_circle</span>
+              {item}
+            </li>
+          ))}
+        </ul>
+
+        <p class="calc-social label-xs text-muted-soft">
+          <span class="calc-avatars" aria-hidden="true">
+            <span class="calc-avatar">A</span>
+            <span class="calc-avatar">M</span>
+            <span class="calc-avatar">L</span>
+          </span>
+          +8.500 personas ya lo han calculado
+        </p>
+
+        <button type="button" class="calc-cta btn-primary" data-calc-start>
+          <span class="calc-cta-main">Empezar el análisis</span>
+          <span class="calc-cta-sub">Gratis · Sin compromiso · 2 minutos</span>
+        </button>
+      </div>
+
+      <!-- Wizard -->
+      <div class="calc-view calc-view--wizard" data-calc-view="wizard" hidden>
+        <div class="calc-progress" aria-hidden="true">
+          <div class="calc-progress-fill" data-calc-progress></div>
+        </div>
+
+        <div class="calc-step" data-calc-step="0">
+          <h3 class="calc-step-title display-xl">¿Qué quieres analizar?</h3>
+          <p class="calc-step-sub body-lg text-muted">Selecciona una opción</p>
+          <div class="calc-options" role="radiogroup">
+            <label class="calc-option"><input type="radio" name="serviceType" value="luz" /><span class="calc-option-ui"></span>Solo luz</label>
+            <label class="calc-option"><input type="radio" name="serviceType" value="luz-gas" /><span class="calc-option-ui"></span>Luz y gas</label>
+          </div>
+        </div>
+
+        <div class="calc-step" data-calc-step="1" hidden>
+          <h3 class="calc-step-title display-xl">¿Cuánto pagas de luz al mes?</h3>
+          <p class="calc-step-sub body-lg text-muted">Mira tu última factura</p>
+          <input class="calc-input" type="number" name="monthlyBill" min="1" placeholder="Ej: 80" inputmode="decimal" />
+          <button type="button" class="calc-continue btn-primary" data-calc-next>Continuar</button>
+        </div>
+
+        <div class="calc-step" data-calc-step="2" hidden>
+          <h3 class="calc-step-title display-xl">¿Cuántas personas viven en casa?</h3>
+          <p class="calc-step-sub body-lg text-muted">Selecciona una opción</p>
+          <div class="calc-options" role="radiogroup">
+            {householdOptions.map((label, i) => (
+              <label class="calc-option">
+                <input type="radio" name="householdSize" value={String(i + 1)} />
+                <span class="calc-option-ui"></span>
+                {label}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div class="calc-step" data-calc-step="3" hidden>
+          <h3 class="calc-step-title display-xl">¿Sabes tu potencia contratada?</h3>
+          <p class="calc-step-sub body-lg text-muted">La encontrarás en tu factura de luz</p>
+          <div class="calc-options" role="radiogroup">
+            <label class="calc-option"><input type="radio" name="knowsPower" value="yes" /><span class="calc-option-ui"></span>Sí, la sé</label>
+            <label class="calc-option"><input type="radio" name="knowsPower" value="no" /><span class="calc-option-ui"></span>No lo sé</label>
+          </div>
+        </div>
+
+        <div class="calc-step" data-calc-step="4" hidden>
+          <h3 class="calc-step-title display-xl">¿Sabes el precio de tu kWh?</h3>
+          <p class="calc-step-sub body-lg text-muted">Lo encontrarás en el detalle de tu factura</p>
+          <div class="calc-options" role="radiogroup">
+            <label class="calc-option"><input type="radio" name="knowsKwh" value="yes" /><span class="calc-option-ui"></span>Sí, lo sé</label>
+            <label class="calc-option"><input type="radio" name="knowsKwh" value="no" /><span class="calc-option-ui"></span>No lo sé</label>
+          </div>
+        </div>
+
+        <div class="calc-step" data-calc-step="5" hidden>
+          <h3 class="calc-step-title display-xl">¿Qué tipo de tarifa tienes?</h3>
+          <p class="calc-step-sub body-lg text-muted">Selecciona una opción</p>
+          <div class="calc-options" role="radiogroup">
+            <label class="calc-option"><input type="radio" name="tariffType" value="pvpc" /><span class="calc-option-ui"></span>PVPC (tarifa regulada)</label>
+            <label class="calc-option"><input type="radio" name="tariffType" value="libre" /><span class="calc-option-ui"></span>Mercado libre</label>
+            <label class="calc-option"><input type="radio" name="tariffType" value="unknown" /><span class="calc-option-ui"></span>No lo sé</label>
+          </div>
+        </div>
+
+        <div class="calc-step" data-calc-step="6" hidden>
+          <h3 class="calc-step-title display-xl">¿Cuál es tu proveedor actual?</h3>
+          <p class="calc-step-sub body-lg text-muted">Selecciona una opción *</p>
+          <div class="calc-options" role="radiogroup">
+            {providers.map((label) => (
+              <label class="calc-option">
+                <input type="radio" name="provider" value={label} />
+                <span class="calc-option-ui"></span>
+                {label}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div class="calc-step" data-calc-step="7" hidden>
+          <h3 class="calc-step-title display-xl">¿Cómo describirías tu situación económica actual?</h3>
+          <p class="calc-step-sub body-lg text-muted">Selecciona una opción *</p>
+          <div class="calc-options" role="radiogroup">
+            {economicOptions.map((label) => (
+              <label class="calc-option">
+                <input type="radio" name="economicSituation" value={label} />
+                <span class="calc-option-ui"></span>
+                {label}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div class="calc-step" data-calc-step="8" hidden>
+          <h3 class="calc-step-title display-xl">¿Con quién vives?</h3>
+          <p class="calc-step-sub body-lg text-muted">Selecciona una opción *</p>
+          <div class="calc-options" role="radiogroup">
+            {livingOptions.map((label) => (
+              <label class="calc-option">
+                <input type="radio" name="livingWith" value={label} />
+                <span class="calc-option-ui"></span>
+                {label}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div class="calc-step" data-calc-step="9" hidden>
+          <h3 class="calc-step-title display-xl">¿Cuál es tu código postal?</h3>
+          <p class="calc-step-sub body-lg text-muted">Introduce tu código postal *</p>
+          <input class="calc-input" type="text" name="postalCode" placeholder="Ej: 28001" maxlength="5" inputmode="numeric" pattern="[0-9]{5}" />
+          <button type="button" class="calc-continue btn-primary" data-calc-next>Continuar</button>
+        </div>
+
+        <div class="calc-step" data-calc-step="10" hidden>
+          <h3 class="calc-step-title display-xl">¿Cómo te llamas?</h3>
+          <p class="calc-step-sub body-lg text-muted">Introduce tu nombre completo *</p>
+          <input class="calc-input" type="text" name="firstName" placeholder="Nombre" autocomplete="given-name" />
+          <input class="calc-input" type="text" name="lastName" placeholder="Introduce tu apellido" autocomplete="family-name" />
+          <button type="button" class="calc-continue btn-primary" data-calc-next>Continuar</button>
+        </div>
+
+        <div class="calc-step" data-calc-step="11" hidden>
+          <h3 class="calc-step-title display-xl">¿Cuál es tu número de teléfono?</h3>
+          <p class="calc-step-sub body-lg text-muted">Introduce tu teléfono *</p>
+          <input class="calc-input" type="tel" name="phone" placeholder="600 00 00 00" autocomplete="tel" />
+          <label class="calc-consent">
+            <input type="checkbox" name="privacy" />
+            <span class="body-md text-muted">
+              Acepto la <a href="/privacidad">política de privacidad</a> y consiento la cesión de mis datos a empresas colaboradoras para recibir ofertas personalizadas.
+            </span>
+          </label>
+          <button type="button" class="calc-continue btn-primary" data-calc-finish>Continuar</button>
+        </div>
+
+        <div class="calc-nav">
+          <button type="button" class="calc-back btn-secondary" data-calc-back hidden>
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+            Atrás
+          </button>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="calc-view calc-view--results" data-calc-view="results" hidden>
+        <div class="calc-result-card">
+          <p class="calc-result-label label-xs">Resultado del análisis</p>
+          <p class="calc-result-percent display-xl" data-calc-result-percent>12%</p>
+          <p class="calc-result-desc body-lg">de ahorro estimado en tu factura</p>
+          <p class="calc-result-badge label-s" data-calc-result-savings>9,84€/mes · 118,08€/año</p>
+
+          <div class="calc-result-cta-wrap">
+            <p class="body-md text-muted">Encuentra la tarifa que mejor encaja contigo hoy</p>
+            <a href="#contacto" class="calc-cta btn-primary">
+              <span class="calc-cta-main">Quiero pagar menos →</span>
+              <span class="calc-cta-sub">Gratis · Sin compromiso · 5 minutos</span>
+            </a>
+          </div>
+        </div>
+
+        <p class="calc-comparison-label label-xs text-muted-soft">⚡ Factura de luz</p>
+        <div class="calc-comparison card-lift">
+          <div class="calc-comparison-row">
+            <div>
+              <p class="label-xs text-muted-soft">Pagas ahora</p>
+              <p class="calc-comparison-bad label-xs">✕ Tarifa sin optimizar</p>
+            </div>
+            <p class="calc-comparison-amount" data-calc-result-current>80,00€</p>
+          </div>
+          <div class="calc-comparison-bar">
+            <span class="material-symbols-outlined" aria-hidden="true">south</span>
+            Cambiando de tarifa
+          </div>
+          <div class="calc-comparison-row calc-comparison-row--new">
+            <div>
+              <p class="label-s calc-comparison-good">Tu nueva factura</p>
+              <ul class="calc-comparison-perks">
+                <li>✓ Potencia optimizada</li>
+                <li>✓ Mejor tarifa del mercado</li>
+                <li>✓ Sin permanencia</li>
+              </ul>
+            </div>
+            <p class="calc-comparison-amount calc-comparison-amount--new" data-calc-result-new>70,16€</p>
+          </div>
+        </div>
+
+        <p class="calc-comparison-label label-xs text-muted-soft">Por qué estás pagando de más</p>
+        <div class="calc-why card-lift">
+          <p class="body-md"><span class="calc-why-x" aria-hidden="true">✕</span> <strong>Tu comercializadora nunca te llamará</strong> para ofrecerte una tarifa más barata — no es su interés.</p>
+          <p class="body-md"><span class="calc-why-x" aria-hidden="true">✕</span> <strong>Las mejores tarifas no se publicitan.</strong> Hay que saber dónde buscarlas y negociarlas.</p>
+        </div>
+
+        <button type="button" class="calc-restart btn-secondary" data-calc-restart>Volver a calcular</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-calc-root]');
+  if (!root) throw new Error('Calculator root not found');
+
+  const views = {
+    intro: root.querySelector<HTMLElement>('[data-calc-view="intro"]')!,
+    wizard: root.querySelector<HTMLElement>('[data-calc-view="wizard"]')!,
+    results: root.querySelector<HTMLElement>('[data-calc-view="results"]')!,
+  };
+
+  const steps = Array.from(root.querySelectorAll<HTMLElement>('[data-calc-step]'));
+  const progressFill = root.querySelector<HTMLElement>('[data-calc-progress]')!;
+  const backBtn = root.querySelector<HTMLButtonElement>('[data-calc-back]')!;
+  const totalSteps = steps.length;
+
+  let currentStep = 0;
+
+  const formatEuro = (value: number) =>
+    value.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '€';
+
+  const showView = (name: keyof typeof views) => {
+    Object.entries(views).forEach(([key, el]) => {
+      el.hidden = key !== name;
+    });
+  };
+
+  const showStep = (index: number) => {
+    currentStep = index;
+    steps.forEach((step, i) => {
+      step.hidden = i !== index;
+    });
+    progressFill.style.width = `${((index + 1) / totalSteps) * 100}%`;
+    backBtn.hidden = index === 0;
+  };
+
+  const getFormData = () => {
+    const data: Record<string, string> = {};
+    root.querySelectorAll<HTMLInputElement>('input[name]').forEach((input) => {
+      if (input.type === 'radio' && !input.checked) return;
+      if (input.type === 'checkbox') {
+        data[input.name] = input.checked ? 'yes' : 'no';
+        return;
+      }
+      data[input.name] = input.value.trim();
+    });
+    return data;
+  };
+
+  const calculateSavings = (data: Record<string, string>) => {
+    const bill = Math.max(parseFloat(data.monthlyBill) || 80, 1);
+    let percent = 10;
+
+    if (data.serviceType === 'luz-gas') percent += 2;
+    if (data.knowsPower === 'no') percent += 2;
+    if (data.knowsKwh === 'no') percent += 2;
+    if (data.tariffType === 'pvpc') percent += 3;
+    if (data.tariffType === 'unknown') percent += 4;
+    if (data.tariffType === 'libre') percent += 1;
+
+    percent = Math.min(Math.round(percent), 25);
+    const newBill = bill * (1 - percent / 100);
+    const monthlySaving = bill - newBill;
+
+    return { percent, bill, newBill, monthlySaving, yearlySaving: monthlySaving * 12 };
+  };
+
+  const validateStep = (index: number): boolean => {
+    const step = steps[index];
+    const inputs = step.querySelectorAll<HTMLInputElement>('input[name]');
+
+    for (const input of inputs) {
+      if (input.type === 'radio') {
+        const group = step.querySelector<HTMLInputElement>(`input[name="${input.name}"]:checked`);
+        if (!group) return false;
+        continue;
+      }
+      if (input.type === 'checkbox') {
+        if (input.name === 'privacy' && !input.checked) return false;
+        continue;
+      }
+      if (!input.value.trim()) return false;
+    }
+    return true;
+  };
+
+  const goNext = () => {
+    if (!validateStep(currentStep)) return;
+    if (currentStep < totalSteps - 1) {
+      showStep(currentStep + 1);
+      return;
+    }
+    finishWizard();
+  };
+
+  const finishWizard = () => {
+    if (!validateStep(currentStep)) return;
+    const data = getFormData();
+    const result = calculateSavings(data);
+
+    root.querySelector('[data-calc-result-percent]')!.textContent = `${result.percent}%`;
+    root.querySelector('[data-calc-result-savings]')!.textContent =
+      `${formatEuro(result.monthlySaving)}/mes · ${formatEuro(result.yearlySaving)}/año`;
+    root.querySelector('[data-calc-result-current]')!.textContent = formatEuro(result.bill);
+    root.querySelector('[data-calc-result-new]')!.textContent = formatEuro(result.newBill);
+
+    showView('results');
+  };
+
+  root.querySelector('[data-calc-start]')?.addEventListener('click', () => {
+    showView('wizard');
+    showStep(0);
+  });
+
+  root.querySelector('[data-calc-restart]')?.addEventListener('click', () => {
+    root.querySelectorAll('input').forEach((input) => {
+      if (input.type === 'radio' || input.type === 'checkbox') input.checked = false;
+      else input.value = '';
+    });
+    showView('intro');
+  });
+
+  backBtn.addEventListener('click', () => {
+    if (currentStep > 0) showStep(currentStep - 1);
+  });
+
+  root.querySelectorAll('[data-calc-next]').forEach((btn) => {
+    btn.addEventListener('click', goNext);
+  });
+
+  root.querySelector('[data-calc-finish]')?.addEventListener('click', finishWizard);
+
+  root.querySelectorAll('.calc-option input[type="radio"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+      window.setTimeout(() => {
+        if (currentStep < totalSteps - 1 && validateStep(currentStep)) {
+          showStep(currentStep + 1);
+        }
+      }, 280);
+    });
+  });
+
+  root.querySelectorAll('.calc-input').forEach((input) => {
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') goNext();
+    });
+  });
+</script>
+
+<style>
+  .calculator {
+    scroll-margin-top: 5rem;
+    background: var(--color-bg);
+  }
+
+  .calculator-panel {
+    max-width: 36rem;
+    margin-inline: auto;
+    padding: 2.5rem 2rem;
+    border-radius: var(--radius-xl);
+    background: #ffffff;
+    border: 1px solid rgba(226, 226, 222, 0.72);
+    text-align: center;
+  }
+
+  .calc-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .calc-view[hidden],
+  .calc-step[hidden] {
+    display: none;
+  }
+
+  .calc-badge {
+    display: inline-block;
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius-full);
+    border: 1px solid rgba(121, 184, 42, 0.45);
+    color: var(--color-green);
+    background: rgba(121, 184, 42, 0.08);
+  }
+
+  .calc-title {
+    font-size: calc(var(--size-xl) * 0.72);
+  }
+
+  .calc-lead {
+    max-width: 28rem;
+  }
+
+  .calc-highlight {
+    color: var(--color-green);
+  }
+
+  .calc-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    list-style: none;
+  }
+
+  @media (min-width: 40rem) {
+    .calc-benefits {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+
+  .calc-benefit {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-xl);
+    background: #ffffff;
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-soft);
+    font-size: var(--size-xs);
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .calc-benefit-icon {
+    font-size: 1.25rem;
+    color: var(--color-green);
+  }
+
+  .calc-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .calc-avatars {
+    display: inline-flex;
+  }
+
+  .calc-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-left: -0.4rem;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    background: var(--color-surface-soft);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--color-night);
+  }
+
+  .calc-avatar:first-child {
+    margin-left: 0;
+  }
+
+  .calc-cta {
+    flex-direction: column;
+    width: 100%;
+    padding-block: 1.1rem;
+    gap: 0.25rem;
+  }
+
+  .calc-cta-main {
+    font-size: var(--size-s);
+    font-weight: 700;
+  }
+
+  .calc-cta-sub {
+    font-size: var(--size-xs);
+    font-weight: 500;
+    opacity: 0.9;
+  }
+
+  .calc-view--wizard {
+    width: 100%;
+    gap: 2rem;
+  }
+
+  .calc-progress {
+    width: 100%;
+    height: 0.25rem;
+    border-radius: var(--radius-full);
+    background: var(--color-surface-soft);
+    overflow: hidden;
+  }
+
+  .calc-progress-fill {
+    height: 100%;
+    width: 0;
+    border-radius: inherit;
+    background: var(--color-green);
+    transition: width 0.35s ease;
+  }
+
+  .calc-step {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
+    width: 100%;
+  }
+
+  .calc-step-title {
+    font-size: calc(var(--size-xl) * 0.65);
+    text-align: center;
+  }
+
+  .calc-step-sub {
+    text-align: center;
+    margin-top: -0.5rem;
+  }
+
+  .calc-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .calc-option {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1rem 1.15rem;
+    border-radius: var(--radius-xl);
+    border: 1px solid rgba(121, 184, 42, 0.35);
+    background: #ffffff;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: left;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .calc-option:hover {
+    border-color: var(--color-green);
+  }
+
+  .calc-option:has(input:checked) {
+    border-color: var(--color-green);
+    background: rgba(121, 184, 42, 0.1);
+  }
+
+  .calc-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .calc-option-ui {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    border: 2px solid rgba(121, 184, 42, 0.5);
+    position: relative;
+  }
+
+  .calc-option:has(input:checked) .calc-option-ui::after {
+    content: '';
+    position: absolute;
+    inset: 0.2rem;
+    border-radius: 50%;
+    background: var(--color-green);
+  }
+
+  .calc-input {
+    width: 100%;
+    padding: 1rem 1.15rem;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border);
+    font-size: var(--size-m);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .calc-input:focus {
+    outline: none;
+    border-color: var(--color-green);
+    box-shadow: 0 0 0 3px rgba(121, 184, 42, 0.2);
+  }
+
+  .calc-continue {
+    width: 100%;
+  }
+
+  .calc-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .calc-consent input {
+    margin-top: 0.2rem;
+    accent-color: var(--color-green);
+  }
+
+  .calc-consent a {
+    color: var(--color-green);
+    text-decoration: underline;
+  }
+
+  .calc-nav {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .calc-back {
+    padding: 0.65rem 1.25rem;
+  }
+
+  .calc-view--results {
+    width: 100%;
+    gap: 1.5rem;
+    text-align: left;
+  }
+
+  .calc-result-card {
+    width: 100%;
+    padding: 2rem 1.5rem;
+    border-radius: var(--radius-xl);
+    background: var(--color-surface-soft);
+    text-align: center;
+  }
+
+  .calc-result-label {
+    color: var(--color-green);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .calc-result-percent {
+    color: var(--color-night);
+    line-height: 1;
+  }
+
+  .calc-result-desc {
+    color: var(--color-green);
+    margin-bottom: 1rem;
+  }
+
+  .calc-result-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border);
+    background: #ffffff;
+    color: var(--color-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .calc-result-cta-wrap {
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .calc-comparison-label {
+    width: 100%;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .calc-comparison {
+    width: 100%;
+    padding: 1.5rem;
+    border-radius: var(--radius-xl);
+    background: linear-gradient(180deg, #ffffff 70%, rgba(121, 184, 42, 0.08));
+    border: 1px solid var(--color-border);
+  }
+
+  .calc-comparison-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .calc-comparison-bad {
+    color: #c0392b;
+    margin-top: 0.25rem;
+  }
+
+  .calc-comparison-amount {
+    font-size: var(--size-headline);
+    font-weight: 800;
+    color: var(--color-night);
+    white-space: nowrap;
+  }
+
+  .calc-comparison-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    margin: 1rem 0;
+    padding: 0.5rem;
+    border-radius: var(--radius-lg);
+    background: rgba(121, 184, 42, 0.15);
+    color: var(--color-green);
+    font-size: var(--size-xs);
+    font-weight: 700;
+  }
+
+  .calc-comparison-good {
+    color: var(--color-green);
+  }
+
+  .calc-comparison-perks {
+    list-style: none;
+    margin-top: 0.5rem;
+    font-size: var(--size-xs);
+    color: var(--color-muted);
+  }
+
+  .calc-comparison-amount--new {
+    color: var(--color-green);
+  }
+
+  .calc-why {
+    width: 100%;
+    padding: 1.5rem;
+    border-radius: var(--radius-xl);
+    background: #ffffff;
+    border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .calc-why-x {
+    color: #c0392b;
+    font-weight: 700;
+  }
+
+  .calc-restart {
+    align-self: center;
+  }
+
+  @media (min-width: 48rem) {
+    .calculator-panel {
+      max-width: 42rem;
+      padding: 3rem 2.5rem;
+    }
+  }
+</style>
