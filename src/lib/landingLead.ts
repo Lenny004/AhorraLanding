@@ -1,4 +1,6 @@
 export const CALC_STORAGE_KEY = 'landing_calculator_data';
+export const COOKIE_SESSION_KEY = '_calc_session';
+export const COOKIE_DATA_KEY = '_calc_data';
 
 export type CalculatorResult = {
   percent: number;
@@ -15,22 +17,70 @@ export type CalculatorPayload = {
   submittedAt?: string;
 };
 
+function generateUUID(): string {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+  });
+}
+
+function getCookie(name: string): string | null {
+  const match = document.cookie.match(new RegExp(`(?:^|;\\s*)${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+function setCookie(name: string, value: string, maxAgeSeconds: number): void {
+  document.cookie = `${name}=${encodeURIComponent(value)}; max-age=${maxAgeSeconds}; path=/; SameSite=Strict`;
+}
+
+function removeCookie(name: string): void {
+  document.cookie = `${name}=; max-age=0; path=/; SameSite=Strict`;
+}
+
+export function getSessionToken(): string {
+  const existing = getCookie(COOKIE_SESSION_KEY);
+  if (existing) return existing;
+  const token = generateUUID();
+  setCookie(COOKIE_SESSION_KEY, token, 3600);
+  return token;
+}
+
 export function saveCalculatorData(payload: CalculatorPayload) {
   sessionStorage.setItem(CALC_STORAGE_KEY, JSON.stringify(payload));
+  const json = JSON.stringify(payload);
+  if (json.length <= 3000) {
+    setCookie(COOKIE_DATA_KEY, json, 3600);
+  }
 }
 
 export function getCalculatorData(): CalculatorPayload | null {
   const raw = sessionStorage.getItem(CALC_STORAGE_KEY);
-  if (!raw) return null;
-  try {
-    return JSON.parse(raw) as CalculatorPayload;
-  } catch {
-    return null;
+  if (raw) {
+    try {
+      return JSON.parse(raw) as CalculatorPayload;
+    } catch {
+      /* ignore */
+    }
   }
+  const cookieRaw = getCookie(COOKIE_DATA_KEY);
+  if (cookieRaw) {
+    try {
+      const data = JSON.parse(cookieRaw) as CalculatorPayload;
+      sessionStorage.setItem(CALC_STORAGE_KEY, cookieRaw);
+      return data;
+    } catch {
+      /* ignore */
+    }
+  }
+  return null;
 }
 
 export function clearCalculatorData() {
   sessionStorage.removeItem(CALC_STORAGE_KEY);
+  removeCookie(COOKIE_DATA_KEY);
 }
 
 export function calculatorToLeadFields(data: CalculatorPayload) {
@@ -70,6 +120,7 @@ export function buildLeadBody(options: {
   monthlySaving?: number;
   calculatorData?: CalculatorPayload | null;
   invoice?: File;
+  sessionToken?: string;
 }): FormData {
   const body = new FormData();
   body.set('source', options.source);
@@ -78,6 +129,7 @@ export function buildLeadBody(options: {
   body.set('lead_origin', options.leadOrigin);
   body.set('calculator_completed', options.calculatorData ? '1' : '0');
 
+  if (options.sessionToken) body.set('session_token', options.sessionToken);
   if (options.email) body.set('email', options.email);
   if (options.clientType) body.set('client_type', options.clientType);
   if (options.approximateConsumption) body.set('approximate_consumption', options.approximateConsumption);
@@ -92,12 +144,6 @@ export function buildLeadBody(options: {
   if (options.vertical) extra.vertical = options.vertical;
   if (options.serviceInternet) extra.service_internet = true;
   if (options.serviceMovil) extra.service_movil = true;
-  if (options.calculatorData) {
-    extra.calculator = options.calculatorData;
-    if (options.leadOrigin === 'both' && options.calculatorData.submittedToCrm) {
-      extra.calculator_already_submitted = true;
-    }
-  }
   if (Object.keys(extra).length > 0) {
     body.set('extra_data', JSON.stringify(extra));
   }

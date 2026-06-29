@@ -176,7 +176,7 @@ const consumptionPlaceholder =
             <p class="label-s contact-status" data-form-status aria-live="polite"></p>
 
             <p class="label-xs text-muted contact-disclaimer">
-              Al enviar aceptas nuestra <a class="label-xs" href="/privacidad">política de privacidad</a>.
+              Al enviar aceptas nuestra <a class="label-xs" href="/privacidad">política de privacidad</a> y consientes que tus datos se registren en el CRM de gestión comercial para que Ahorra Sin Líos y empresas colaboradoras te contacten con ofertas personalizadas.
             </p>
           </form>
 
@@ -616,6 +616,7 @@ const consumptionPlaceholder =
     calculatorToLeadFields,
     clearCalculatorData,
     getCalculatorData,
+    getSessionToken,
     submitLandingLead,
   } from '../lib/landingLead';
 
@@ -739,6 +740,7 @@ const consumptionPlaceholder =
         savingsPercent: calcFields?.savingsPercent,
         monthlySaving: calcFields?.monthlySaving,
         calculatorData,
+        sessionToken: getSessionToken(),
         invoice: data.get('invoice') instanceof File && (data.get('invoice') as File).size > 0
           ? (data.get('invoice') as File)
           : undefined,

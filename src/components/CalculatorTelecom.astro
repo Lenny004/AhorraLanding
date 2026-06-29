@@ -5,34 +5,37 @@ const benefits = [
   'Mejor tarifa disponible para ti',
 ];
 
-const householdOptions = ['1 persona', '2 personas', '3 personas', '4 personas', '5 o más'];
+const telecomTypes = [
+  { label: 'Solo móvil', value: 'solo-movil' },
+  { label: 'Solo fibra', value: 'solo-fibra' },
+  { label: 'Móvil + fibra', value: 'movil-fibra' },
+];
+
+const mobileLineOptions = ['1', '2', '3', '4 o más'];
+
+const dataUsageOptions = [
+  'Menos de 10 GB',
+  '10-30 GB',
+  '30-50 GB',
+  'Más de 50 GB',
+  'No lo sé',
+];
+
+const connectionOptions = ['Fibra', 'ADSL', 'No tengo en casa'];
+
+const fiberSpeedOptions = [
+  'Menos de 100 Mb',
+  '100-300 Mb',
+  '600 Mb',
+  '1 Gb',
+  'No lo sé',
+];
 
 const providers = [
-  'Iberdrola',
-  'Endesa',
-  'Naturgy',
-  'Repsol',
-  'Plenitude (Aldro)',
-  'Holaluz',
-  'Gana Energía',
-  'Otra',
+  'Movistar', 'Vodafone', 'Orange', 'MásMóvil', 'Digi', 'Yoigo', 'Otro',
 ];
 
-const economicOptions = [
-  'Llego justo a fin de mes',
-  'Cubro gastos y ahorro algo',
-  'Vivo con holgura',
-  'El dinero no es una preocupación',
-];
-
-const livingOptions = [
-  'Solo/a',
-  'Con mi pareja',
-  'Con mi pareja e hijos',
-  'Con mis hijos',
-  'Con otros familiares',
-  'Con compañeros de piso',
-];
+const permanenceOptions = ['Sí', 'No', 'No lo sé'];
 
 const crmEndpoint = import.meta.env.PUBLIC_CRM_LANDING_LEADS_ENDPOINT ?? 'https://TU_DOMINIO_CRM/PTR-Sales/api/public/api_landing_leads.php?action=create';
 const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
@@ -41,8 +44,8 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
 <section class="calculator section" id="calculadora">
   <div class="container">
     <header class="section-header" data-reveal>
-      <h2 class="display-xl">Calculadora</h2>
-      <p class="body-lg text-muted">Luz y gas, cuánto puedes ahorrar con la mejor tarifa.</p>
+      <h2 class="display-xl">Comparador</h2>
+      <p class="body-lg text-muted">Móvil e internet, cuánto puedes ahorrar con la mejor tarifa.</p>
     </header>
 
     <div
@@ -55,13 +58,13 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     >
       <!-- Intro -->
       <div class="calc-view" data-calc-view="intro">
-        <span class="calc-badge label-xs">Calculadora gratuita</span>
-        <h3 class="calc-title display-xl">¿Cuánto podrías ahorrar en tu factura de luz?</h3>
+        <span class="calc-badge label-xs">Comparador gratuito</span>
+        <h3 class="calc-title display-xl">¿Cuánto podrías ahorrar en tu factura de móvil e internet?</h3>
         <p class="calc-lead body-lg text-muted">
           Responde unas preguntas y descubre si estás pagando de más — y qué tarifa te conviene.
         </p>
         <p class="calc-highlight label-s">
-          Ahorro medio: <strong>35€/mes</strong>
+          Ahorro medio: <strong>25€/mes</strong>
         </p>
 
         <ul class="calc-benefits">
@@ -89,112 +92,101 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
           <h3 class="calc-step-title display-xl">¿Qué quieres analizar?</h3>
           <p class="calc-step-sub body-lg text-muted">Selecciona una opción</p>
           <div class="calc-options" role="radiogroup">
-            <label class="calc-option"><input type="radio" name="serviceType" value="luz" /><span class="calc-option-ui"></span>Solo luz</label>
-            <label class="calc-option"><input type="radio" name="serviceType" value="luz-gas" /><span class="calc-option-ui"></span>Luz y gas</label>
+            {telecomTypes.map((opt) => (
+              <label class="calc-option"><input type="radio" name="telecomType" value={opt.value} /><span class="calc-option-ui"></span>{opt.label}</label>
+            ))}
           </div>
         </div>
 
         <div class="calc-step" data-calc-step="1" hidden>
-          <h3 class="calc-step-title display-xl">¿Cuánto pagas de luz al mes?</h3>
+          <h3 class="calc-step-title display-xl">¿Cuánto pagas ahora al mes?</h3>
           <p class="calc-step-sub body-lg text-muted">Mira tu última factura</p>
-          <input class="calc-input" type="number" name="monthlyBill" min="1" placeholder="Ej: 80" inputmode="decimal" />
+          <input class="calc-input" type="number" name="monthlyBill" min="1" placeholder="Ej: 55" inputmode="decimal" />
           <button type="button" class="calc-continue btn-primary" data-calc-next>Continuar</button>
         </div>
 
         <div class="calc-step" data-calc-step="2" hidden>
-          <h3 class="calc-step-title display-xl">¿Cuántas personas viven en casa?</h3>
+          <h3 class="calc-step-title display-xl">¿Cuántas líneas móviles?</h3>
           <p class="calc-step-sub body-lg text-muted">Selecciona una opción</p>
           <div class="calc-options" role="radiogroup">
-            {householdOptions.map((label, i) => (
-              <label class="calc-option">
-                <input type="radio" name="householdSize" value={String(i + 1)} />
-                <span class="calc-option-ui"></span>
-                {label}
-              </label>
+            {mobileLineOptions.map((label) => (
+              <label class="calc-option"><input type="radio" name="mobileLines" value={label} /><span class="calc-option-ui"></span>{label}</label>
             ))}
           </div>
         </div>
 
         <div class="calc-step" data-calc-step="3" hidden>
-          <h3 class="calc-step-title display-xl">¿Sabes tu potencia contratada?</h3>
-          <p class="calc-step-sub body-lg text-muted">La encontrarás en tu factura de luz</p>
+          <h3 class="calc-step-title display-xl">¿Cuántos GB usas al mes por línea?</h3>
+          <p class="calc-step-sub body-lg text-muted">Selecciona una opción</p>
           <div class="calc-options" role="radiogroup">
-            <label class="calc-option"><input type="radio" name="knowsPower" value="yes" /><span class="calc-option-ui"></span>Sí, la sé</label>
-            <label class="calc-option"><input type="radio" name="knowsPower" value="no" /><span class="calc-option-ui"></span>No lo sé</label>
+            {dataUsageOptions.map((label) => {
+              const val = label.toLowerCase().replace(/\s+/g, '-').replace(/[áéíóú]/g, (c) => ({ 'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u' })[c] || c);
+              return (
+                <label class="calc-option"><input type="radio" name="dataUsageGb" value={val} /><span class="calc-option-ui"></span>{label}</label>
+              );
+            })}
           </div>
         </div>
 
         <div class="calc-step" data-calc-step="4" hidden>
-          <h3 class="calc-step-title display-xl">¿Sabes el precio de tu kWh?</h3>
-          <p class="calc-step-sub body-lg text-muted">Lo encontrarás en el detalle de tu factura</p>
+          <h3 class="calc-step-title display-xl">¿Tienes fibra o ADSL?</h3>
+          <p class="calc-step-sub body-lg text-muted">Selecciona una opción</p>
           <div class="calc-options" role="radiogroup">
-            <label class="calc-option"><input type="radio" name="knowsKwh" value="yes" /><span class="calc-option-ui"></span>Sí, lo sé</label>
-            <label class="calc-option"><input type="radio" name="knowsKwh" value="no" /><span class="calc-option-ui"></span>No lo sé</label>
+            {connectionOptions.map((label) => {
+              const val = label.toLowerCase().replace(/\s+/g, '-');
+              return (
+                <label class="calc-option"><input type="radio" name="connectionType" value={val} /><span class="calc-option-ui"></span>{label}</label>
+              );
+            })}
           </div>
         </div>
 
         <div class="calc-step" data-calc-step="5" hidden>
-          <h3 class="calc-step-title display-xl">¿Qué tipo de tarifa tienes?</h3>
+          <h3 class="calc-step-title display-xl">¿Qué velocidad de bajada tienes?</h3>
           <p class="calc-step-sub body-lg text-muted">Selecciona una opción</p>
           <div class="calc-options" role="radiogroup">
-            <label class="calc-option"><input type="radio" name="tariffType" value="pvpc" /><span class="calc-option-ui"></span>PVPC (tarifa regulada)</label>
-            <label class="calc-option"><input type="radio" name="tariffType" value="libre" /><span class="calc-option-ui"></span>Mercado libre</label>
-            <label class="calc-option"><input type="radio" name="tariffType" value="unknown" /><span class="calc-option-ui"></span>No lo sé</label>
+            {fiberSpeedOptions.map((label) => {
+              const val = label.toLowerCase().replace(/\s+/g, '-').replace(/[áéíóú]/g, (c) => ({ 'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u' })[c] || c);
+              return (
+                <label class="calc-option"><input type="radio" name="fiberSpeed" value={val} /><span class="calc-option-ui"></span>{label}</label>
+              );
+            })}
           </div>
         </div>
 
         <div class="calc-step" data-calc-step="6" hidden>
-          <h3 class="calc-step-title display-xl">¿Cuál es tu proveedor actual?</h3>
-          <p class="calc-step-sub body-lg text-muted">Selecciona una opción *</p>
+          <h3 class="calc-step-title display-xl">¿Cuál es tu operador actual?</h3>
+          <p class="calc-step-sub body-lg text-muted">Selecciona una opción</p>
           <div class="calc-options" role="radiogroup">
             {providers.map((label) => (
-              <label class="calc-option">
-                <input type="radio" name="provider" value={label} />
-                <span class="calc-option-ui"></span>
-                {label}
-              </label>
+              <label class="calc-option"><input type="radio" name="provider" value={label} /><span class="calc-option-ui"></span>{label}</label>
             ))}
           </div>
         </div>
 
         <div class="calc-step" data-calc-step="7" hidden>
-          <h3 class="calc-step-title display-xl">¿Cómo describirías tu situación económica actual?</h3>
-          <p class="calc-step-sub body-lg text-muted">Selecciona una opción *</p>
+          <h3 class="calc-step-title display-xl">¿Tienes permanencia activa?</h3>
+          <p class="calc-step-sub body-lg text-muted">Selecciona una opción</p>
           <div class="calc-options" role="radiogroup">
-            {economicOptions.map((label) => (
-              <label class="calc-option">
-                <input type="radio" name="economicSituation" value={label} />
-                <span class="calc-option-ui"></span>
-                {label}
-              </label>
-            ))}
+            {permanenceOptions.map((label) => {
+              const val = label.toLowerCase().replace(/\s+/g, '-');
+              return (
+                <label class="calc-option"><input type="radio" name="hasPermanence" value={val} /><span class="calc-option-ui"></span>{label}</label>
+              );
+            })}
           </div>
         </div>
 
         <div class="calc-step" data-calc-step="8" hidden>
-          <h3 class="calc-step-title display-xl">¿Con quién vives?</h3>
-          <p class="calc-step-sub body-lg text-muted">Selecciona una opción *</p>
-          <div class="calc-options" role="radiogroup">
-            {livingOptions.map((label) => (
-              <label class="calc-option">
-                <input type="radio" name="livingWith" value={label} />
-                <span class="calc-option-ui"></span>
-                {label}
-              </label>
-            ))}
-          </div>
-        </div>
-
-        <div class="calc-step" data-calc-step="9" hidden>
           <h3 class="calc-step-title display-xl">¿Cuál es tu código postal?</h3>
-          <p class="calc-step-sub body-lg text-muted">Introduce tu código postal *</p>
+          <p class="calc-step-sub body-lg text-muted">Introduce tu código postal</p>
           <input class="calc-input" type="text" name="postalCode" placeholder="Ej: 28001" maxlength="5" inputmode="numeric" pattern="[0-9]{5}" />
           <button type="button" class="calc-continue btn-primary" data-calc-next>Continuar</button>
         </div>
 
-        <div class="calc-step" data-calc-step="10" hidden>
+        <div class="calc-step" data-calc-step="9" hidden>
           <h3 class="calc-step-title display-xl">¿Cómo te llamas?</h3>
-          <p class="calc-step-sub body-lg text-muted">Introduce tu nombre completo *</p>
+          <p class="calc-step-sub body-lg text-muted">Introduce tu nombre completo</p>
           <p class="calc-privacy-note body-md">
             Para enviarte el resultado personalizado, necesitamos tu contacto. Solo guardaremos tus datos en nuestro CRM si aceptas la política de privacidad.
           </p>
@@ -203,14 +195,14 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
           <button type="button" class="calc-continue btn-primary" data-calc-next>Continuar</button>
         </div>
 
-        <div class="calc-step" data-calc-step="11" hidden>
+        <div class="calc-step" data-calc-step="10" hidden>
           <h3 class="calc-step-title display-xl">¿Cuál es tu número de teléfono?</h3>
-          <p class="calc-step-sub body-lg text-muted">Introduce tu teléfono *</p>
+          <p class="calc-step-sub body-lg text-muted">Introduce tu teléfono</p>
           <input class="calc-input" type="tel" name="phone" placeholder="600 00 00 00" autocomplete="tel" />
           <label class="calc-consent">
             <input type="checkbox" name="privacy" />
             <span class="body-md text-muted">
-              Acepto que Ahorra Sin Líos trate mis datos personales y los registre para contactarme con la mejor oferta energética. Puedo retirar mi consentimiento en cualquier momento. <a href="/privacidad">Política de privacidad</a>.
+              Acepto que Ahorra Sin Líos trate mis datos personales y los registre en su CRM de gestión comercial para contactarme con la mejor oferta. Puedo retirar mi consentimiento en cualquier momento. <a href="/privacidad">Política de privacidad</a>.
             </span>
           </label>
           <button type="button" class="calc-continue btn-primary" data-calc-finish>Continuar</button>
@@ -228,9 +220,9 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
       <div class="calc-view calc-view--results" data-calc-view="results" hidden>
         <div class="calc-result-card">
           <p class="calc-result-label label-xs">Resultado del análisis</p>
-          <p class="calc-result-percent display-xl" data-calc-result-percent>12%</p>
+          <p class="calc-result-percent display-xl" data-calc-result-percent>15%</p>
           <p class="calc-result-desc body-lg">de ahorro estimado en tu factura</p>
-          <p class="calc-result-badge label-s" data-calc-result-savings>9,84€/mes · 118,08€/año</p>
+          <p class="calc-result-badge label-s" data-calc-result-savings>7,50€/mes · 90,00€/año</p>
 
           <div class="calc-result-cta-wrap">
             <p class="body-md text-muted">Encuentra la tarifa que mejor encaja contigo hoy</p>
@@ -241,14 +233,14 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
           </div>
         </div>
 
-        <p class="calc-comparison-label label-xs text-muted-soft">Factura de luz</p>
+        <p class="calc-comparison-label label-xs text-muted-soft">Factura actual</p>
         <div class="calc-comparison card-lift">
           <div class="calc-comparison-row">
             <div>
               <p class="label-xs text-muted-soft">Pagas ahora</p>
               <p class="calc-comparison-bad label-xs">✕ Tarifa sin optimizar</p>
             </div>
-            <p class="calc-comparison-amount" data-calc-result-current>80,00€</p>
+            <p class="calc-comparison-amount" data-calc-result-current>55,00€</p>
           </div>
           <div class="calc-comparison-bar">
             <span class="material-symbols-outlined" aria-hidden="true">south</span>
@@ -258,19 +250,19 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
             <div>
               <p class="label-s calc-comparison-good">Tu nueva factura</p>
               <ul class="calc-comparison-perks">
-                <li>✓ Potencia optimizada</li>
-                <li>✓ Mejor tarifa del mercado</li>
+                <li>✓ Fibra optimizada</li>
+                <li>✓ Móvil ajustado a tu consumo</li>
                 <li>✓ Sin permanencia</li>
               </ul>
             </div>
-            <p class="calc-comparison-amount calc-comparison-amount--new" data-calc-result-new>70,16€</p>
+            <p class="calc-comparison-amount calc-comparison-amount--new" data-calc-result-new>46,75€</p>
           </div>
         </div>
 
         <p class="calc-comparison-label label-xs text-muted-soft">Por qué estás pagando de más</p>
         <div class="calc-why card-lift">
-          <p class="body-md"><span class="calc-why-x" aria-hidden="true">✕</span> <strong>Tu comercializadora nunca te llamará</strong> para ofrecerte una tarifa más barata — no es su interés.</p>
-          <p class="body-md"><span class="calc-why-x" aria-hidden="true">✕</span> <strong>Las mejores tarifas no se publicitan.</strong> Hay que saber dónde buscarlas y negociarlas.</p>
+          <p class="body-md"><span class="calc-why-x" aria-hidden="true">✕</span> <strong>Las ofertas de bienvenida caducan.</strong> Si no cambias cada 12-24 meses, pagas de más.</p>
+          <p class="body-md"><span class="calc-why-x" aria-hidden="true">✕</span> <strong>Pagas por servicios que no usas.</strong> Líneas, GB o canales que podrías recortar.</p>
         </div>
 
         <button type="button" class="calc-restart btn-secondary" data-calc-restart>Volver a calcular</button>
@@ -335,18 +327,18 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     return data;
   };
 
-  const calculateSavings = (data: Record<string, string>) => {
-    const bill = Math.max(parseFloat(data.monthlyBill) || 80, 1);
-    let percent = 10;
+  const calculateTelecomSavings = (data: Record<string, string>) => {
+    const bill = Math.max(parseFloat(data.monthlyBill) || 50, 1);
+    let percent = 15;
 
-    if (data.serviceType === 'luz-gas') percent += 2;
-    if (data.knowsPower === 'no') percent += 2;
-    if (data.knowsKwh === 'no') percent += 2;
-    if (data.tariffType === 'pvpc') percent += 3;
-    if (data.tariffType === 'unknown') percent += 4;
-    if (data.tariffType === 'libre') percent += 1;
+    if (data.telecomType === 'movil-fibra') percent += 5;
+    if (data.provider === 'Movistar' || data.provider === 'Vodafone') percent += 5;
+    if (data.provider === 'Orange') percent += 3;
+    if (data.hasPermanence === 'no') percent += 2;
+    if (data.dataUsageGb === 'menos-de-10-gb') percent += 2;
+    if (data.connectionType === 'adsl') percent += 4;
 
-    percent = Math.min(Math.round(percent), 25);
+    percent = Math.min(Math.round(percent), 35);
     const newBill = bill * (1 - percent / 100);
     const monthlySaving = bill - newBill;
 
@@ -384,7 +376,7 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
   const finishWizard = async () => {
     if (!validateStep(currentStep)) return;
     const data = getFormData();
-    const result = calculateSavings(data);
+    const result = calculateTelecomSavings(data);
 
     root.querySelector('[data-calc-result-percent]')!.textContent = `${result.percent}%`;
     root.querySelector('[data-calc-result-savings]')!.textContent =
@@ -404,18 +396,21 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
 
     try {
       const fields = calculatorToLeadFields(payload);
+      const fullName = fields.fullName;
+      const phone = fields.phone;
+      if (!fullName && !phone) return;
+
       const body = buildLeadBody({
         source,
         leadOrigin: 'calculator',
-        fullName: fields.fullName,
-        phone: fields.phone,
-        postalCode: fields.postalCode,
-        monthlyBill: fields.monthlyBill,
-        savingsPercent: fields.savingsPercent,
-        monthlySaving: fields.monthlySaving,
-        approximateConsumption: fields.approximateConsumption,
-        serviceLuz: fields.serviceLuz,
-        serviceGas: fields.serviceGas,
+        fullName,
+        phone,
+        vertical: 'telecom',
+        postalCode: data.postalCode,
+        monthlyBill: result.bill,
+        savingsPercent: result.percent,
+        monthlySaving: result.monthlySaving,
+        approximateConsumption: `${result.bill}€/mes`,
         calculatorData: payload,
         sessionToken: getSessionToken(),
       });
