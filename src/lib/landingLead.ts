@@ -114,6 +114,7 @@ export function buildLeadBody(options: {
   serviceInternet?: boolean;
   serviceMovil?: boolean;
   vertical?: string;
+  sourcePage?: string;
   postalCode?: string;
   monthlyBill?: number;
   savingsPercent?: number;
@@ -142,6 +143,7 @@ export function buildLeadBody(options: {
 
   const extra: Record<string, unknown> = {};
   if (options.vertical) extra.vertical = options.vertical;
+  if (options.sourcePage) extra.source_page = options.sourcePage;
   if (options.serviceInternet) extra.service_internet = true;
   if (options.serviceMovil) extra.service_movil = true;
   if (Object.keys(extra).length > 0) {

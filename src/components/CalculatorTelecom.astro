@@ -226,7 +226,7 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
 
           <div class="calc-result-cta-wrap">
             <p class="body-md text-muted">Encuentra la tarifa que mejor encaja contigo hoy</p>
-            <a href="#contacto" class="calc-cta btn-primary">
+            <a href="#contacto" class="calc-cta btn-primary" data-calc-result-cta>
               <span class="calc-cta-main">Quiero pagar menos →</span>
               <span class="calc-cta-sub">Gratis · Sin compromiso · 5 minutos</span>
             </a>
@@ -383,6 +383,14 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
       `${formatEuro(result.monthlySaving)}/mes · ${formatEuro(result.yearlySaving)}/año`;
     root.querySelector('[data-calc-result-current]')!.textContent = formatEuro(result.bill);
     root.querySelector('[data-calc-result-new]')!.textContent = formatEuro(result.newBill);
+
+    const cta = root.querySelector<HTMLAnchorElement>('[data-calc-result-cta]');
+    if (cta) {
+      const ctaMain = cta.querySelector('.calc-cta-main');
+      const ctaSub = cta.querySelector('.calc-cta-sub');
+      if (ctaMain) ctaMain.textContent = `Quiero ahorrar ${formatEuro(result.monthlySaving)}/mes →`;
+      if (ctaSub) ctaSub.textContent = 'Gratis · Sin compromiso · 5 minutos';
+    }
 
     const payload = { answers: data, result };
     saveCalculatorData(payload);

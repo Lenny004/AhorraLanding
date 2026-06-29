@@ -12,11 +12,11 @@ const { vertical = 'energy' } = Astro.props;
 const otherVertical: Vertical = vertical === 'energy' ? 'telecom' : 'energy';
 
 const navLinks = [
+  { href: '#comparativa', label: 'Comparativa' },
   { href: '#servicios', label: 'Servicios' },
   { href: '#como-funciona', label: 'Cómo funciona' },
   { href: '#testimonios', label: 'Opiniones' },
-  { href: '#comparativa', label: 'Comparativa' },
-  ...(vertical === 'energy' ? [{ href: '#calculadora', label: 'Calculadora' }] : []),
+  { href: '#calculadora', label: 'Calculadora' },
   { href: verticalPaths[otherVertical], label: verticalLabels[otherVertical] },
 ];
 ---

@@ -3,9 +3,10 @@ import type { Vertical } from '../lib/vertical';
 
 interface Props {
   vertical?: Vertical;
+  sourcePage?: string;
 }
 
-const { vertical = 'energy' } = Astro.props;
+const { vertical = 'energy', sourcePage = '' } = Astro.props;
 
 const perks = [
   'Revisión gratuita',
@@ -58,6 +59,7 @@ const consumptionPlaceholder =
             data-api-key={crmApiKey}
             data-source="ahorrasinlios"
             data-vertical={vertical}
+            data-source-page={sourcePage}
           >
             <div class="contact-field">
               <label class="label-s contact-label" for="contact-name">Nombre completo</label>
@@ -174,6 +176,11 @@ const consumptionPlaceholder =
             <button class="btn-primary contact-submit" type="submit">Solicitar revisión</button>
 
             <p class="label-s contact-status" data-form-status aria-live="polite"></p>
+
+            <div class="contact-calc-badge" data-calc-badge hidden>
+              <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+              <span>Basado en tu análisis de ahorro</span>
+            </div>
 
             <p class="label-xs text-muted contact-disclaimer">
               Al enviar aceptas nuestra <a class="label-xs" href="/privacidad">política de privacidad</a> y consientes que tus datos se registren en el CRM de gestión comercial para que Ahorra Sin Líos y empresas colaboradoras te contacten con ofertas personalizadas.
@@ -504,6 +511,24 @@ const consumptionPlaceholder =
     color: var(--color-night);
   }
 
+  .contact-calc-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    border-radius: var(--radius-lg);
+    background: rgba(121, 184, 42, 0.12);
+    border: 1px solid rgba(121, 184, 42, 0.35);
+    color: var(--color-night);
+    font-size: var(--size-xs);
+    font-weight: 600;
+  }
+
+  .contact-calc-badge .material-symbols-outlined {
+    font-size: 1.1rem;
+    color: var(--color-green);
+  }
+
   .contact-success {
     display: flex;
     flex-direction: column;
@@ -633,7 +658,10 @@ const consumptionPlaceholder =
     const filePlaceholder = fileName instanceof HTMLElement ? fileName.textContent : 'o arrastra aquí';
 
     const calcData = getCalculatorData();
+    const calcBadge = form.querySelector('[data-calc-badge]');
     if (calcData) {
+      if (calcBadge instanceof HTMLElement) calcBadge.hidden = false;
+
       const fields = calculatorToLeadFields(calcData);
       const nameInput = form.querySelector<HTMLInputElement>('[name="name"]');
       const phoneInput = form.querySelector<HTMLInputElement>('[name="phone"]');
@@ -735,6 +763,7 @@ const consumptionPlaceholder =
         serviceInternet: Boolean(data.get('service_internet')),
         serviceMovil: Boolean(data.get('service_movil')),
         vertical: form.dataset.vertical || 'energy',
+        sourcePage: form.dataset.sourcePage,
         postalCode: calcFields?.postalCode,
         monthlyBill: calcFields?.monthlyBill,
         savingsPercent: calcFields?.savingsPercent,
