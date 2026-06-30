@@ -57,14 +57,8 @@ type FileUploadElements = {
   filePlaceholder: string;
 };
 
-function extractInvoiceFile(formData: FormData): File | undefined {
-  const invoice = formData.get('invoice');
-
-  if (invoice instanceof File && invoice.size > 0) {
-    return invoice;
-  }
-
-  return undefined;
+function getErrorMessage(error: unknown, fallback: string): string {
+  return error instanceof Error ? error.message : fallback;
 }
 
 function getContactFormElements(): ContactFormElements | null {
@@ -248,6 +242,16 @@ function createFileFieldSync(form: HTMLFormElement): () => void {
   };
 }
 
+function extractInvoiceFile(formData: FormData): File | undefined {
+  const invoice = formData.get('invoice');
+
+  if (invoice instanceof File && invoice.size > 0) {
+    return invoice;
+  }
+
+  return undefined;
+}
+
 function showSuccessView(form: HTMLFormElement, successPanel: HTMLElement | null): void {
   form.classList.add('is-hidden');
 
@@ -358,9 +362,7 @@ function bindContactFormSubmit(
       clearCalculatorData();
       showSuccessView(elements.form, elements.successPanel);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : FORM_MESSAGES.SUBMIT_FAILED;
-      writeStatus(errorMessage, 'error');
+      writeStatus(getErrorMessage(error, FORM_MESSAGES.SUBMIT_FAILED), 'error');
     } finally {
       if (elements.submitButton) {
         elements.submitButton.disabled = false;

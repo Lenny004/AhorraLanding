@@ -1,6 +1,12 @@
 const DESKTOP_MEDIA_QUERY = '(min-width: 48rem)';
 const OPEN_CLASS = 'open';
 
+/**
+ * Inicializa el menú móvil del header: toggle, cierre al navegar y en desktop.
+ *
+ * Espera encontrar `[data-header]`, `[data-menu-toggle]`, `[data-mobile-menu]`
+ * y `[data-menu-icon]` en el DOM.
+ */
 export function initSiteHeader(): void {
   const header = document.querySelector<HTMLElement>('[data-header]');
   const toggle = header?.querySelector<HTMLButtonElement>('[data-menu-toggle]');

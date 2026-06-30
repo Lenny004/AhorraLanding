@@ -5,6 +5,13 @@ const RANGE_TICK_MS = 35;
 const SINGLE_TICK_MS = 40;
 const SINGLE_STEPS = 40;
 
+/**
+ * Anima un rango numérico con formato "A-B" (p. ej. "10-15%").
+ *
+ * @param element - Nodo cuyo textContent se actualiza en cada tick.
+ * @param target - Valor objetivo en formato rango.
+ * @returns true si el target era un rango válido y se inició la animación.
+ */
 function animateRange(element: HTMLElement, target: string): boolean {
   const rangeMatch = target.match(RANGE_PATTERN);
 
@@ -33,6 +40,14 @@ function animateRange(element: HTMLElement, target: string): boolean {
   return true;
 }
 
+/**
+ * Anima un contador incremental hasta un valor máximo con prefijo y sufijo opcionales.
+ *
+ * @param element - Nodo cuyo textContent se actualiza.
+ * @param prefix - Texto antes del número (p. ej. "+").
+ * @param max - Valor final del contador.
+ * @param suffix - Texto después del número (p. ej. "%").
+ */
 function animateSingleValue(
   element: HTMLElement,
   prefix: string,
@@ -54,6 +69,11 @@ function animateSingleValue(
   }, SINGLE_TICK_MS);
 }
 
+/**
+ * Detecta el formato de `data-count` y delega en la animación correspondiente.
+ *
+ * @param element - Elemento con atributo data-count.
+ */
 function animateCountElement(element: HTMLElement): void {
   const target = element.dataset.count ?? '';
 
@@ -77,6 +97,11 @@ function animateCountElement(element: HTMLElement): void {
   animateSingleValue(element, withoutSuffix[1], Number(withoutSuffix[2]), '');
 }
 
+/**
+ * Inicia contadores animados en elementos `[data-count]` del hero.
+ *
+ * Respeta `prefers-reduced-motion` y no anima si el usuario lo tiene activado.
+ */
 export function initHeroCounter(): void {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     return;

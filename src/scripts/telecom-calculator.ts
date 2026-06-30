@@ -10,6 +10,12 @@ import {
   type WizardAnswers,
 } from './calculator-wizard';
 
+/**
+ * Calcula el porcentaje y importe de ahorro estimado en telecom según respuestas.
+ *
+ * @param answers - Respuestas del wizard de móvil e internet.
+ * @returns Resultado con factura actual, nueva factura y ahorro mensual/anual.
+ */
 function calculateTelecomSavings(answers: WizardAnswers) {
   const monthlyBill = Math.max(
     parseFloat(answers.monthlyBill) || TELECOM_SAVINGS.DEFAULT_MONTHLY_BILL_EUR,
@@ -59,6 +65,9 @@ function calculateTelecomSavings(answers: WizardAnswers) {
   };
 }
 
+/**
+ * Arranca el wizard de calculadora para el vertical de móvil e internet.
+ */
 export function initTelecomCalculator(): void {
   initCalculatorWizard({
     calculateSavings: calculateTelecomSavings,

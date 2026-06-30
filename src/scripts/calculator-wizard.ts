@@ -15,9 +15,70 @@ const RADIO_AUTO_ADVANCE_MS = 280;
 const DEFAULT_CALCULATOR_SOURCE = 'ahorrasinlios';
 const RESULT_CTA_SUBTITLE = 'Gratis · Sin compromiso · 5 minutos';
 
+export const ENERGY_SERVICE_TYPE = {
+  LUZ: 'luz',
+  LUZ_GAS: 'luz-gas',
+} as const;
+
+export const ENERGY_TARIFF_TYPE = {
+  PVPC: 'pvpc',
+  UNKNOWN: 'unknown',
+  LIBRE: 'libre',
+} as const;
+
+export const ENERGY_KNOWLEDGE_ANSWER = { NO: 'no' } as const;
+
+export const ENERGY_SAVINGS = {
+  DEFAULT_MONTHLY_BILL_EUR: 80,
+  MIN_MONTHLY_BILL_EUR: 1,
+  BASE_PERCENT: 10,
+  MAX_PERCENT: 25,
+  PERCENT_DIVISOR: 100,
+  MONTHS_PER_YEAR: 12,
+  BONUS: {
+    LUZ_GAS: 2,
+    UNKNOWN_POWER: 2,
+    UNKNOWN_KWH: 2,
+    PVPC_TARIFF: 3,
+    UNKNOWN_TARIFF: 4,
+    LIBRE_TARIFF: 1,
+  },
+} as const;
+
+export const TELECOM_PACKAGE_TYPE = { MOVIL_FIBRA: 'movil-fibra' } as const;
+
+export const TELECOM_PROVIDER = {
+  MOVISTAR: 'Movistar',
+  VODAFONE: 'Vodafone',
+  ORANGE: 'Orange',
+} as const;
+
+export const TELECOM_PERMANENCE_ANSWER = { NO: 'no' } as const;
+export const TELECOM_DATA_USAGE = { LESS_THAN_10_GB: 'menos-de-10-gb' } as const;
+export const TELECOM_CONNECTION_TYPE = { ADSL: 'adsl' } as const;
+
+export const TELECOM_SAVINGS = {
+  DEFAULT_MONTHLY_BILL_EUR: 50,
+  MIN_MONTHLY_BILL_EUR: 1,
+  BASE_PERCENT: 15,
+  MAX_PERCENT: 35,
+  PERCENT_DIVISOR: 100,
+  MONTHS_PER_YEAR: 12,
+  BONUS: {
+    MOVIL_FIBRA: 5,
+    PREMIUM_PROVIDER: 5,
+    ORANGE_PROVIDER: 3,
+    NO_PERMANENCE: 2,
+    LOW_DATA_USAGE: 2,
+    ADSL_CONNECTION: 4,
+  },
+} as const;
+
+export const VERTICAL = { TELECOM: 'telecom' } as const;
+
 type WizardViewName = 'intro' | 'wizard' | 'results';
 type WizardViews = Record<WizardViewName, HTMLElement>;
-type WizardAnswers = Record<string, string>;
+export type WizardAnswers = Record<string, string>;
 
 type CalculatorLeadFields = Omit<
   BuildLeadBodyOptions,
@@ -41,6 +102,14 @@ function formatEuroAmount(value: number): string {
       maximumFractionDigits: 2,
     }) + '€'
   );
+}
+
+function getWizardViews(wizardRoot: HTMLElement): WizardViews {
+  return {
+    intro: wizardRoot.querySelector<HTMLElement>('[data-calc-view="intro"]')!,
+    wizard: wizardRoot.querySelector<HTMLElement>('[data-calc-view="wizard"]')!,
+    results: wizardRoot.querySelector<HTMLElement>('[data-calc-view="results"]')!,
+  };
 }
 
 function collectWizardAnswers(wizardRoot: HTMLElement): WizardAnswers {
@@ -192,14 +261,6 @@ async function submitCalculatorLeadToCrm(
   }
 }
 
-function getWizardViews(wizardRoot: HTMLElement): WizardViews {
-  return {
-    intro: wizardRoot.querySelector<HTMLElement>('[data-calc-view="intro"]')!,
-    wizard: wizardRoot.querySelector<HTMLElement>('[data-calc-view="wizard"]')!,
-    results: wizardRoot.querySelector<HTMLElement>('[data-calc-view="results"]')!,
-  };
-}
-
 function bindWizardNavigation(
   wizardRoot: HTMLElement,
   steps: HTMLElement[],
@@ -328,67 +389,3 @@ export function initCalculatorWizard(config: CalculatorWizardConfig): void {
 
   bindWizardNavigation(wizardRoot, steps, () => currentStepIndex, showStep, goToNextStep);
 }
-
-// Constantes de reglas de ahorro (exportadas para energy/telecom-calculator)
-export const ENERGY_SERVICE_TYPE = {
-  LUZ: 'luz',
-  LUZ_GAS: 'luz-gas',
-} as const;
-
-export const ENERGY_TARIFF_TYPE = {
-  PVPC: 'pvpc',
-  UNKNOWN: 'unknown',
-  LIBRE: 'libre',
-} as const;
-
-export const ENERGY_KNOWLEDGE_ANSWER = { NO: 'no' } as const;
-
-export const ENERGY_SAVINGS = {
-  DEFAULT_MONTHLY_BILL_EUR: 80,
-  MIN_MONTHLY_BILL_EUR: 1,
-  BASE_PERCENT: 10,
-  MAX_PERCENT: 25,
-  PERCENT_DIVISOR: 100,
-  MONTHS_PER_YEAR: 12,
-  BONUS: {
-    LUZ_GAS: 2,
-    UNKNOWN_POWER: 2,
-    UNKNOWN_KWH: 2,
-    PVPC_TARIFF: 3,
-    UNKNOWN_TARIFF: 4,
-    LIBRE_TARIFF: 1,
-  },
-} as const;
-
-export const TELECOM_PACKAGE_TYPE = { MOVIL_FIBRA: 'movil-fibra' } as const;
-
-export const TELECOM_PROVIDER = {
-  MOVISTAR: 'Movistar',
-  VODAFONE: 'Vodafone',
-  ORANGE: 'Orange',
-} as const;
-
-export const TELECOM_PERMANENCE_ANSWER = { NO: 'no' } as const;
-export const TELECOM_DATA_USAGE = { LESS_THAN_10_GB: 'menos-de-10-gb' } as const;
-export const TELECOM_CONNECTION_TYPE = { ADSL: 'adsl' } as const;
-
-export const TELECOM_SAVINGS = {
-  DEFAULT_MONTHLY_BILL_EUR: 50,
-  MIN_MONTHLY_BILL_EUR: 1,
-  BASE_PERCENT: 15,
-  MAX_PERCENT: 35,
-  PERCENT_DIVISOR: 100,
-  MONTHS_PER_YEAR: 12,
-  BONUS: {
-    MOVIL_FIBRA: 5,
-    PREMIUM_PROVIDER: 5,
-    ORANGE_PROVIDER: 3,
-    NO_PERMANENCE: 2,
-    LOW_DATA_USAGE: 2,
-    ADSL_CONNECTION: 4,
-  },
-} as const;
-
-export const VERTICAL = { TELECOM: 'telecom' } as const;
-
-export type { WizardAnswers };

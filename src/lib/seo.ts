@@ -1,3 +1,4 @@
+/** Metadatos globales del sitio para SEO y Open Graph. */
 export const site = {
   name: 'Ahorra Sin Líos',
   defaultTitle: 'Ahorra Sin Líos — Ahorra en tus facturas',
@@ -12,12 +13,14 @@ export const site = {
   twitterCard: 'summary_large_image' as const,
 };
 
+/** Créditos del desarrollador en el código fuente. */
 export const developer = {
   name: 'Lenny Sánchez',
   url: 'https://lennyx004.com',
   comment: 'Sitio web desarrollado por Lenny Sánchez — https://lennyx004.com',
 };
 
+/** Propiedades SEO opcionales que puede sobrescribir cada página. */
 export type SeoProps = {
   title?: string;
   description?: string;
@@ -27,6 +30,7 @@ export type SeoProps = {
   noindex?: boolean;
 };
 
+/** Metadatos SEO ya resueltos con valores por defecto y URLs absolutas. */
 export type ResolvedSeo = {
   title: string;
   description: string;
@@ -37,6 +41,14 @@ export type ResolvedSeo = {
   robots: string;
 };
 
+/**
+ * Combina props de página con valores por defecto del sitio y genera URLs canónicas.
+ *
+ * @param props - Overrides opcionales de título, descripción, etc.
+ * @param pathname - Ruta relativa de la página actual.
+ * @param origin - Origen absoluto del sitio (protocolo + host).
+ * @returns Objeto con todos los metadatos listos para el layout.
+ */
 export function resolveSeo(
   props: SeoProps,
   pathname: string,

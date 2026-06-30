@@ -10,6 +10,12 @@ import {
 
 type EnergyLeadFields = ReturnType<typeof calculatorToLeadFields>;
 
+/**
+ * Calcula el porcentaje y importe de ahorro estimado en luz/gas según respuestas.
+ *
+ * @param answers - Respuestas del wizard de energía.
+ * @returns Resultado con factura actual, nueva factura y ahorro mensual/anual.
+ */
 function calculateEnergySavings(answers: WizardAnswers) {
   const monthlyBill = Math.max(
     parseFloat(answers.monthlyBill) || ENERGY_SAVINGS.DEFAULT_MONTHLY_BILL_EUR,
@@ -56,6 +62,9 @@ function calculateEnergySavings(answers: WizardAnswers) {
   };
 }
 
+/**
+ * Arranca el wizard de calculadora para el vertical de luz y gas.
+ */
 export function initEnergyCalculator(): void {
   initCalculatorWizard({
     calculateSavings: calculateEnergySavings,
