@@ -22,42 +22,42 @@ const navLinks = [
 ---
 
 <header class="site-header" data-header>
-  <div class="container header-inner">
+  <div class="container site-header__inner">
     <a href="/" class="brand" aria-label="Ahorra Sin Líos">
       <Brand />
     </a>
 
-    <nav class="nav-desktop" aria-label="Principal">
+    <nav class="site-header__nav" aria-label="Principal">
       {navLinks.map((link) => (
-        <a href={link.href} class="nav-link">{link.label}</a>
+        <a href={link.href} class="site-header__link">{link.label}</a>
       ))}
     </nav>
 
-    <a href="#contacto" class="cta-desktop">Contactar</a>
+    <a href="#contacto" class="site-header__cta">Contactar</a>
 
     <button
       type="button"
-      class="menu-toggle"
+      class="site-header__toggle"
       data-menu-toggle
       aria-expanded="false"
       aria-controls="mobile-menu"
       aria-label="Abrir menú"
     >
-      <span class="material-symbols-outlined menu-icon" data-menu-icon>menu</span>
+      <span class="material-symbols-outlined site-header__toggle-icon" data-menu-icon>menu</span>
     </button>
   </div>
 
   <nav
     id="mobile-menu"
-    class="mobile-menu"
+    class="site-header__menu"
     data-mobile-menu
     aria-label="Menú móvil"
     hidden
   >
     {navLinks.map((link) => (
-      <a href={link.href} class="mobile-link">{link.label}</a>
+      <a href={link.href} class="site-header__menu-link">{link.label}</a>
     ))}
-    <a href="#contacto" class="mobile-cta">Contactar</a>
+    <a href="#contacto" class="site-header__menu-cta">Contactar</a>
   </nav>
 </header>
 
@@ -80,7 +80,7 @@ const navLinks = [
     box-shadow: var(--shadow-soft);
   }
 
-  .header-inner {
+  .site-header__inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -88,24 +88,24 @@ const navLinks = [
     padding-block: 1rem;
   }
 
-  .nav-desktop {
+  .site-header__nav {
     display: none;
     align-items: center;
     gap: 2rem;
   }
 
-  .nav-link {
+  .site-header__link {
     font-weight: 700;
     letter-spacing: 0.04em;
     color: var(--color-muted);
     transition: color 0.2s ease;
   }
 
-  .nav-link:hover {
+  .site-header__link:hover {
     color: var(--color-night);
   }
 
-  .cta-desktop {
+  .site-header__cta {
     display: none;
     align-items: center;
     justify-content: center;
@@ -118,13 +118,13 @@ const navLinks = [
     transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .cta-desktop:hover {
+  .site-header__cta:hover {
     background: var(--color-green);
     transform: translateY(-0.125rem);
     box-shadow: var(--shadow-soft);
   }
 
-  .menu-toggle {
+  .site-header__toggle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -135,11 +135,11 @@ const navLinks = [
     cursor: pointer;
   }
 
-  .menu-icon {
+  .site-header__toggle-icon {
     font-size: var(--size-icon-nav);
   }
 
-  .mobile-menu {
+  .site-header__menu {
     display: none;
     flex-direction: column;
     gap: 0.25rem;
@@ -148,11 +148,11 @@ const navLinks = [
     background: var(--color-bg);
   }
 
-  .mobile-menu.open {
+  .site-header__menu--open {
     display: flex;
   }
 
-  .mobile-link {
+  .site-header__menu-link {
     padding: 0.75rem 0;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -160,11 +160,11 @@ const navLinks = [
     transition: color 0.2s ease;
   }
 
-  .mobile-link:hover {
+  .site-header__menu-link:hover {
     color: var(--color-night);
   }
 
-  .mobile-cta {
+  .site-header__menu-cta {
     margin-top: 0.5rem;
     padding: 0.8rem 1.5rem;
     border-radius: var(--radius-xl);
@@ -176,22 +176,22 @@ const navLinks = [
     transition: background-color 0.2s ease;
   }
 
-  .mobile-cta:hover {
+  .site-header__menu-cta:hover {
     background: var(--color-green);
   }
 
   @media (min-width: 769px) {
-    .nav-desktop,
-    .cta-desktop {
+    .site-header__nav,
+    .site-header__cta {
       display: flex;
       flex-wrap: wrap;
     }
 
-    .menu-toggle {
+    .site-header__toggle {
       display: none;
     }
 
-    .mobile-menu {
+    .site-header__menu {
       display: none !important;
     }
   }

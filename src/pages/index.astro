@@ -11,7 +11,7 @@ const options = [
     label: verticalLabels.energy,
     description: 'Comparamos tarifas de luz y gas, revisamos tu factura y gestionamos el cambio por ti.',
     icon: 'bolt',
-    accent: 'hub-card--energy',
+    accent: 'hub__card--energy',
   },
   {
     vertical: 'telecom' as const,
@@ -19,7 +19,7 @@ const options = [
     label: verticalLabels.telecom,
     description: 'Fibra y móvil ajustados a tu consumo real, sin servicios de más ni letra pequeña.',
     icon: 'wifi',
-    accent: 'hub-card--telecom',
+    accent: 'hub__card--telecom',
   },
 ];
 ---
@@ -29,8 +29,8 @@ const options = [
   description="Comparador gratuito de luz, gas, internet y móvil. Elige qué quieres optimizar y empieza a ahorrar sin líos."
   keywords="Ahorra Sin Líos, ahorrar facturas, comparar luz gas, fibra móvil, comparador tarifas"
 >
-  <header class="hub-header">
-    <div class="container hub-header-inner">
+  <header class="hub__header">
+    <div class="container hub__header-inner">
       <a href="/" class="brand" aria-label="Ahorra Sin Líos">
         <Brand />
       </a>
@@ -38,38 +38,38 @@ const options = [
   </header>
 
   <main class="hub">
-    <div class="hub-bg" aria-hidden="true">
-      <div class="hub-bg-blob hub-bg-blob--top"></div>
-      <div class="hub-bg-blob hub-bg-blob--bottom"></div>
+    <div class="hub__bg" aria-hidden="true">
+      <div class="hub__bg-blob hub__bg-blob--top"></div>
+      <div class="hub__bg-blob hub__bg-blob--bottom"></div>
     </div>
 
-    <div class="container hub-inner">
-      <header class="hub-intro" data-reveal>
-        <span class="label-s hub-kicker">Comparador gratuito</span>
-        <h1 class="display-xl hub-title">
+    <div class="container hub__inner">
+      <header class="hub__intro" data-reveal>
+        <span class="label-s hub__kicker">Comparador gratuito</span>
+        <h1 class="display-xl hub__title">
           ¿Qué quieres <span class="text-gradient">optimizar hoy?</span>
         </h1>
-        <p class="body-lg text-muted hub-lead">
+        <p class="body-lg text-muted hub__lead">
           Comparamos luz, gas, fibra y móvil por ti. Sin coste ni compromiso — elige un servicio y descubre cuánto puedes ahorrar.
         </p>
       </header>
 
-      <div class="hub-grid">
+      <div class="hub__grid">
         {options.map((option, i) => (
           <a
             href={option.href}
-            class={`hub-card card-lift ${option.accent}`}
+            class={`hub__card card-lift ${option.accent}`}
             data-reveal
             style={`--reveal-delay: ${i * 100}ms`}
           >
-            <div class="hub-card-icon">
+            <div class="hub__card-icon">
               <span class="material-symbols-outlined">{option.icon}</span>
             </div>
-            <h2 class="headline-lg hub-card-title">{option.label}</h2>
-            <p class="body-md text-muted hub-card-text">{option.description}</p>
-            <span class="label-s hub-card-cta">
+            <h2 class="headline-lg hub__card-title">{option.label}</h2>
+            <p class="body-md text-muted hub__card-text">{option.description}</p>
+            <span class="label-s hub__card-cta">
               Empezar
-              <span class="material-symbols-outlined hub-card-arrow" aria-hidden="true">arrow_forward</span>
+              <span class="material-symbols-outlined hub__card-arrow" aria-hidden="true">arrow_forward</span>
             </span>
           </a>
         ))}
@@ -81,7 +81,7 @@ const options = [
 </BaseLayout>
 
 <style>
-  .hub-header {
+  .hub__header {
     position: fixed;
     top: 0;
     left: 0;
@@ -93,7 +93,7 @@ const options = [
     box-shadow: var(--shadow-soft);
   }
 
-  .hub-header-inner {
+  .hub__header-inner {
     display: flex;
     align-items: center;
     padding-block: 1rem;
@@ -107,20 +107,20 @@ const options = [
     background: var(--color-bg);
   }
 
-  .hub-bg {
+  .hub__bg {
     position: absolute;
     inset: 0;
     pointer-events: none;
   }
 
-  .hub-bg-blob {
+  .hub__bg-blob {
     position: absolute;
     border-radius: var(--radius-full);
     filter: blur(4rem);
     opacity: 0.55;
   }
 
-  .hub-bg-blob--top {
+  .hub__bg-blob--top {
     top: -10%;
     right: -8%;
     width: 55%;
@@ -128,7 +128,7 @@ const options = [
     background: linear-gradient(to bottom left, rgba(121, 184, 42, 0.18), transparent);
   }
 
-  .hub-bg-blob--bottom {
+  .hub__bg-blob--bottom {
     bottom: -8%;
     left: -8%;
     width: 48%;
@@ -136,17 +136,17 @@ const options = [
     background: linear-gradient(to top right, rgba(231, 184, 46, 0.22), transparent);
   }
 
-  .hub-inner {
+  .hub__inner {
     position: relative;
     z-index: 1;
   }
 
-  .hub-intro {
+  .hub__intro {
     max-width: 40rem;
     margin-bottom: 3rem;
   }
 
-  .hub-kicker {
+  .hub__kicker {
     display: inline-block;
     margin-bottom: 1.25rem;
     padding: 0.35rem 0.9rem;
@@ -156,22 +156,22 @@ const options = [
     border: 1px solid var(--color-border);
   }
 
-  .hub-title {
+  .hub__title {
     margin-bottom: 1rem;
     color: var(--color-night);
   }
 
-  .hub-lead {
+  .hub__lead {
     max-width: 34rem;
   }
 
-  .hub-grid {
+  .hub__grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 
-  .hub-card {
+  .hub__card {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -183,11 +183,11 @@ const options = [
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .hub-card:hover {
+  .hub__card:hover {
     border-color: rgba(121, 184, 42, 0.35);
   }
 
-  .hub-card-icon {
+  .hub__card-icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -198,25 +198,25 @@ const options = [
     background: var(--color-cream);
   }
 
-  .hub-card-icon .material-symbols-outlined {
+  .hub__card-icon .material-symbols-outlined {
     font-size: var(--size-lg);
     font-variation-settings: 'FILL' 1;
   }
 
-  .hub-card--telecom .hub-card-icon {
+  .hub__card--telecom .hub__card-icon {
     color: var(--color-night);
     background: rgba(231, 184, 46, 0.28);
   }
 
-  .hub-card-title {
+  .hub__card-title {
     color: var(--color-night);
   }
 
-  .hub-card-text {
+  .hub__card-text {
     flex: 1;
   }
 
-  .hub-card-cta {
+  .hub__card-cta {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
@@ -224,22 +224,22 @@ const options = [
     font-weight: 700;
   }
 
-  .hub-card-arrow {
+  .hub__card-arrow {
     font-size: var(--size-m);
     transition: translate 0.2s ease;
   }
 
-  .hub-card:hover .hub-card-arrow {
+  .hub__card:hover .hub__card-arrow {
     translate: 0.25rem 0;
   }
 
   @media (min-width: 48rem) {
-    .hub-grid {
+    .hub__grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 2rem;
     }
 
-    .hub-intro {
+    .hub__intro {
       margin-bottom: 4rem;
     }
   }

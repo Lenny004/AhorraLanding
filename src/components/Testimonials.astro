@@ -14,21 +14,21 @@ const allTestimonials = {
       initial: 'M',
       name: 'María G.',
       role: 'Cliente, Madrid',
-      tone: 'testimonials-avatar--green',
+      tone: 'testimonials__avatar--green',
     },
     {
       quote: 'Tenía luz y gas por separado y pagaba de más. Me propusieron una tarifa clara y ahora ahorro cada mes.',
       initial: 'J',
       name: 'Javier R.',
       role: 'Cliente, Valencia',
-      tone: 'testimonials-avatar--gold',
+      tone: 'testimonials__avatar--gold',
     },
     {
       quote: 'Lo mejor fue no tener que llamar a ninguna compañía de energía. Me explicaron la oferta y ellos gestionaron el cambio.',
       initial: 'L',
       name: 'Laura P.',
       role: 'Cliente, Sevilla',
-      tone: 'testimonials-avatar--cream',
+      tone: 'testimonials__avatar--cream',
     },
   ],
   telecom: [
@@ -37,21 +37,21 @@ const allTestimonials = {
       initial: 'A',
       name: 'Ana S.',
       role: 'Cliente, Barcelona',
-      tone: 'testimonials-avatar--green',
+      tone: 'testimonials__avatar--green',
     },
     {
       quote: 'Tenía internet, móvil y líneas extra que no usábamos. Me propusieron una alternativa clara y ahora tengo todo controlado.',
       initial: 'J',
       name: 'Javier R.',
       role: 'Cliente, Valencia',
-      tone: 'testimonials-avatar--gold',
+      tone: 'testimonials__avatar--gold',
     },
     {
       quote: 'Lo mejor fue no tener que comparar operadoras. Me explicaron las opciones y ellos gestionaron el cambio sin líos.',
       initial: 'L',
       name: 'Laura P.',
       role: 'Cliente, Sevilla',
-      tone: 'testimonials-avatar--cream',
+      tone: 'testimonials__avatar--cream',
     },
   ],
 };
@@ -66,14 +66,14 @@ const testimonials = allTestimonials[vertical];
       <p class="body-lg text-muted">Historias reales de hogares que dejaron de pelearse con sus facturas.</p>
     </header>
 
-    <div class="testimonials-grid">
+    <div class="testimonials__grid">
       {testimonials.map((item, i) => (
-        <article class="testimonials-card card-lift" data-reveal style={`--reveal-delay: ${i * 100}ms`}>
-          <blockquote class="body-md text-muted testimonials-text">"{item.quote}"</blockquote>
-          <footer class="testimonials-author">
-            <div class={`testimonials-avatar ${item.tone}`}>{item.initial}</div>
+        <article class="testimonials__card card-lift" data-reveal style={`--reveal-delay: ${i * 100}ms`}>
+          <blockquote class="body-md text-muted testimonials__text">"{item.quote}"</blockquote>
+          <footer class="testimonials__author">
+            <div class={`testimonials__avatar ${item.tone}`}>{item.initial}</div>
             <div>
-              <div class="label-s testimonials-name">{item.name}</div>
+              <div class="label-s testimonials__name">{item.name}</div>
               <div class="label-xs text-muted-soft">{item.role}</div>
             </div>
           </footer>
@@ -88,13 +88,13 @@ const testimonials = allTestimonials[vertical];
     background: #ffffff;
   }
 
-  .testimonials-grid {
+  .testimonials__grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem;
   }
 
-  .testimonials-card {
+  .testimonials__card {
     display: flex;
     flex-direction: column;
     padding: 2rem;
@@ -103,19 +103,19 @@ const testimonials = allTestimonials[vertical];
     border: 1px solid rgba(226, 226, 222, 0.72);
   }
 
-  .testimonials-text {
+  .testimonials__text {
     flex: 1;
     margin-bottom: 2rem;
     font-style: italic;
   }
 
-  .testimonials-author {
+  .testimonials__author {
     display: flex;
     align-items: center;
     gap: 1rem;
   }
 
-  .testimonials-avatar {
+  .testimonials__avatar {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -125,27 +125,27 @@ const testimonials = allTestimonials[vertical];
     font-weight: 800;
   }
 
-  .testimonials-avatar--green {
+  .testimonials__avatar--green {
     color: #ffffff;
     background: var(--color-green);
   }
 
-  .testimonials-avatar--gold {
+  .testimonials__avatar--gold {
     color: var(--color-night);
     background: var(--color-gold);
   }
 
-  .testimonials-avatar--cream {
+  .testimonials__avatar--cream {
     color: var(--color-night);
     background: var(--color-cream);
   }
 
-  .testimonials-name {
+  .testimonials__name {
     color: var(--color-night);
   }
 
   @media (min-width: 48rem) {
-    .testimonials-grid {
+    .testimonials__grid {
       grid-template-columns: repeat(3, 1fr);
     }
   }

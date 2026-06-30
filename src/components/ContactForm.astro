@@ -29,29 +29,29 @@ const consumptionPlaceholder =
 
 <section class="contact section" id="contacto">
   <div class="container">
-    <div class="contact-panel" data-reveal>
-      <div class="contact-glow" aria-hidden="true"></div>
+    <div class="contact__panel" data-reveal>
+      <div class="contact__glow" aria-hidden="true"></div>
 
-      <div class="contact-grid">
-        <div class="contact-intro">
-          <h2 class="display-xl contact-title">Revisamos tu factura gratis</h2>
-          <p class="body-lg text-inverse contact-lead">
+      <div class="contact__grid">
+        <div class="contact__intro">
+          <h2 class="display-xl contact__title">Revisamos tu factura gratis</h2>
+          <p class="body-lg text-inverse contact__lead">
             Déjanos tus datos y un asesor se pondrá en contacto contigo para analizar tu caso y explicarte cómo podrías ahorrar.
           </p>
 
-          <ul class="contact-perks">
+          <ul class="contact__perks">
             {perks.map((perk) => (
-              <li class="contact-perk">
-                <span class="material-symbols-outlined contact-perk-icon" aria-hidden="true">check_circle</span>
+              <li class="contact__perk">
+                <span class="material-symbols-outlined contact__perk-icon" aria-hidden="true">check_circle</span>
                 <span class="body-md">{perk}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        <div class="contact-form-wrap">
+        <div class="contact__form-wrap">
           <form
-            class="contact-form"
+            class="contact__form"
             method="post"
             enctype="multipart/form-data"
             data-contact-form
@@ -61,10 +61,10 @@ const consumptionPlaceholder =
             data-vertical={vertical}
             data-source-page={sourcePage}
           >
-            <div class="contact-field">
-              <label class="label-s contact-label" for="contact-name">Nombre completo</label>
+            <div class="contact__field">
+              <label class="label-s contact__label" for="contact-name">Nombre completo</label>
               <input
-                class="contact-input"
+                class="contact__input"
                 id="contact-name"
                 name="name"
                 type="text"
@@ -73,11 +73,11 @@ const consumptionPlaceholder =
               />
             </div>
 
-            <div class="contact-row">
-              <div class="contact-field">
-                <label class="label-s contact-label" for="contact-phone">Teléfono</label>
+            <div class="contact__row">
+              <div class="contact__field">
+                <label class="label-s contact__label" for="contact-phone">Teléfono</label>
                 <input
-                  class="contact-input"
+                  class="contact__input"
                   id="contact-phone"
                   name="phone"
                   type="tel"
@@ -85,10 +85,10 @@ const consumptionPlaceholder =
                   required
                 />
               </div>
-              <div class="contact-field">
-                <label class="label-s contact-label" for="contact-email">Email</label>
+              <div class="contact__field">
+                <label class="label-s contact__label" for="contact-email">Email</label>
                 <input
-                  class="contact-input"
+                  class="contact__input"
                   id="contact-email"
                   name="email"
                   type="email"
@@ -98,9 +98,9 @@ const consumptionPlaceholder =
               </div>
             </div>
 
-            <div class="contact-field">
-              <label class="label-s contact-label" for="contact-client-type">Tipo de cliente</label>
-              <select class="contact-input" id="contact-client-type" name="client_type" required>
+            <div class="contact__field">
+              <label class="label-s contact__label" for="contact-client-type">Tipo de cliente</label>
+              <select class="contact__input" id="contact-client-type" name="client_type" required>
                 <option value="" disabled selected>Selecciona una opción</option>
                 {clientTypes.map((type) => (
                   <option value={type.value}>{type.label}</option>
@@ -108,10 +108,10 @@ const consumptionPlaceholder =
               </select>
             </div>
 
-            <div class="contact-field">
-              <label class="label-s contact-label" for="contact-consumption">Consumo aproximado</label>
+            <div class="contact__field">
+              <label class="label-s contact__label" for="contact-consumption">Consumo aproximado</label>
               <input
-                class="contact-input"
+                class="contact__input"
                 id="contact-consumption"
                 name="approximate_consumption"
                 type="text"
@@ -119,27 +119,27 @@ const consumptionPlaceholder =
               />
             </div>
 
-            <fieldset class="contact-field contact-fieldset">
-              <legend class="label-s contact-label">Servicios de interés</legend>
-              <div class="contact-checks">
+            <fieldset class="contact__field contact__fieldset">
+              <legend class="label-s contact__label">Servicios de interés</legend>
+              <div class="contact__checks">
                 {vertical === 'energy' ? (
                   <>
-                    <label class="contact-check">
+                    <label class="contact__check">
                       <input type="checkbox" name="service_luz" value="1" />
                       <span>Luz</span>
                     </label>
-                    <label class="contact-check">
+                    <label class="contact__check">
                       <input type="checkbox" name="service_gas" value="1" />
                       <span>Gas</span>
                     </label>
                   </>
                 ) : (
                   <>
-                    <label class="contact-check">
+                    <label class="contact__check">
                       <input type="checkbox" name="service_internet" value="1" />
                       <span>Internet</span>
                     </label>
-                    <label class="contact-check">
+                    <label class="contact__check">
                       <input type="checkbox" name="service_movil" value="1" />
                       <span>Móvil</span>
                     </label>
@@ -148,11 +148,11 @@ const consumptionPlaceholder =
               </div>
             </fieldset>
 
-            <div class="contact-field">
-              <span class="label-s contact-label" id="contact-invoice-label">Subir factura</span>
-              <div class="contact-file-wrap" data-file-wrap>
+            <div class="contact__field">
+              <span class="label-s contact__label" id="contact-invoice-label">Subir factura</span>
+              <div class="contact__file-wrap" data-file-wrap>
                 <input
-                  class="contact-file-input"
+                  class="contact__file-input"
                   id="contact-invoice"
                   name="invoice"
                   type="file"
@@ -160,70 +160,70 @@ const consumptionPlaceholder =
                   aria-labelledby="contact-invoice-label contact-invoice-name"
                   data-contact-file
                 />
-                <label class="contact-file-dropzone" for="contact-invoice" data-file-dropzone>
-                  <span class="material-symbols-outlined contact-file-icon" aria-hidden="true">upload_file</span>
-                  <span class="contact-file-copy">
-                    <span class="label-s contact-file-cta">Seleccionar archivo</span>
-                    <span class="label-xs text-muted contact-file-name" id="contact-invoice-name" data-file-name>
+                <label class="contact__file-dropzone" for="contact-invoice" data-file-dropzone>
+                  <span class="material-symbols-outlined contact__file-icon" aria-hidden="true">upload_file</span>
+                  <span class="contact__file-copy">
+                    <span class="label-s contact__file-cta">Seleccionar archivo</span>
+                    <span class="label-xs text-muted contact__file-name" id="contact-invoice-name" data-file-name>
                       o arrastra aquí
                     </span>
                   </span>
                 </label>
               </div>
-              <p class="label-xs text-muted contact-file-hint">PDF, JPG o PNG. Máximo 10 MB.</p>
+              <p class="label-xs text-muted contact__file-hint">PDF, JPG o PNG. Máximo 10 MB.</p>
             </div>
 
-            <button class="btn-primary contact-submit" type="submit">Solicitar revisión</button>
+            <button class="btn-primary contact__submit" type="submit">Solicitar revisión</button>
 
-            <p class="label-s contact-status" data-form-status aria-live="polite"></p>
+            <p class="label-s contact__status" data-form-status aria-live="polite"></p>
 
-            <div class="contact-calc-badge" data-calc-badge hidden>
+            <div class="contact__calc-badge" data-calc-badge hidden>
               <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
               <span>Basado en tu análisis de ahorro</span>
             </div>
 
-            <p class="label-xs text-muted contact-disclaimer">
+            <p class="label-xs text-muted contact__disclaimer">
               Al enviar aceptas nuestra <a class="label-xs" href="/privacidad">política de privacidad</a> y consientes que tus datos se registren en el CRM de gestión comercial para que Ahorra Sin Líos y empresas colaboradoras te contacten con ofertas personalizadas.
             </p>
           </form>
 
-          <div class="contact-success" data-contact-success hidden>
-            <div class="contact-success-icon" aria-hidden="true">
+          <div class="contact__success" data-contact-success hidden>
+            <div class="contact__success-icon" aria-hidden="true">
               <span class="material-symbols-outlined">check</span>
             </div>
-            <h3 class="display-xl contact-success-title">¡Solicitud recibida!</h3>
-            <p class="body-lg text-muted contact-success-lead">
+            <h3 class="display-xl contact__success-title">¡Solicitud recibida!</h3>
+            <p class="body-lg text-muted contact__success-lead">
               Gracias por confiar en nosotros. Un asesor experto se pondrá en contacto contigo en las próximas horas.
             </p>
 
-            <div class="contact-success-card">
-              <h4 class="headline-lg contact-success-card-title">¿Qué pasa ahora?</h4>
-              <ol class="contact-success-steps">
-                <li class="contact-success-step">
-                  <span class="contact-success-step-num">1</span>
+            <div class="contact__success-card">
+              <h4 class="headline-lg contact__success-card-title">¿Qué pasa ahora?</h4>
+              <ol class="contact__success-steps">
+                <li class="contact__success-step">
+                  <span class="contact__success-step-num">1</span>
                   <div>
-                    <p class="label-s contact-success-step-title">Revisamos tu perfil</p>
+                    <p class="label-s contact__success-step-title">Revisamos tu perfil</p>
                     <p class="body-md text-muted">Analizamos tu situación para encontrar las mejores opciones del mercado para ti.</p>
                   </div>
                 </li>
-                <li class="contact-success-step">
-                  <span class="contact-success-step-num">2</span>
+                <li class="contact__success-step">
+                  <span class="contact__success-step-num">2</span>
                   <div>
-                    <p class="label-s contact-success-step-title">Te llamamos</p>
+                    <p class="label-s contact__success-step-title">Te llamamos</p>
                     <p class="body-md text-muted">Un asesor especializado te contactará para presentarte la mejor opción. Sin presiones ni compromiso.</p>
                   </div>
                 </li>
-                <li class="contact-success-step">
-                  <span class="contact-success-step-num">3</span>
+                <li class="contact__success-step">
+                  <span class="contact__success-step-num">3</span>
                   <div>
-                    <p class="label-s contact-success-step-title">Tú decides</p>
+                    <p class="label-s contact__success-step-title">Tú decides</p>
                     <p class="body-md text-muted">Si te convence, nos encargamos de todo el papeleo. Si no, tan amigos.</p>
                   </div>
                 </li>
               </ol>
             </div>
 
-            <p class="label-xs text-muted-soft contact-success-trust">
+            <p class="label-xs text-muted-soft contact__success-trust">
               Más de 50.000 usuarios ya confían en nosotros
             </p>
           </div>
@@ -241,7 +241,7 @@ const consumptionPlaceholder =
     margin-bottom: -5rem;
   }
 
-  .contact-panel {
+  .contact__panel {
     position: relative;
     overflow: hidden;
     padding: 2rem;
@@ -250,7 +250,7 @@ const consumptionPlaceholder =
     box-shadow: var(--shadow-lift);
   }
 
-  .contact-glow {
+  .contact__glow {
     position: absolute;
     top: -6rem;
     right: -6rem;
@@ -262,7 +262,7 @@ const consumptionPlaceholder =
     pointer-events: none;
   }
 
-  .contact-grid {
+  .contact__grid {
     position: relative;
     z-index: 1;
     display: grid;
@@ -270,16 +270,16 @@ const consumptionPlaceholder =
     gap: 4rem;
   }
 
-  .contact-title {
+  .contact__title {
     margin-bottom: 1.5rem;
     color: #ffffff;
   }
 
-  .contact-lead {
+  .contact__lead {
     margin-bottom: 2rem;
   }
 
-  .contact-perks {
+  .contact__perks {
     list-style: none;
     display: flex;
     flex-direction: column;
@@ -287,57 +287,57 @@ const consumptionPlaceholder =
     margin-top: 3rem;
   }
 
-  .contact-perk {
+  .contact__perk {
     display: flex;
     align-items: center;
     gap: 1rem;
     color: #ffffff;
   }
 
-  .contact-perk-icon {
+  .contact__perk-icon {
     font-size: var(--size-lg);
     color: var(--color-green);
     font-variation-settings: 'FILL' 1;
   }
 
-  .contact-form-wrap {
+  .contact__form-wrap {
     padding: 2rem;
     border-radius: var(--radius-xl);
     background: #ffffff;
     box-shadow: var(--shadow-soft);
   }
 
-  .contact-form {
+  .contact__form {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
   }
 
-  .contact-row {
+  .contact__row {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 
-  .contact-field {
+  .contact__field {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
   }
 
-  .contact-fieldset {
+  .contact__fieldset {
     border: none;
     padding: 0;
     margin: 0;
   }
 
-  .contact-checks {
+  .contact__checks {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
   }
 
-  .contact-check {
+  .contact__check {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -345,17 +345,17 @@ const consumptionPlaceholder =
     cursor: pointer;
   }
 
-  .contact-check input {
+  .contact__check input {
     width: 1rem;
     height: 1rem;
     accent-color: var(--color-green);
   }
 
-  .contact-label {
+  .contact__label {
     color: var(--color-night);
   }
 
-  .contact-input {
+  .contact__input {
     width: 100%;
     padding: 0.75rem 1rem;
     border: 1px solid var(--color-border);
@@ -365,17 +365,17 @@ const consumptionPlaceholder =
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .contact-input:focus {
+  .contact__input:focus {
     outline: none;
     border-color: var(--color-green);
     box-shadow: 0 0 0 0.2rem rgba(121, 184, 42, 0.14);
   }
 
-  .contact-file-wrap {
+  .contact__file-wrap {
     position: relative;
   }
 
-  .contact-file-input {
+  .contact__file-input {
     position: absolute;
     inset: 0;
     z-index: 1;
@@ -385,7 +385,7 @@ const consumptionPlaceholder =
     cursor: pointer;
   }
 
-  .contact-file-dropzone {
+  .contact__file-dropzone {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -401,7 +401,7 @@ const consumptionPlaceholder =
       box-shadow 0.2s ease;
   }
 
-  .contact-file-icon {
+  .contact__file-icon {
     flex-shrink: 0;
     display: grid;
     place-items: center;
@@ -419,99 +419,99 @@ const consumptionPlaceholder =
       background-color 0.2s ease;
   }
 
-  .contact-file-copy {
+  .contact__file-copy {
     display: flex;
     flex-direction: column;
     gap: 0.125rem;
     min-width: 0;
   }
 
-  .contact-file-cta {
+  .contact__file-cta {
     color: var(--color-night);
   }
 
-  .contact-file-name {
+  .contact__file-name {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .contact-file-wrap:hover .contact-file-dropzone,
-  .contact-file-wrap.is-dragover .contact-file-dropzone {
+  .contact__file-wrap:hover .contact__file-dropzone,
+  .contact__file-wrap--dragover .contact__file-dropzone {
     border-color: var(--color-green);
     background: #ffffff;
   }
 
-  .contact-file-wrap:hover .contact-file-icon,
-  .contact-file-wrap.is-dragover .contact-file-icon {
+  .contact__file-wrap:hover .contact__file-icon,
+  .contact__file-wrap--dragover .contact__file-icon {
     border-color: rgba(121, 184, 42, 0.35);
     color: var(--color-night);
   }
 
-  .contact-file-input:focus-visible + .contact-file-dropzone {
+  .contact__file-input:focus-visible + .contact__file-dropzone {
     border-color: var(--color-green);
     background: #ffffff;
     box-shadow: 0 0 0 0.2rem rgba(121, 184, 42, 0.14);
   }
 
-  .contact-file-wrap.is-filled .contact-file-dropzone {
+  .contact__file-wrap--filled .contact__file-dropzone {
     border-style: solid;
     border-color: rgba(121, 184, 42, 0.45);
     background: #ffffff;
   }
 
-  .contact-file-wrap.is-filled .contact-file-icon {
+  .contact__file-wrap--filled .contact__file-icon {
     border-color: rgba(121, 184, 42, 0.35);
     background: rgba(121, 184, 42, 0.08);
     color: var(--color-night);
   }
 
-  .contact-file-wrap.is-filled .contact-file-name {
+  .contact__file-wrap--filled .contact__file-name {
     color: var(--color-night);
   }
 
-  .contact-file-hint {
+  .contact__file-hint {
     margin: 0;
   }
 
-  .contact-submit {
+  .contact__submit {
     width: 100%;
     margin-top: 0.5rem;
     padding-block: 1rem;
   }
 
-  .contact-status {
+  .contact__status {
     display: none;
     margin: 0;
     text-align: center;
   }
 
-  .contact-status.is-visible {
+  .contact__status--visible {
     display: block;
   }
 
-  .contact-status.is-success {
+  .contact__status--success {
     color: #1b7f45;
   }
 
-  .contact-status.is-error {
+  .contact__status--error {
     color: var(--color-error);
   }
 
-  .contact-disclaimer {
+  .contact__disclaimer {
     text-align: center;
   }
 
-  .contact-disclaimer a {
+  .contact__disclaimer a {
     color: var(--color-green);
     text-decoration: underline;
   }
 
-  .contact-disclaimer a:hover {
+  .contact__disclaimer a:hover {
     color: var(--color-night);
   }
 
-  .contact-calc-badge {
+  .contact__calc-badge {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -524,12 +524,12 @@ const consumptionPlaceholder =
     font-weight: 600;
   }
 
-  .contact-calc-badge .material-symbols-outlined {
+  .contact__calc-badge .material-symbols-outlined {
     font-size: 1.1rem;
     color: var(--color-green);
   }
 
-  .contact-success {
+  .contact__success {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -537,15 +537,15 @@ const consumptionPlaceholder =
     text-align: center;
   }
 
-  .contact-success[hidden] {
+  .contact__success[hidden] {
     display: none;
   }
 
-  .contact-form.is-hidden {
+  .contact__form--hidden {
     display: none;
   }
 
-  .contact-success-icon {
+  .contact__success-icon {
     display: grid;
     place-items: center;
     width: 2.75rem;
@@ -555,21 +555,21 @@ const consumptionPlaceholder =
     color: var(--color-green);
   }
 
-  .contact-success-icon .material-symbols-outlined {
+  .contact__success-icon .material-symbols-outlined {
     font-size: 1.5rem;
     font-variation-settings: 'FILL' 1;
   }
 
-  .contact-success-title {
+  .contact__success-title {
     font-size: calc(var(--size-xl) * 0.55);
     color: var(--color-night);
   }
 
-  .contact-success-lead {
+  .contact__success-lead {
     max-width: 28rem;
   }
 
-  .contact-success-card {
+  .contact__success-card {
     width: 100%;
     padding: 1.5rem;
     border-radius: var(--radius-xl);
@@ -577,26 +577,26 @@ const consumptionPlaceholder =
     text-align: left;
   }
 
-  .contact-success-card-title {
+  .contact__success-card-title {
     margin-bottom: 1.25rem;
     color: var(--color-night);
     text-align: center;
   }
 
-  .contact-success-steps {
+  .contact__success-steps {
     list-style: none;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
   }
 
-  .contact-success-step {
+  .contact__success-step {
     display: flex;
     gap: 1rem;
     align-items: flex-start;
   }
 
-  .contact-success-step-num {
+  .contact__success-step-num {
     flex-shrink: 0;
     display: grid;
     place-items: center;
@@ -609,27 +609,27 @@ const consumptionPlaceholder =
     font-weight: 700;
   }
 
-  .contact-success-step-title {
+  .contact__success-step-title {
     margin-bottom: 0.25rem;
     color: var(--color-night);
   }
 
-  .contact-success-trust {
+  .contact__success-trust {
     margin-top: 0.5rem;
   }
 
   @media (min-width: 48rem) {
-    .contact-panel {
+    .contact__panel {
       padding: 4rem;
     }
 
-    .contact-row {
+    .contact__row {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
   @media (min-width: 64rem) {
-    .contact-grid {
+    .contact__grid {
       grid-template-columns: 1fr 1fr;
     }
   }

@@ -56,13 +56,13 @@ const header = headers[vertical];
       <p class="body-lg text-muted">{header.subtitle}</p>
     </header>
 
-    <div class="services-grid services-grid--duo">
+    <div class="services__grid services__grid--duo">
       {services.map((service, i) => (
-        <article class="services-card card-lift" data-reveal style={`--reveal-delay: ${i * 100}ms`}>
-          <div class="services-icon">
+        <article class="services__card card-lift" data-reveal style={`--reveal-delay: ${i * 100}ms`}>
+          <div class="services__icon">
             <span class="material-symbols-outlined">{service.icon}</span>
           </div>
-          <h3 class="headline-lg services-title">{service.title}</h3>
+          <h3 class="headline-lg services__title">{service.title}</h3>
           <p class="body-md text-muted">{service.description}</p>
         </article>
       ))}
@@ -75,13 +75,13 @@ const header = headers[vertical];
     background: #ffffff;
   }
 
-  .services-grid {
+  .services__grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 
-  .services-card {
+  .services__card {
     position: relative;
     overflow: hidden;
     min-height: 20rem;
@@ -93,7 +93,7 @@ const header = headers[vertical];
     border: 1px solid var(--color-border);
   }
 
-  .services-card::after {
+  .services__card::after {
     content: '';
     position: absolute;
     right: -3rem;
@@ -104,7 +104,7 @@ const header = headers[vertical];
     background: rgba(121, 184, 42, 0.08);
   }
 
-  .services-icon {
+  .services__icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -116,23 +116,23 @@ const header = headers[vertical];
     background: var(--color-cream);
   }
 
-  .services-icon .material-symbols-outlined {
+  .services__icon .material-symbols-outlined {
     font-variation-settings: 'FILL' 1;
   }
 
-  .services-title {
+  .services__title {
     margin-bottom: 0.75rem;
     color: var(--color-night);
   }
 
   @media (min-width: 40rem) {
-    .services-grid {
+    .services__grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
   @media (min-width: 64rem) {
-    .services-grid--duo {
+    .services__grid--duo {
       grid-template-columns: repeat(2, 1fr);
       max-width: 56rem;
       margin-inline: auto;

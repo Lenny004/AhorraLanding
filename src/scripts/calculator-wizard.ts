@@ -199,8 +199,8 @@ function updateCalculatorResultUi(
     return;
   }
 
-  const ctaMain = resultCta.querySelector('.calc-cta-main');
-  const ctaSub = resultCta.querySelector('.calc-cta-sub');
+  const ctaMain = resultCta.querySelector('.calculator__cta-main');
+  const ctaSub = resultCta.querySelector('.calculator__cta-sub');
 
   if (ctaMain) {
     ctaMain.textContent =
@@ -282,7 +282,7 @@ function bindWizardNavigation(
     nextButton.addEventListener('click', goToNextStep);
   });
 
-  wizardRoot.querySelectorAll('.calc-option input[type="radio"]').forEach((radioInput) => {
+  wizardRoot.querySelectorAll('.calculator__option input[type="radio"]').forEach((radioInput) => {
     radioInput.addEventListener('change', () => {
       window.setTimeout(() => {
         const currentStepIndex = getCurrentStepIndex();
@@ -297,7 +297,7 @@ function bindWizardNavigation(
     });
   });
 
-  wizardRoot.querySelectorAll('.calc-input').forEach((textInput) => {
+  wizardRoot.querySelectorAll('.calculator__input').forEach((textInput) => {
     textInput.addEventListener('keydown', (event) => {
       if (event instanceof KeyboardEvent && event.key === 'Enter') {
         goToNextStep();

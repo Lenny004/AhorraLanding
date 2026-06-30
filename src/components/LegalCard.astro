@@ -7,11 +7,11 @@ const { title } = Astro.props;
 ---
 
 <article class="legal-card">
-  <header class="legal-card-header">
-    <a href="/" class="legal-card-back">← Volver al inicio</a>
+  <header class="legal-card__header">
+    <a href="/" class="legal-card__back">← Volver al inicio</a>
     <h1 class="display-xl">{title}</h1>
   </header>
-  <div class="legal-card-body">
+  <div class="legal-card__body">
     <slot />
   </div>
 </article>

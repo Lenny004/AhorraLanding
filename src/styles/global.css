@@ -330,7 +330,7 @@ ul {
   box-shadow: var(--shadow-soft);
 }
 
-.legal-card-header {
+.legal-card__header {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -339,7 +339,7 @@ ul {
   border-bottom: 1px solid var(--color-border);
 }
 
-.legal-card-back {
+.legal-card__back {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
@@ -349,30 +349,30 @@ ul {
   transition: color 0.2s ease;
 }
 
-.legal-card-back:hover {
+.legal-card__back:hover {
   color: var(--color-night);
 }
 
-.legal-card-body {
+.legal-card__body {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   color: var(--color-muted);
 }
 
-.legal-card-body h2 {
+.legal-card__body h2 {
   font-size: var(--size-lg);
   font-weight: 700;
   color: var(--color-night);
 }
 
-.legal-card-body p,
-.legal-card-body li {
+.legal-card__body p,
+.legal-card__body li {
   font-size: var(--size-m);
   line-height: 1.6;
 }
 
-.legal-card-body ul {
+.legal-card__body ul {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

@@ -49,7 +49,7 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     </header>
 
     <div
-      class="calculator-panel card-lift"
+      class="calculator__panel card-lift"
       data-calc-root
       data-endpoint={crmEndpoint}
       data-api-key={crmApiKey}
@@ -57,159 +57,159 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
       data-reveal
     >
       <!-- Intro -->
-      <div class="calc-view" data-calc-view="intro">
-        <span class="calc-badge label-xs">Comparador gratuito</span>
-        <h3 class="calc-title display-xl">¿Cuánto podrías ahorrar en tu factura de móvil e internet?</h3>
-        <p class="calc-lead body-lg text-muted">
+      <div class="calculator__view" data-calc-view="intro">
+        <span class="calculator__badge label-xs">Comparador gratuito</span>
+        <h3 class="calculator__title display-xl">¿Cuánto podrías ahorrar en tu factura de móvil e internet?</h3>
+        <p class="calculator__lead body-lg text-muted">
           Responde unas preguntas y descubre si estás pagando de más — y qué tarifa te conviene.
         </p>
-        <p class="calc-highlight label-s">
+        <p class="calculator__highlight label-s">
           Ahorro medio: <strong>25€/mes</strong>
         </p>
 
-        <ul class="calc-benefits">
+        <ul class="calculator__benefits">
           {benefits.map((item) => (
-            <li class="calc-benefit">
-              <span class="material-symbols-outlined calc-benefit-icon" aria-hidden="true">check_circle</span>
+            <li class="calculator__benefit">
+              <span class="material-symbols-outlined calculator__benefit-icon" aria-hidden="true">check_circle</span>
               {item}
             </li>
           ))}
         </ul>
 
-        <button type="button" class="calc-cta btn-primary" data-calc-start>
-          <span class="calc-cta-main">Empezar el análisis</span>
-          <span class="calc-cta-sub">Gratis · Sin compromiso · 2 minutos</span>
+        <button type="button" class="calculator__cta btn-primary" data-calc-start>
+          <span class="calculator__cta-main">Empezar el análisis</span>
+          <span class="calculator__cta-sub">Gratis · Sin compromiso · 2 minutos</span>
         </button>
       </div>
 
       <!-- Wizard -->
-      <div class="calc-view calc-view--wizard" data-calc-view="wizard" hidden>
-        <div class="calc-progress" aria-hidden="true">
-          <div class="calc-progress-fill" data-calc-progress></div>
+      <div class="calculator__view calculator__view--wizard" data-calc-view="wizard" hidden>
+        <div class="calculator__progress" aria-hidden="true">
+          <div class="calculator__progress-fill" data-calc-progress></div>
         </div>
 
-        <div class="calc-step" data-calc-step="0">
-          <h3 class="calc-step-title display-xl">¿Qué quieres analizar?</h3>
-          <p class="calc-step-sub body-lg text-muted">Selecciona una opción</p>
-          <div class="calc-options" role="radiogroup">
+        <div class="calculator__step" data-calc-step="0">
+          <h3 class="calculator__step-title display-xl">¿Qué quieres analizar?</h3>
+          <p class="calculator__step-sub body-lg text-muted">Selecciona una opción</p>
+          <div class="calculator__options" role="radiogroup">
             {telecomTypes.map((opt) => (
-              <label class="calc-option"><input type="radio" name="telecomType" value={opt.value} /><span class="calc-option-ui"></span>{opt.label}</label>
+              <label class="calculator__option"><input type="radio" name="telecomType" value={opt.value} /><span class="calculator__option-ui"></span>{opt.label}</label>
             ))}
           </div>
         </div>
 
-        <div class="calc-step" data-calc-step="1" hidden>
-          <h3 class="calc-step-title display-xl">¿Cuánto pagas ahora al mes?</h3>
-          <p class="calc-step-sub body-lg text-muted">Mira tu última factura</p>
-          <input class="calc-input" type="number" name="monthlyBill" min="1" placeholder="Ej: 55" inputmode="decimal" />
-          <button type="button" class="calc-continue btn-primary" data-calc-next>Continuar</button>
+        <div class="calculator__step" data-calc-step="1" hidden>
+          <h3 class="calculator__step-title display-xl">¿Cuánto pagas ahora al mes?</h3>
+          <p class="calculator__step-sub body-lg text-muted">Mira tu última factura</p>
+          <input class="calculator__input" type="number" name="monthlyBill" min="1" placeholder="Ej: 55" inputmode="decimal" />
+          <button type="button" class="calculator__continue btn-primary" data-calc-next>Continuar</button>
         </div>
 
-        <div class="calc-step" data-calc-step="2" hidden>
-          <h3 class="calc-step-title display-xl">¿Cuántas líneas móviles?</h3>
-          <p class="calc-step-sub body-lg text-muted">Selecciona una opción</p>
-          <div class="calc-options" role="radiogroup">
+        <div class="calculator__step" data-calc-step="2" hidden>
+          <h3 class="calculator__step-title display-xl">¿Cuántas líneas móviles?</h3>
+          <p class="calculator__step-sub body-lg text-muted">Selecciona una opción</p>
+          <div class="calculator__options" role="radiogroup">
             {mobileLineOptions.map((label) => (
-              <label class="calc-option"><input type="radio" name="mobileLines" value={label} /><span class="calc-option-ui"></span>{label}</label>
+              <label class="calculator__option"><input type="radio" name="mobileLines" value={label} /><span class="calculator__option-ui"></span>{label}</label>
             ))}
           </div>
         </div>
 
-        <div class="calc-step" data-calc-step="3" hidden>
-          <h3 class="calc-step-title display-xl">¿Cuántos GB usas al mes por línea?</h3>
-          <p class="calc-step-sub body-lg text-muted">Selecciona una opción</p>
-          <div class="calc-options" role="radiogroup">
+        <div class="calculator__step" data-calc-step="3" hidden>
+          <h3 class="calculator__step-title display-xl">¿Cuántos GB usas al mes por línea?</h3>
+          <p class="calculator__step-sub body-lg text-muted">Selecciona una opción</p>
+          <div class="calculator__options" role="radiogroup">
             {dataUsageOptions.map((label) => {
               const val = label.toLowerCase().replace(/\s+/g, '-').replace(/[áéíóú]/g, (c) => ({ 'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u' })[c] || c);
               return (
-                <label class="calc-option"><input type="radio" name="dataUsageGb" value={val} /><span class="calc-option-ui"></span>{label}</label>
+                <label class="calculator__option"><input type="radio" name="dataUsageGb" value={val} /><span class="calculator__option-ui"></span>{label}</label>
               );
             })}
           </div>
         </div>
 
-        <div class="calc-step" data-calc-step="4" hidden>
-          <h3 class="calc-step-title display-xl">¿Tienes fibra o ADSL?</h3>
-          <p class="calc-step-sub body-lg text-muted">Selecciona una opción</p>
-          <div class="calc-options" role="radiogroup">
+        <div class="calculator__step" data-calc-step="4" hidden>
+          <h3 class="calculator__step-title display-xl">¿Tienes fibra o ADSL?</h3>
+          <p class="calculator__step-sub body-lg text-muted">Selecciona una opción</p>
+          <div class="calculator__options" role="radiogroup">
             {connectionOptions.map((label) => {
               const val = label.toLowerCase().replace(/\s+/g, '-');
               return (
-                <label class="calc-option"><input type="radio" name="connectionType" value={val} /><span class="calc-option-ui"></span>{label}</label>
+                <label class="calculator__option"><input type="radio" name="connectionType" value={val} /><span class="calculator__option-ui"></span>{label}</label>
               );
             })}
           </div>
         </div>
 
-        <div class="calc-step" data-calc-step="5" hidden>
-          <h3 class="calc-step-title display-xl">¿Qué velocidad de bajada tienes?</h3>
-          <p class="calc-step-sub body-lg text-muted">Selecciona una opción</p>
-          <div class="calc-options" role="radiogroup">
+        <div class="calculator__step" data-calc-step="5" hidden>
+          <h3 class="calculator__step-title display-xl">¿Qué velocidad de bajada tienes?</h3>
+          <p class="calculator__step-sub body-lg text-muted">Selecciona una opción</p>
+          <div class="calculator__options" role="radiogroup">
             {fiberSpeedOptions.map((label) => {
               const val = label.toLowerCase().replace(/\s+/g, '-').replace(/[áéíóú]/g, (c) => ({ 'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u' })[c] || c);
               return (
-                <label class="calc-option"><input type="radio" name="fiberSpeed" value={val} /><span class="calc-option-ui"></span>{label}</label>
+                <label class="calculator__option"><input type="radio" name="fiberSpeed" value={val} /><span class="calculator__option-ui"></span>{label}</label>
               );
             })}
           </div>
         </div>
 
-        <div class="calc-step" data-calc-step="6" hidden>
-          <h3 class="calc-step-title display-xl">¿Cuál es tu operador actual?</h3>
-          <p class="calc-step-sub body-lg text-muted">Selecciona una opción</p>
-          <div class="calc-options" role="radiogroup">
+        <div class="calculator__step" data-calc-step="6" hidden>
+          <h3 class="calculator__step-title display-xl">¿Cuál es tu operador actual?</h3>
+          <p class="calculator__step-sub body-lg text-muted">Selecciona una opción</p>
+          <div class="calculator__options" role="radiogroup">
             {providers.map((label) => (
-              <label class="calc-option"><input type="radio" name="provider" value={label} /><span class="calc-option-ui"></span>{label}</label>
+              <label class="calculator__option"><input type="radio" name="provider" value={label} /><span class="calculator__option-ui"></span>{label}</label>
             ))}
           </div>
         </div>
 
-        <div class="calc-step" data-calc-step="7" hidden>
-          <h3 class="calc-step-title display-xl">¿Tienes permanencia activa?</h3>
-          <p class="calc-step-sub body-lg text-muted">Selecciona una opción</p>
-          <div class="calc-options" role="radiogroup">
+        <div class="calculator__step" data-calc-step="7" hidden>
+          <h3 class="calculator__step-title display-xl">¿Tienes permanencia activa?</h3>
+          <p class="calculator__step-sub body-lg text-muted">Selecciona una opción</p>
+          <div class="calculator__options" role="radiogroup">
             {permanenceOptions.map((label) => {
               const val = label.toLowerCase().replace(/\s+/g, '-');
               return (
-                <label class="calc-option"><input type="radio" name="hasPermanence" value={val} /><span class="calc-option-ui"></span>{label}</label>
+                <label class="calculator__option"><input type="radio" name="hasPermanence" value={val} /><span class="calculator__option-ui"></span>{label}</label>
               );
             })}
           </div>
         </div>
 
-        <div class="calc-step" data-calc-step="8" hidden>
-          <h3 class="calc-step-title display-xl">¿Cuál es tu código postal?</h3>
-          <p class="calc-step-sub body-lg text-muted">Introduce tu código postal</p>
-          <input class="calc-input" type="text" name="postalCode" placeholder="Ej: 28001" maxlength="5" inputmode="numeric" pattern="[0-9]{5}" />
-          <button type="button" class="calc-continue btn-primary" data-calc-next>Continuar</button>
+        <div class="calculator__step" data-calc-step="8" hidden>
+          <h3 class="calculator__step-title display-xl">¿Cuál es tu código postal?</h3>
+          <p class="calculator__step-sub body-lg text-muted">Introduce tu código postal</p>
+          <input class="calculator__input" type="text" name="postalCode" placeholder="Ej: 28001" maxlength="5" inputmode="numeric" pattern="[0-9]{5}" />
+          <button type="button" class="calculator__continue btn-primary" data-calc-next>Continuar</button>
         </div>
 
-        <div class="calc-step" data-calc-step="9" hidden>
-          <h3 class="calc-step-title display-xl">¿Cómo te llamas?</h3>
-          <p class="calc-step-sub body-lg text-muted">Introduce tu nombre completo</p>
-          <p class="calc-privacy-note body-md">
+        <div class="calculator__step" data-calc-step="9" hidden>
+          <h3 class="calculator__step-title display-xl">¿Cómo te llamas?</h3>
+          <p class="calculator__step-sub body-lg text-muted">Introduce tu nombre completo</p>
+          <p class="calculator__privacy-note body-md">
             Para enviarte el resultado personalizado, necesitamos tu contacto. Solo guardaremos tus datos en nuestro CRM si aceptas la política de privacidad.
           </p>
-          <input class="calc-input" type="text" name="firstName" placeholder="Nombre" autocomplete="given-name" />
-          <input class="calc-input" type="text" name="lastName" placeholder="Introduce tu apellido" autocomplete="family-name" />
-          <button type="button" class="calc-continue btn-primary" data-calc-next>Continuar</button>
+          <input class="calculator__input" type="text" name="firstName" placeholder="Nombre" autocomplete="given-name" />
+          <input class="calculator__input" type="text" name="lastName" placeholder="Introduce tu apellido" autocomplete="family-name" />
+          <button type="button" class="calculator__continue btn-primary" data-calc-next>Continuar</button>
         </div>
 
-        <div class="calc-step" data-calc-step="10" hidden>
-          <h3 class="calc-step-title display-xl">¿Cuál es tu número de teléfono?</h3>
-          <p class="calc-step-sub body-lg text-muted">Introduce tu teléfono</p>
-          <input class="calc-input" type="tel" name="phone" placeholder="600 00 00 00" autocomplete="tel" />
-          <label class="calc-consent">
+        <div class="calculator__step" data-calc-step="10" hidden>
+          <h3 class="calculator__step-title display-xl">¿Cuál es tu número de teléfono?</h3>
+          <p class="calculator__step-sub body-lg text-muted">Introduce tu teléfono</p>
+          <input class="calculator__input" type="tel" name="phone" placeholder="600 00 00 00" autocomplete="tel" />
+          <label class="calculator__consent">
             <input type="checkbox" name="privacy" />
             <span class="body-md text-muted">
               Acepto que Ahorra Sin Líos trate mis datos personales y los registre en su CRM de gestión comercial para contactarme con la mejor oferta. Puedo retirar mi consentimiento en cualquier momento. <a href="/privacidad">Política de privacidad</a>.
             </span>
           </label>
-          <button type="button" class="calc-continue btn-primary" data-calc-finish>Continuar</button>
+          <button type="button" class="calculator__continue btn-primary" data-calc-finish>Continuar</button>
         </div>
 
-        <div class="calc-nav">
-          <button type="button" class="calc-back btn-secondary" data-calc-back hidden>
+        <div class="calculator__nav">
+          <button type="button" class="calculator__back btn-secondary" data-calc-back hidden>
             <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
             Atrás
           </button>
@@ -217,55 +217,55 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
       </div>
 
       <!-- Results -->
-      <div class="calc-view calc-view--results" data-calc-view="results" hidden>
-        <div class="calc-result-card">
-          <p class="calc-result-label label-xs">Resultado del análisis</p>
-          <p class="calc-result-percent display-xl" data-calc-result-percent>35%</p>
-          <p class="calc-result-desc body-lg">de ahorro estimado en tu factura</p>
-          <p class="calc-result-badge label-s" data-calc-result-savings>19,25€/mes · 231,00€/año</p>
+      <div class="calculator__view calculator__view--results" data-calc-view="results" hidden>
+        <div class="calculator__result-card">
+          <p class="calculator__result-label label-xs">Resultado del análisis</p>
+          <p class="calculator__result-percent display-xl" data-calc-result-percent>35%</p>
+          <p class="calculator__result-desc body-lg">de ahorro estimado en tu factura</p>
+          <p class="calculator__result-badge label-s" data-calc-result-savings>19,25€/mes · 231,00€/año</p>
 
-          <div class="calc-result-cta-wrap">
+          <div class="calculator__result-cta-wrap">
             <p class="body-md text-muted">Encuentra la tarifa que mejor encaja contigo hoy</p>
-            <a href="#contacto" class="calc-cta btn-primary" data-calc-result-cta>
-              <span class="calc-cta-main">Quiero pagar menos →</span>
-              <span class="calc-cta-sub">Gratis · Sin compromiso · 5 minutos</span>
+            <a href="#contacto" class="calculator__cta btn-primary" data-calc-result-cta>
+              <span class="calculator__cta-main">Quiero pagar menos →</span>
+              <span class="calculator__cta-sub">Gratis · Sin compromiso · 5 minutos</span>
             </a>
           </div>
         </div>
 
-        <p class="calc-comparison-label label-xs text-muted-soft">Factura actual</p>
-        <div class="calc-comparison card-lift">
-          <div class="calc-comparison-row">
+        <p class="calculator__comparison-label label-xs text-muted-soft">Factura actual</p>
+        <div class="calculator__comparison card-lift">
+          <div class="calculator__comparison-row">
             <div>
               <p class="label-xs text-muted-soft">Pagas ahora</p>
-              <p class="calc-comparison-bad label-xs">✕ Tarifa sin optimizar</p>
+              <p class="calculator__comparison-bad label-xs">✕ Tarifa sin optimizar</p>
             </div>
-            <p class="calc-comparison-amount" data-calc-result-current>55,00€</p>
+            <p class="calculator__comparison-amount" data-calc-result-current>55,00€</p>
           </div>
-          <div class="calc-comparison-bar">
+          <div class="calculator__comparison-bar">
             <span class="material-symbols-outlined" aria-hidden="true">south</span>
             Cambiando de tarifa
           </div>
-          <div class="calc-comparison-row calc-comparison-row--new">
+          <div class="calculator__comparison-row calculator__comparison-row--new">
             <div>
-              <p class="label-s calc-comparison-good">Tu nueva factura</p>
-              <ul class="calc-comparison-perks">
+              <p class="label-s calculator__comparison-good">Tu nueva factura</p>
+              <ul class="calculator__comparison-perks">
                 <li>✓ Fibra optimizada</li>
                 <li>✓ Móvil ajustado a tu consumo</li>
                 <li>✓ Sin permanencia</li>
               </ul>
             </div>
-            <p class="calc-comparison-amount calc-comparison-amount--new" data-calc-result-new>35,75€</p>
+            <p class="calculator__comparison-amount calculator__comparison-amount--new" data-calc-result-new>35,75€</p>
           </div>
         </div>
 
-        <p class="calc-comparison-label label-xs text-muted-soft">Por qué estás pagando de más</p>
-        <div class="calc-why card-lift">
-          <p class="body-md"><span class="calc-why-x" aria-hidden="true">✕</span> <strong>Las ofertas de bienvenida caducan.</strong> Si no cambias cada 12-24 meses, pagas de más.</p>
-          <p class="body-md"><span class="calc-why-x" aria-hidden="true">✕</span> <strong>Pagas por servicios que no usas.</strong> Líneas, GB o canales que podrías recortar.</p>
+        <p class="calculator__comparison-label label-xs text-muted-soft">Por qué estás pagando de más</p>
+        <div class="calculator__why card-lift">
+          <p class="body-md"><span class="calculator__why-x" aria-hidden="true">✕</span> <strong>Las ofertas de bienvenida caducan.</strong> Si no cambias cada 12-24 meses, pagas de más.</p>
+          <p class="body-md"><span class="calculator__why-x" aria-hidden="true">✕</span> <strong>Pagas por servicios que no usas.</strong> Líneas, GB o canales que podrías recortar.</p>
         </div>
 
-        <button type="button" class="calc-restart btn-secondary" data-calc-restart>Volver a calcular</button>
+        <button type="button" class="calculator__restart btn-secondary" data-calc-restart>Volver a calcular</button>
       </div>
     </div>
   </div>
@@ -283,7 +283,7 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     background: var(--color-bg);
   }
 
-  .calculator-panel {
+  .calculator__panel {
     max-width: 36rem;
     margin-inline: auto;
     padding: 2.5rem 2rem;
@@ -293,19 +293,19 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     text-align: center;
   }
 
-  .calc-view {
+  .calculator__view {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1.25rem;
   }
 
-  .calc-view[hidden],
-  .calc-step[hidden] {
+  .calculator__view[hidden],
+  .calculator__step[hidden] {
     display: none;
   }
 
-  .calc-badge {
+  .calculator__badge {
     display: inline-block;
     padding: 0.35rem 0.85rem;
     border-radius: var(--radius-full);
@@ -314,19 +314,19 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     background: rgba(121, 184, 42, 0.08);
   }
 
-  .calc-title {
+  .calculator__title {
     font-size: calc(var(--size-xl) * 0.72);
   }
 
-  .calc-lead {
+  .calculator__lead {
     max-width: 28rem;
   }
 
-  .calc-highlight {
+  .calculator__highlight {
     color: var(--color-green);
   }
 
-  .calc-benefits {
+  .calculator__benefits {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
@@ -335,14 +335,14 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
   }
 
   @media (min-width: 40rem) {
-    .calc-benefits {
+    .calculator__benefits {
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: center;
     }
   }
 
-  .calc-benefit {
+  .calculator__benefit {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -356,35 +356,35 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     text-align: left;
   }
 
-  .calc-benefit-icon {
+  .calculator__benefit-icon {
     font-size: 1.25rem;
     color: var(--color-green);
   }
 
-  .calc-cta {
+  .calculator__cta {
     flex-direction: column;
     width: 100%;
     padding-block: 1.1rem;
     gap: 0.25rem;
   }
 
-  .calc-cta-main {
+  .calculator__cta-main {
     font-size: var(--size-s);
     font-weight: 700;
   }
 
-  .calc-cta-sub {
+  .calculator__cta-sub {
     font-size: var(--size-xs);
     font-weight: 500;
     opacity: 0.9;
   }
 
-  .calc-view--wizard {
+  .calculator__view--wizard {
     width: 100%;
     gap: 2rem;
   }
 
-  .calc-progress {
+  .calculator__progress {
     width: 100%;
     height: 0.25rem;
     border-radius: var(--radius-full);
@@ -392,7 +392,7 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     overflow: hidden;
   }
 
-  .calc-progress-fill {
+  .calculator__progress-fill {
     height: 100%;
     width: 0;
     border-radius: inherit;
@@ -400,7 +400,7 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     transition: width 0.35s ease;
   }
 
-  .calc-step {
+  .calculator__step {
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -408,23 +408,23 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     width: 100%;
   }
 
-  .calc-step-title {
+  .calculator__step-title {
     font-size: calc(var(--size-xl) * 0.65);
     text-align: center;
   }
 
-  .calc-step-sub {
+  .calculator__step-sub {
     text-align: center;
     margin-top: -0.5rem;
   }
 
-  .calc-options {
+  .calculator__options {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
   }
 
-  .calc-option {
+  .calculator__option {
     display: flex;
     align-items: center;
     gap: 0.85rem;
@@ -438,22 +438,22 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     transition: border-color 0.2s ease, background-color 0.2s ease;
   }
 
-  .calc-option:hover {
+  .calculator__option:hover {
     border-color: var(--color-green);
   }
 
-  .calc-option:has(input:checked) {
+  .calculator__option:has(input:checked) {
     border-color: var(--color-green);
     background: rgba(121, 184, 42, 0.1);
   }
 
-  .calc-option input {
+  .calculator__option input {
     position: absolute;
     opacity: 0;
     pointer-events: none;
   }
 
-  .calc-option-ui {
+  .calculator__option-ui {
     flex-shrink: 0;
     width: 1.25rem;
     height: 1.25rem;
@@ -462,7 +462,7 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     position: relative;
   }
 
-  .calc-option:has(input:checked) .calc-option-ui::after {
+  .calculator__option:has(input:checked) .calculator__option-ui::after {
     content: '';
     position: absolute;
     inset: 0.2rem;
@@ -470,7 +470,7 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     background: var(--color-green);
   }
 
-  .calc-input {
+  .calculator__input {
     width: 100%;
     padding: 1rem 1.15rem;
     border-radius: var(--radius-xl);
@@ -479,17 +479,17 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .calc-input:focus {
+  .calculator__input:focus {
     outline: none;
     border-color: var(--color-green);
     box-shadow: 0 0 0 3px rgba(121, 184, 42, 0.2);
   }
 
-  .calc-continue {
+  .calculator__continue {
     width: 100%;
   }
 
-  .calc-consent {
+  .calculator__consent {
     display: flex;
     align-items: flex-start;
     gap: 0.65rem;
@@ -497,17 +497,17 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     cursor: pointer;
   }
 
-  .calc-consent input {
+  .calculator__consent input {
     margin-top: 0.2rem;
     accent-color: var(--color-green);
   }
 
-  .calc-consent a {
+  .calculator__consent a {
     color: var(--color-green);
     text-decoration: underline;
   }
 
-  .calc-privacy-note {
+  .calculator__privacy-note {
     padding: 0.9rem 1rem;
     border: 1px solid rgba(121, 184, 42, 0.28);
     border-radius: var(--radius-lg);
@@ -516,23 +516,23 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     text-align: left;
   }
 
-  .calc-nav {
+  .calculator__nav {
     width: 100%;
     display: flex;
     justify-content: flex-start;
   }
 
-  .calc-back {
+  .calculator__back {
     padding: 0.65rem 1.25rem;
   }
 
-  .calc-view--results {
+  .calculator__view--results {
     width: 100%;
     gap: 1.5rem;
     text-align: left;
   }
 
-  .calc-result-card {
+  .calculator__result-card {
     width: 100%;
     padding: 2rem 1.5rem;
     border-radius: var(--radius-xl);
@@ -540,24 +540,24 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     text-align: center;
   }
 
-  .calc-result-label {
+  .calculator__result-label {
     color: var(--color-green);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-bottom: 0.5rem;
   }
 
-  .calc-result-percent {
+  .calculator__result-percent {
     color: var(--color-night);
     line-height: 1;
   }
 
-  .calc-result-desc {
+  .calculator__result-desc {
     color: var(--color-green);
     margin-bottom: 1rem;
   }
 
-  .calc-result-badge {
+  .calculator__result-badge {
     display: inline-block;
     padding: 0.5rem 1rem;
     border-radius: var(--radius-full);
@@ -567,7 +567,7 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     margin-bottom: 1.5rem;
   }
 
-  .calc-result-cta-wrap {
+  .calculator__result-cta-wrap {
     padding-top: 1.5rem;
     border-top: 1px solid var(--color-border);
     display: flex;
@@ -576,13 +576,13 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     align-items: center;
   }
 
-  .calc-comparison-label {
+  .calculator__comparison-label {
     width: 100%;
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
 
-  .calc-comparison {
+  .calculator__comparison {
     width: 100%;
     padding: 1.5rem;
     border-radius: var(--radius-xl);
@@ -590,26 +590,26 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     border: 1px solid var(--color-border);
   }
 
-  .calc-comparison-row {
+  .calculator__comparison-row {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     gap: 1rem;
   }
 
-  .calc-comparison-bad {
+  .calculator__comparison-bad {
     color: #c0392b;
     margin-top: 0.25rem;
   }
 
-  .calc-comparison-amount {
+  .calculator__comparison-amount {
     font-size: var(--size-headline);
     font-weight: 800;
     color: var(--color-night);
     white-space: nowrap;
   }
 
-  .calc-comparison-bar {
+  .calculator__comparison-bar {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -623,22 +623,22 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     font-weight: 700;
   }
 
-  .calc-comparison-good {
+  .calculator__comparison-good {
     color: var(--color-green);
   }
 
-  .calc-comparison-perks {
+  .calculator__comparison-perks {
     list-style: none;
     margin-top: 0.5rem;
     font-size: var(--size-xs);
     color: var(--color-muted);
   }
 
-  .calc-comparison-amount--new {
+  .calculator__comparison-amount--new {
     color: var(--color-green);
   }
 
-  .calc-why {
+  .calculator__why {
     width: 100%;
     padding: 1.5rem;
     border-radius: var(--radius-xl);
@@ -649,17 +649,17 @@ const crmApiKey = import.meta.env.PUBLIC_AHORRA_LANDING_API_KEY ?? '';
     gap: 1rem;
   }
 
-  .calc-why-x {
+  .calculator__why-x {
     color: #c0392b;
     font-weight: 700;
   }
 
-  .calc-restart {
+  .calculator__restart {
     align-self: center;
   }
 
   @media (min-width: 48rem) {
-    .calculator-panel {
+    .calculator__panel {
       max-width: 42rem;
       padding: 3rem 2.5rem;
     }

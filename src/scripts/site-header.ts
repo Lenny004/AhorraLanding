@@ -1,5 +1,5 @@
 const DESKTOP_MEDIA_QUERY = '(min-width: 769px)';
-const OPEN_CLASS = 'open';
+const MENU_OPEN_CLASS = 'site-header__menu--open';
 
 /**
  * Inicializa el menú móvil del header: toggle, cierre al navegar y en desktop.
@@ -18,7 +18,7 @@ export function initSiteHeader(): void {
   }
 
   const setOpen = (open: boolean): void => {
-    menu.classList.toggle(OPEN_CLASS, open);
+    menu.classList.toggle(MENU_OPEN_CLASS, open);
     menu.hidden = !open;
     toggle.setAttribute('aria-expanded', String(open));
     toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
@@ -26,7 +26,7 @@ export function initSiteHeader(): void {
   };
 
   toggle.addEventListener('click', () => {
-    setOpen(!menu.classList.contains(OPEN_CLASS));
+    setOpen(!menu.classList.contains(MENU_OPEN_CLASS));
   });
 
   menu.querySelectorAll('a').forEach((link) => {

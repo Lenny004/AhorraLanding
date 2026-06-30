@@ -19,38 +19,38 @@ const solutions = [
       <p class="body-lg text-muted">Deja de perder tiempo en llamadas interminables y ofertas confusas.</p>
     </header>
 
-    <div class="comparison-grid">
-      <article class="comparison-card card-lift" data-reveal>
-        <div class="comparison-title-row">
-          <div class="comparison-icon comparison-icon--problem">
+    <div class="comparison__grid">
+      <article class="comparison__card card-lift" data-reveal>
+        <div class="comparison__title-row">
+          <div class="comparison__icon comparison__icon--problem">
             <span class="material-symbols-outlined">cancel</span>
           </div>
           <h3 class="headline-lg">Hacerlo solo</h3>
         </div>
 
-        <ul class="comparison-list">
+        <ul class="comparison__list">
           {problems.map((item) => (
             <li>
-              <span class="material-symbols-outlined comparison-list-icon comparison-list-icon--problem">remove</span>
+              <span class="material-symbols-outlined comparison__list-icon comparison__list-icon--problem">remove</span>
               <span class="body-md">{item}</span>
             </li>
           ))}
         </ul>
       </article>
 
-      <article class="comparison-card comparison-card--solution card-lift" data-reveal style="--reveal-delay: 100ms">
-        <div class="comparison-card-glow" aria-hidden="true"></div>
-        <div class="comparison-title-row">
-          <div class="comparison-icon comparison-icon--solution">
+      <article class="comparison__card comparison__card--solution card-lift" data-reveal style="--reveal-delay: 100ms">
+        <div class="comparison__card-glow" aria-hidden="true"></div>
+        <div class="comparison__title-row">
+          <div class="comparison__icon comparison__icon--solution">
             <span class="material-symbols-outlined">check_circle</span>
           </div>
           <h3 class="headline-lg">Con Ahorra Sin Líos</h3>
         </div>
 
-        <ul class="comparison-list">
+        <ul class="comparison__list">
           {solutions.map((item) => (
             <li>
-              <span class="material-symbols-outlined comparison-list-icon comparison-list-icon--solution">check</span>
+              <span class="material-symbols-outlined comparison__list-icon comparison__list-icon--solution">check</span>
               <span class="body-md">{item}</span>
             </li>
           ))}
@@ -65,13 +65,13 @@ const solutions = [
     background: #ffffff;
   }
 
-  .comparison-grid {
+  .comparison__grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 
-  .comparison-card {
+  .comparison__card {
     position: relative;
     overflow: hidden;
     padding: 2rem;
@@ -80,12 +80,12 @@ const solutions = [
     border: 1px solid var(--color-border);
   }
 
-  .comparison-card--solution {
+  .comparison__card--solution {
     background: var(--color-cream);
     border-color: var(--color-gold);
   }
 
-  .comparison-card-glow {
+  .comparison__card-glow {
     position: absolute;
     top: -4rem;
     right: -4rem;
@@ -96,7 +96,7 @@ const solutions = [
     pointer-events: none;
   }
 
-  .comparison-title-row {
+  .comparison__title-row {
     position: relative;
     z-index: 1;
     display: flex;
@@ -105,7 +105,7 @@ const solutions = [
     margin-bottom: 1.5rem;
   }
 
-  .comparison-icon {
+  .comparison__icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -114,21 +114,21 @@ const solutions = [
     border-radius: var(--radius-full);
   }
 
-  .comparison-icon .material-symbols-outlined {
+  .comparison__icon .material-symbols-outlined {
     font-variation-settings: 'FILL' 1;
   }
 
-  .comparison-icon--problem {
+  .comparison__icon--problem {
     color: var(--color-error);
     background: var(--color-error-bg);
   }
 
-  .comparison-icon--solution {
+  .comparison__icon--solution {
     color: var(--color-green);
     background: rgba(121, 184, 42, 0.18);
   }
 
-  .comparison-list {
+  .comparison__list {
     position: relative;
     z-index: 1;
     list-style: none;
@@ -137,28 +137,28 @@ const solutions = [
     gap: 1.25rem;
   }
 
-  .comparison-list li {
+  .comparison__list li {
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
   }
 
-  .comparison-list-icon {
+  .comparison__list-icon {
     flex: 0 0 auto;
     margin-top: 0.2rem;
     font-size: var(--size-s);
   }
 
-  .comparison-list-icon--problem {
+  .comparison__list-icon--problem {
     color: var(--color-muted-soft);
   }
 
-  .comparison-list-icon--solution {
+  .comparison__list-icon--solution {
     color: var(--color-green);
   }
 
   @media (min-width: 48rem) {
-    .comparison-grid {
+    .comparison__grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }

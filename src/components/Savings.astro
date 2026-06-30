@@ -21,17 +21,17 @@ const copy = {
 const amounts = { energy: '300€', telecom: '200€' };
 ---
 <section class="savings section">
-  <div class="savings-glow" aria-hidden="true"></div>
-  <div class="container savings-inner" data-reveal>
-    <h2 class="display-xl savings-title">¿Cuánto podrías ahorrar al año?</h2>
-    <p class="body-lg text-inverse savings-lead">
+  <div class="savings__glow" aria-hidden="true"></div>
+  <div class="container savings__inner" data-reveal>
+    <h2 class="display-xl savings__title">¿Cuánto podrías ahorrar al año?</h2>
+    <p class="body-lg text-inverse savings__lead">
       {copy.lead}
     </p>
 
-    <div class="savings-card">
-      <span class="label-xs savings-label">Ahorro medio estimado</span>
-      <span class="savings-amount">{amounts[vertical]}</span>
-      <span class="label-s savings-pill">{copy.pill}</span>
+    <div class="savings__card">
+      <span class="label-xs savings__label">Ahorro medio estimado</span>
+      <span class="savings__amount">{amounts[vertical]}</span>
+      <span class="label-s savings__pill">{copy.pill}</span>
     </div>
   </div>
 </section>
@@ -44,7 +44,7 @@ const amounts = { energy: '300€', telecom: '200€' };
     background: var(--color-night);
   }
 
-  .savings-glow {
+  .savings__glow {
     position: absolute;
     top: 50%;
     right: -10rem;
@@ -56,7 +56,7 @@ const amounts = { energy: '300€', telecom: '200€' };
     translate: 0 -50%;
   }
 
-  .savings-inner {
+  .savings__inner {
     position: relative;
     z-index: 1;
     display: flex;
@@ -65,17 +65,17 @@ const amounts = { energy: '300€', telecom: '200€' };
     text-align: center;
   }
 
-  .savings-title {
+  .savings__title {
     margin-bottom: 1rem;
     color: #ffffff;
   }
 
-  .savings-lead {
+  .savings__lead {
     max-width: 42rem;
     margin-bottom: 3rem;
   }
 
-  .savings-card {
+  .savings__card {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
@@ -87,14 +87,14 @@ const amounts = { energy: '300€', telecom: '200€' };
     box-shadow: var(--shadow-lift);
   }
 
-  .savings-label {
+  .savings__label {
     margin-bottom: 0.35rem;
     color: var(--color-muted-soft);
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
 
-  .savings-amount {
+  .savings__amount {
     margin-bottom: 0.75rem;
     color: var(--color-green);
     font-size: clamp(4rem, 12vw, 6rem);
@@ -103,7 +103,7 @@ const amounts = { energy: '300€', telecom: '200€' };
     letter-spacing: -0.04em;
   }
 
-  .savings-pill {
+  .savings__pill {
     padding: 0.35rem 0.9rem;
     border-radius: var(--radius-full);
     color: var(--color-night);
