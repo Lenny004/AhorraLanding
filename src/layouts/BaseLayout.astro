@@ -1,27 +1,54 @@
 ---
 import '../styles/global.css';
+import { developer, resolveSeo, site, type SeoProps } from '../lib/seo';
 
-interface Props {
-  title?: string;
-  description?: string;
-}
+interface Props extends SeoProps {}
 
-const {
-  title = 'Ahorra Sin Líos - Ahorra en tus facturas',
-  description = 'Comparamos luz, gas, internet y móvil por ti para ayudarte a ahorrar sin líos, sin coste y sin compromiso.',
-} = Astro.props;
+const seo = resolveSeo(Astro.props, Astro.url.pathname, Astro.url.origin);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.name,
+  url: seo.canonicalUrl,
+  description: seo.description,
+  logo: seo.ogImageUrl,
+};
 ---
 
 <!doctype html>
 <html lang="es">
   <head>
+    <Fragment set:html={`<!-- ${developer.comment} -->`} />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
+    <title>{seo.title}</title>
+    <meta name="description" content={seo.description} />
+    <meta name="keywords" content={seo.keywords} />
+    <meta name="author" content={developer.name} />
+    <meta name="developer" content={`${developer.name} — ${developer.url}`} />
+    <meta name="robots" content={seo.robots} />
+    <link rel="canonical" href={seo.canonicalUrl} />
+
+    <meta property="og:type" content={seo.ogType} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content={site.locale} />
+    <meta property="og:title" content={seo.title} />
+    <meta property="og:description" content={seo.description} />
+    <meta property="og:url" content={seo.canonicalUrl} />
+    <meta property="og:image" content={seo.ogImageUrl} />
+    <meta property="og:image:alt" content={`${site.name} — logo`} />
+
+    <meta name="twitter:card" content={site.twitterCard} />
+    <meta name="twitter:title" content={seo.title} />
+    <meta name="twitter:description" content={seo.description} />
+    <meta name="twitter:image" content={seo.ogImageUrl} />
+
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/jpeg" href="/logo.png" />
     <link rel="apple-touch-icon" href="/logo.png" />
-    <title>{title}</title>
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
