@@ -62,34 +62,9 @@ const navLinks = [
 </header>
 
 <script>
-  const header = document.querySelector<HTMLElement>('[data-header]');
-  const toggle = header?.querySelector<HTMLButtonElement>('[data-menu-toggle]');
-  const menu = header?.querySelector<HTMLElement>('[data-mobile-menu]');
-  const icon = header?.querySelector<HTMLElement>('[data-menu-icon]');
+  import { initSiteHeader } from '../scripts/site-header';
 
-  if (toggle && menu && icon) {
-    const setOpen = (open: boolean) => {
-      menu.classList.toggle('open', open);
-      menu.hidden = !open;
-      toggle.setAttribute('aria-expanded', String(open));
-      toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
-      icon.textContent = open ? 'close' : 'menu';
-    };
-
-    toggle.addEventListener('click', () => {
-      setOpen(!menu.classList.contains('open'));
-    });
-
-    menu.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => setOpen(false));
-    });
-
-    window.addEventListener('resize', () => {
-      if (window.matchMedia('(min-width: 48rem)').matches) {
-        setOpen(false);
-      }
-    });
-  }
+  initSiteHeader();
 </script>
 
 <style>

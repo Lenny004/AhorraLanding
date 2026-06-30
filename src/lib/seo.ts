@@ -2,9 +2,11 @@ export const site = {
   name: 'Ahorra Sin Líos',
   defaultTitle: 'Ahorra Sin Líos — Ahorra en tus facturas',
   defaultDescription:
-    'Comparamos luz, gas, internet y móvil por ti para ayudarte a ahorrar sin líos, sin coste y sin compromiso.',
+    'Comparamos luz, gas, internet y móvil por ti para ayudarte a ahorrar sin líos, ' +
+    'sin coste y sin compromiso.',
   defaultKeywords:
-    'Ahorra Sin Líos, ahorrar luz, comparar tarifas gas, fibra barata, móvil ahorro, comparador facturas, cambiar compañía luz',
+    'Ahorra Sin Líos, ahorrar luz, comparar tarifas gas, fibra barata, móvil ahorro, ' +
+    'comparador facturas, cambiar compañía luz',
   locale: 'es_ES',
   ogImage: '/logo.png',
   twitterCard: 'summary_large_image' as const,
@@ -25,11 +27,21 @@ export type SeoProps = {
   noindex?: boolean;
 };
 
+export type ResolvedSeo = {
+  title: string;
+  description: string;
+  keywords: string;
+  canonicalUrl: string;
+  ogImageUrl: string;
+  ogType: 'website' | 'article';
+  robots: string;
+};
+
 export function resolveSeo(
   props: SeoProps,
   pathname: string,
   origin: string,
-) {
+): ResolvedSeo {
   const title = props.title ?? site.defaultTitle;
   const description = props.description ?? site.defaultDescription;
   const keywords = props.keywords ?? site.defaultKeywords;

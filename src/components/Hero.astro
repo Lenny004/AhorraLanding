@@ -108,28 +108,9 @@ const heroImage =
 </section>
 
 <script>
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => {
-      const target = el.dataset.count ?? '';
-      const match = target.match(/^(\D*)(\d+)(.*)$/);
+  import { initHeroCounter } from '../scripts/hero-counter';
 
-      if (!match) return;
-
-      const prefix = match[1];
-      const max = Number(match[2]);
-      const suffix = match[3];
-      const step = Math.max(1, Math.round(max / 40));
-      let n = 0;
-
-      el.textContent = `${prefix}0${suffix}`;
-
-      const timer = setInterval(() => {
-        n = Math.min(n + step, max);
-        el.textContent = `${prefix}${n}${suffix}`;
-        if (n >= max) clearInterval(timer);
-      }, 40);
-    });
-  }
+  initHeroCounter();
 </script>
 
 <style>
