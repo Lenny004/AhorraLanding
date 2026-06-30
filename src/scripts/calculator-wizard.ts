@@ -9,9 +9,15 @@ import {
   type CalculatorResult,
 } from '../lib/landingLead';
 
-type CalculatorViewName = 'intro' | 'wizard' | 'results';
+const WIZARD_CHECKBOX_ANSWER = { YES: 'yes', NO: 'no' } as const;
+const WIZARD_FIELD_NAMES = { PRIVACY: 'privacy' } as const;
+const RADIO_AUTO_ADVANCE_MS = 280;
+const DEFAULT_CALCULATOR_SOURCE = 'ahorrasinlios';
+const RESULT_CTA_SUBTITLE = 'Gratis · Sin compromiso · 5 minutos';
 
-type CalculatorViews = Record<CalculatorViewName, HTMLElement>;
+type WizardViewName = 'intro' | 'wizard' | 'results';
+type WizardViews = Record<WizardViewName, HTMLElement>;
+type WizardAnswers = Record<string, string>;
 
 type CalculatorLeadFields = Omit<
   BuildLeadBodyOptions,
@@ -19,19 +25,16 @@ type CalculatorLeadFields = Omit<
 >;
 
 export type CalculatorWizardConfig = {
-  calculateResult: (data: Record<string, string>) => CalculatorResult;
-  buildLeadOptions: (
-    payload: CalculatorPayload,
-    root: HTMLElement,
-    fields: ReturnType<typeof calculatorToLeadFields>,
+  calculateSavings: (answers: WizardAnswers) => CalculatorResult;
+  buildLeadFields: (
+    calculatorPayload: CalculatorPayload,
+    wizardRoot: HTMLElement,
+    leadFields: ReturnType<typeof calculatorToLeadFields>,
   ) => CalculatorLeadFields;
   requireContactFields?: boolean;
 };
 
-const RADIO_AUTO_ADVANCE_MS = 280;
-const DEFAULT_SOURCE = 'ahorrasinlios';
-
-function formatEuro(value: number): string {
+function formatEuroAmount(value: number): string {
   return (
     value.toLocaleString('es-ES', {
       minimumFractionDigits: 2,
@@ -40,36 +43,38 @@ function formatEuro(value: number): string {
   );
 }
 
-function getFormData(root: HTMLElement): Record<string, string> {
-  const data: Record<string, string> = {};
+function collectWizardAnswers(wizardRoot: HTMLElement): WizardAnswers {
+  const answers: WizardAnswers = {};
 
-  root.querySelectorAll<HTMLInputElement>('input[name]').forEach((input) => {
+  wizardRoot.querySelectorAll<HTMLInputElement>('input[name]').forEach((input) => {
     if (input.type === 'radio' && !input.checked) {
       return;
     }
 
     if (input.type === 'checkbox') {
-      data[input.name] = input.checked ? 'yes' : 'no';
+      answers[input.name] = input.checked
+        ? WIZARD_CHECKBOX_ANSWER.YES
+        : WIZARD_CHECKBOX_ANSWER.NO;
       return;
     }
 
-    data[input.name] = input.value.trim();
+    answers[input.name] = input.value.trim();
   });
 
-  return data;
+  return answers;
 }
 
-function validateStep(steps: HTMLElement[], index: number): boolean {
-  const step = steps[index];
-  const inputs = step.querySelectorAll<HTMLInputElement>('input[name]');
+function isWizardStepValid(steps: HTMLElement[], stepIndex: number): boolean {
+  const stepElement = steps[stepIndex];
+  const inputs = stepElement.querySelectorAll<HTMLInputElement>('input[name]');
 
   for (const input of inputs) {
     if (input.type === 'radio') {
-      const group = step.querySelector<HTMLInputElement>(
+      const selectedOption = stepElement.querySelector<HTMLInputElement>(
         `input[name="${input.name}"]:checked`,
       );
 
-      if (!group) {
+      if (!selectedOption) {
         return false;
       }
 
@@ -77,7 +82,7 @@ function validateStep(steps: HTMLElement[], index: number): boolean {
     }
 
     if (input.type === 'checkbox') {
-      if (input.name === 'privacy' && !input.checked) {
+      if (input.name === WIZARD_FIELD_NAMES.PRIVACY && !input.checked) {
         return false;
       }
 
@@ -92,80 +97,93 @@ function validateStep(steps: HTMLElement[], index: number): boolean {
   return true;
 }
 
-function updateResultUi(root: HTMLElement, result: CalculatorResult): void {
-  const percentNode = root.querySelector('[data-calc-result-percent]');
-  const savingsNode = root.querySelector('[data-calc-result-savings]');
-  const currentNode = root.querySelector('[data-calc-result-current]');
-  const newNode = root.querySelector('[data-calc-result-new]');
+function updateCalculatorResultUi(
+  wizardRoot: HTMLElement,
+  savingsResult: CalculatorResult,
+): void {
+  const percentNode = wizardRoot.querySelector('[data-calc-result-percent]');
+  const savingsNode = wizardRoot.querySelector('[data-calc-result-savings]');
+  const currentBillNode = wizardRoot.querySelector('[data-calc-result-current]');
+  const newBillNode = wizardRoot.querySelector('[data-calc-result-new]');
 
   if (percentNode) {
-    percentNode.textContent = `${result.percent}%`;
+    percentNode.textContent = `${savingsResult.percent}%`;
   }
 
   if (savingsNode) {
     savingsNode.textContent =
-      `${formatEuro(result.monthlySaving)}/mes · ${formatEuro(result.yearlySaving)}/año`;
+      `${formatEuroAmount(savingsResult.monthlySaving)}/mes · ` +
+      `${formatEuroAmount(savingsResult.yearlySaving)}/año`;
   }
 
-  if (currentNode) {
-    currentNode.textContent = formatEuro(result.bill);
+  if (currentBillNode) {
+    currentBillNode.textContent = formatEuroAmount(savingsResult.bill);
   }
 
-  if (newNode) {
-    newNode.textContent = formatEuro(result.newBill);
+  if (newBillNode) {
+    newBillNode.textContent = formatEuroAmount(savingsResult.newBill);
   }
 
-  const cta = root.querySelector<HTMLAnchorElement>('[data-calc-result-cta]');
+  const resultCta = wizardRoot.querySelector<HTMLAnchorElement>('[data-calc-result-cta]');
 
-  if (!cta) {
+  if (!resultCta) {
     return;
   }
 
-  const ctaMain = cta.querySelector('.calc-cta-main');
-  const ctaSub = cta.querySelector('.calc-cta-sub');
+  const ctaMain = resultCta.querySelector('.calc-cta-main');
+  const ctaSub = resultCta.querySelector('.calc-cta-sub');
 
   if (ctaMain) {
-    ctaMain.textContent = `Quiero ahorrar ${formatEuro(result.monthlySaving)}/mes →`;
+    ctaMain.textContent =
+      `Quiero ahorrar ${formatEuroAmount(savingsResult.monthlySaving)}/mes →`;
   }
 
   if (ctaSub) {
-    ctaSub.textContent = 'Gratis · Sin compromiso · 5 minutos';
+    ctaSub.textContent = RESULT_CTA_SUBTITLE;
   }
 }
 
-async function submitCalculatorLead(
-  root: HTMLElement,
-  payload: CalculatorPayload,
+async function submitCalculatorLeadToCrm(
+  wizardRoot: HTMLElement,
+  calculatorPayload: CalculatorPayload,
   config: CalculatorWizardConfig,
 ): Promise<void> {
-  const endpoint = root.dataset.endpoint;
-  const apiKey = root.dataset.apiKey;
-  const source = root.dataset.source || DEFAULT_SOURCE;
+  const endpoint = wizardRoot.dataset.endpoint;
+  const apiKey = wizardRoot.dataset.apiKey;
+  const leadSource = wizardRoot.dataset.source || DEFAULT_CALCULATOR_SOURCE;
 
   if (!endpoint || !apiKey) {
     return;
   }
 
   try {
-    const fields = calculatorToLeadFields(payload);
-    const leadOptions = config.buildLeadOptions(payload, root, fields);
+    const leadFields = calculatorToLeadFields(calculatorPayload);
+    const partialLeadOptions = config.buildLeadFields(
+      calculatorPayload,
+      wizardRoot,
+      leadFields,
+    );
 
-    if (config.requireContactFields && !leadOptions.fullName && !leadOptions.phone) {
+    if (
+      config.requireContactFields &&
+      !partialLeadOptions.fullName &&
+      !partialLeadOptions.phone
+    ) {
       return;
     }
 
     const body = buildLeadBody({
-      ...leadOptions,
+      ...partialLeadOptions,
       sessionToken: getSessionToken(),
-      source,
+      source: leadSource,
       leadOrigin: 'calculator',
-      calculatorData: payload,
+      calculatorData: calculatorPayload,
     });
 
     await submitLandingLead(endpoint, apiKey, body);
 
     saveCalculatorData({
-      ...payload,
+      ...calculatorPayload,
       submittedToCrm: true,
       submittedAt: new Date().toISOString(),
     });
@@ -174,78 +192,126 @@ async function submitCalculatorLead(
   }
 }
 
-export function initCalculatorWizard(config: CalculatorWizardConfig): void {
-  const root = document.querySelector<HTMLElement>('[data-calc-root]');
+function getWizardViews(wizardRoot: HTMLElement): WizardViews {
+  return {
+    intro: wizardRoot.querySelector<HTMLElement>('[data-calc-view="intro"]')!,
+    wizard: wizardRoot.querySelector<HTMLElement>('[data-calc-view="wizard"]')!,
+    results: wizardRoot.querySelector<HTMLElement>('[data-calc-view="results"]')!,
+  };
+}
 
-  if (!root) {
+function bindWizardNavigation(
+  wizardRoot: HTMLElement,
+  steps: HTMLElement[],
+  getCurrentStepIndex: () => number,
+  showStep: (stepIndex: number) => void,
+  goToNextStep: () => void,
+): void {
+  const backButton = wizardRoot.querySelector<HTMLButtonElement>('[data-calc-back]');
+
+  backButton?.addEventListener('click', () => {
+    const currentStepIndex = getCurrentStepIndex();
+
+    if (currentStepIndex > 0) {
+      showStep(currentStepIndex - 1);
+    }
+  });
+
+  wizardRoot.querySelectorAll('[data-calc-next]').forEach((nextButton) => {
+    nextButton.addEventListener('click', goToNextStep);
+  });
+
+  wizardRoot.querySelectorAll('.calc-option input[type="radio"]').forEach((radioInput) => {
+    radioInput.addEventListener('change', () => {
+      window.setTimeout(() => {
+        const currentStepIndex = getCurrentStepIndex();
+
+        if (
+          currentStepIndex < steps.length - 1 &&
+          isWizardStepValid(steps, currentStepIndex)
+        ) {
+          showStep(currentStepIndex + 1);
+        }
+      }, RADIO_AUTO_ADVANCE_MS);
+    });
+  });
+
+  wizardRoot.querySelectorAll('.calc-input').forEach((textInput) => {
+    textInput.addEventListener('keydown', (event) => {
+      if (event instanceof KeyboardEvent && event.key === 'Enter') {
+        goToNextStep();
+      }
+    });
+  });
+}
+
+export function initCalculatorWizard(config: CalculatorWizardConfig): void {
+  const wizardRoot = document.querySelector<HTMLElement>('[data-calc-root]');
+
+  if (!wizardRoot) {
     return;
   }
 
-  const views: CalculatorViews = {
-    intro: root.querySelector<HTMLElement>('[data-calc-view="intro"]')!,
-    wizard: root.querySelector<HTMLElement>('[data-calc-view="wizard"]')!,
-    results: root.querySelector<HTMLElement>('[data-calc-view="results"]')!,
-  };
-
-  const steps = Array.from(root.querySelectorAll<HTMLElement>('[data-calc-step]'));
-  const progressFill = root.querySelector<HTMLElement>('[data-calc-progress]')!;
-  const backBtn = root.querySelector<HTMLButtonElement>('[data-calc-back]')!;
+  const views = getWizardViews(wizardRoot);
+  const steps = Array.from(wizardRoot.querySelectorAll<HTMLElement>('[data-calc-step]'));
+  const progressFill = wizardRoot.querySelector<HTMLElement>('[data-calc-progress]')!;
+  const backButton = wizardRoot.querySelector<HTMLButtonElement>('[data-calc-back]')!;
   const totalSteps = steps.length;
-  let currentStep = 0;
+  let currentStepIndex = 0;
 
-  const showView = (name: CalculatorViewName): void => {
-    Object.entries(views).forEach(([key, element]) => {
-      element.hidden = key !== name;
+  const showView = (viewName: WizardViewName): void => {
+    Object.entries(views).forEach(([key, viewElement]) => {
+      viewElement.hidden = key !== viewName;
     });
   };
 
-  const showStep = (index: number): void => {
-    currentStep = index;
+  const showStep = (stepIndex: number): void => {
+    currentStepIndex = stepIndex;
 
-    steps.forEach((step, stepIndex) => {
-      step.hidden = stepIndex !== index;
+    steps.forEach((stepElement, index) => {
+      stepElement.hidden = index !== stepIndex;
     });
 
-    progressFill.style.width = `${((index + 1) / totalSteps) * 100}%`;
-    backBtn.hidden = index === 0;
+    progressFill.style.width = `${((stepIndex + 1) / totalSteps) * 100}%`;
+    backButton.hidden = stepIndex === 0;
   };
 
   const finishWizard = async (): Promise<void> => {
-    if (!validateStep(steps, currentStep)) {
+    if (!isWizardStepValid(steps, currentStepIndex)) {
       return;
     }
 
-    const data = getFormData(root);
-    const result = config.calculateResult(data);
-    const payload: CalculatorPayload = { answers: data, result };
+    const answers = collectWizardAnswers(wizardRoot);
+    const savingsResult = config.calculateSavings(answers);
+    const calculatorPayload: CalculatorPayload = { answers, result: savingsResult };
 
-    updateResultUi(root, result);
-    saveCalculatorData(payload);
+    updateCalculatorResultUi(wizardRoot, savingsResult);
+    saveCalculatorData(calculatorPayload);
     showView('results');
 
-    await submitCalculatorLead(root, payload, config);
+    await submitCalculatorLeadToCrm(wizardRoot, calculatorPayload, config);
   };
 
-  const goNext = (): void => {
-    if (!validateStep(steps, currentStep)) {
+  const goToNextStep = (): void => {
+    if (!isWizardStepValid(steps, currentStepIndex)) {
       return;
     }
 
-    if (currentStep < totalSteps - 1) {
-      showStep(currentStep + 1);
+    if (currentStepIndex < totalSteps - 1) {
+      showStep(currentStepIndex + 1);
       return;
     }
 
     void finishWizard();
   };
 
-  root.querySelector('[data-calc-start]')?.addEventListener('click', () => {
+  wizardRoot.querySelector('[data-calc-start]')?.addEventListener('click', () => {
     showView('wizard');
     showStep(0);
   });
 
-  root.querySelector('[data-calc-restart]')?.addEventListener('click', () => {
-    root.querySelectorAll('input').forEach((input) => {
+  wizardRoot.querySelector('[data-calc-restart]')?.addEventListener('click', () => {
+    wizardRoot.querySelectorAll('input').forEach((input) => {
       if (input.type === 'radio' || input.type === 'checkbox') {
         input.checked = false;
         return;
@@ -256,35 +322,73 @@ export function initCalculatorWizard(config: CalculatorWizardConfig): void {
     showView('intro');
   });
 
-  backBtn.addEventListener('click', () => {
-    if (currentStep > 0) {
-      showStep(currentStep - 1);
-    }
-  });
-
-  root.querySelectorAll('[data-calc-next]').forEach((button) => {
-    button.addEventListener('click', goNext);
-  });
-
-  root.querySelector('[data-calc-finish]')?.addEventListener('click', () => {
+  wizardRoot.querySelector('[data-calc-finish]')?.addEventListener('click', () => {
     void finishWizard();
   });
 
-  root.querySelectorAll('.calc-option input[type="radio"]').forEach((radio) => {
-    radio.addEventListener('change', () => {
-      window.setTimeout(() => {
-        if (currentStep < totalSteps - 1 && validateStep(steps, currentStep)) {
-          showStep(currentStep + 1);
-        }
-      }, RADIO_AUTO_ADVANCE_MS);
-    });
-  });
-
-  root.querySelectorAll('.calc-input').forEach((input) => {
-    input.addEventListener('keydown', (event) => {
-      if (event instanceof KeyboardEvent && event.key === 'Enter') {
-        goNext();
-      }
-    });
-  });
+  bindWizardNavigation(wizardRoot, steps, () => currentStepIndex, showStep, goToNextStep);
 }
+
+// Constantes de reglas de ahorro (exportadas para energy/telecom-calculator)
+export const ENERGY_SERVICE_TYPE = {
+  LUZ: 'luz',
+  LUZ_GAS: 'luz-gas',
+} as const;
+
+export const ENERGY_TARIFF_TYPE = {
+  PVPC: 'pvpc',
+  UNKNOWN: 'unknown',
+  LIBRE: 'libre',
+} as const;
+
+export const ENERGY_KNOWLEDGE_ANSWER = { NO: 'no' } as const;
+
+export const ENERGY_SAVINGS = {
+  DEFAULT_MONTHLY_BILL_EUR: 80,
+  MIN_MONTHLY_BILL_EUR: 1,
+  BASE_PERCENT: 10,
+  MAX_PERCENT: 25,
+  PERCENT_DIVISOR: 100,
+  MONTHS_PER_YEAR: 12,
+  BONUS: {
+    LUZ_GAS: 2,
+    UNKNOWN_POWER: 2,
+    UNKNOWN_KWH: 2,
+    PVPC_TARIFF: 3,
+    UNKNOWN_TARIFF: 4,
+    LIBRE_TARIFF: 1,
+  },
+} as const;
+
+export const TELECOM_PACKAGE_TYPE = { MOVIL_FIBRA: 'movil-fibra' } as const;
+
+export const TELECOM_PROVIDER = {
+  MOVISTAR: 'Movistar',
+  VODAFONE: 'Vodafone',
+  ORANGE: 'Orange',
+} as const;
+
+export const TELECOM_PERMANENCE_ANSWER = { NO: 'no' } as const;
+export const TELECOM_DATA_USAGE = { LESS_THAN_10_GB: 'menos-de-10-gb' } as const;
+export const TELECOM_CONNECTION_TYPE = { ADSL: 'adsl' } as const;
+
+export const TELECOM_SAVINGS = {
+  DEFAULT_MONTHLY_BILL_EUR: 50,
+  MIN_MONTHLY_BILL_EUR: 1,
+  BASE_PERCENT: 15,
+  MAX_PERCENT: 35,
+  PERCENT_DIVISOR: 100,
+  MONTHS_PER_YEAR: 12,
+  BONUS: {
+    MOVIL_FIBRA: 5,
+    PREMIUM_PROVIDER: 5,
+    ORANGE_PROVIDER: 3,
+    NO_PERMANENCE: 2,
+    LOW_DATA_USAGE: 2,
+    ADSL_CONNECTION: 4,
+  },
+} as const;
+
+export const VERTICAL = { TELECOM: 'telecom' } as const;
+
+export type { WizardAnswers };

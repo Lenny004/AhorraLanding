@@ -2,9 +2,18 @@ export const CALC_STORAGE_KEY = 'landing_calculator_data';
 export const COOKIE_SESSION_KEY = '_calc_session';
 export const COOKIE_DATA_KEY = '_calc_data';
 
+export const CRM_RESPONSE_STATUS = {
+  SUCCESS: 1,
+} as const;
+
 const SESSION_TOKEN_PATTERN = /^[a-f0-9]{64}$/;
 const COOKIE_MAX_AGE_SECONDS = 3600;
 const CALC_DATA_COOKIE_MAX_BYTES = 3000;
+
+const CALCULATOR_SERVICE_TYPE = {
+  LUZ: 'luz',
+  LUZ_GAS: 'luz-gas',
+} as const;
 
 export type CalculatorResult = {
   percent: number;
@@ -45,6 +54,15 @@ export type BuildLeadBodyOptions = {
   calculatorData?: CalculatorPayload | null;
   invoice?: File;
   sessionToken?: string;
+};
+
+export type CreateCalculatorSessionOptions = {
+  endpoint: string;
+  apiKey: string;
+  source: string;
+  vertical: string;
+  answers: Record<string, string>;
+  result: CalculatorResult;
 };
 
 type CalculatorSessionResponse = {
@@ -102,21 +120,21 @@ export function setSessionTokenOverride(token: string): void {
   setCookie(COOKIE_SESSION_KEY, token, COOKIE_MAX_AGE_SECONDS);
 }
 
-export function saveCalculatorData(payload: CalculatorPayload): void {
-  sessionStorage.setItem(CALC_STORAGE_KEY, JSON.stringify(payload));
-  const json = JSON.stringify(payload);
+export function saveCalculatorData(calculatorPayload: CalculatorPayload): void {
+  sessionStorage.setItem(CALC_STORAGE_KEY, JSON.stringify(calculatorPayload));
+  const serializedPayload = JSON.stringify(calculatorPayload);
 
-  if (json.length <= CALC_DATA_COOKIE_MAX_BYTES) {
-    setCookie(COOKIE_DATA_KEY, json, COOKIE_MAX_AGE_SECONDS);
+  if (serializedPayload.length <= CALC_DATA_COOKIE_MAX_BYTES) {
+    setCookie(COOKIE_DATA_KEY, serializedPayload, COOKIE_MAX_AGE_SECONDS);
   }
 }
 
 export function getCalculatorData(): CalculatorPayload | null {
-  const raw = sessionStorage.getItem(CALC_STORAGE_KEY);
+  const sessionRaw = sessionStorage.getItem(CALC_STORAGE_KEY);
 
-  if (raw) {
+  if (sessionRaw) {
     try {
-      return JSON.parse(raw) as CalculatorPayload;
+      return JSON.parse(sessionRaw) as CalculatorPayload;
     } catch {
       // Datos corruptos en sessionStorage; se intenta recuperar desde cookie.
     }
@@ -129,9 +147,9 @@ export function getCalculatorData(): CalculatorPayload | null {
   }
 
   try {
-    const data = JSON.parse(cookieRaw) as CalculatorPayload;
+    const calculatorPayload = JSON.parse(cookieRaw) as CalculatorPayload;
     sessionStorage.setItem(CALC_STORAGE_KEY, cookieRaw);
-    return data;
+    return calculatorPayload;
   } catch {
     return null;
   }
@@ -143,15 +161,12 @@ export function clearCalculatorData(): void {
 }
 
 export async function createCalculatorSession(
-  calcSessionEndpoint: string,
-  apiKey: string,
-  source: string,
-  vertical: string,
-  answers: Record<string, string>,
-  result: CalculatorResult,
+  options: CreateCalculatorSessionOptions,
 ): Promise<CalculatorSessionResponse | null> {
+  const { endpoint, apiKey, source, vertical, answers, result } = options;
+
   try {
-    const response = await fetch(calcSessionEndpoint, {
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -159,16 +174,16 @@ export async function createCalculatorSession(
       },
       body: JSON.stringify({ source, vertical, answers, result }),
     });
-    const data: unknown = await response.json();
+    const responseBody: unknown = await response.json();
 
     if (
       response.ok &&
-      typeof data === 'object' &&
-      data !== null &&
-      'estado' in data &&
-      (data as Record<string, unknown>).estado === 1
+      typeof responseBody === 'object' &&
+      responseBody !== null &&
+      'estado' in responseBody &&
+      (responseBody as Record<string, unknown>).estado === CRM_RESPONSE_STATUS.SUCCESS
     ) {
-      const dataset = (data as Record<string, unknown>).dataset;
+      const dataset = (responseBody as Record<string, unknown>).dataset;
 
       if (
         typeof dataset === 'object' &&
@@ -185,13 +200,15 @@ export async function createCalculatorSession(
   }
 }
 
-export function calculatorToLeadFields(data: CalculatorPayload): CalculatorLeadFields {
-  const { answers, result } = data;
+export function calculatorToLeadFields(
+  calculatorPayload: CalculatorPayload,
+): CalculatorLeadFields {
+  const { answers, result } = calculatorPayload;
   const fullName = [answers.firstName, answers.lastName]
     .filter(Boolean)
     .join(' ')
     .trim();
-  const serviceType = answers.serviceType ?? 'luz';
+  const serviceType = answers.serviceType ?? CALCULATOR_SERVICE_TYPE.LUZ;
   const approximateConsumption = answers.monthlyBill
     ? `${answers.monthlyBill}€/mes`
     : `${result.bill}€/mes`;
@@ -204,8 +221,10 @@ export function calculatorToLeadFields(data: CalculatorPayload): CalculatorLeadF
     savingsPercent: result.percent,
     monthlySaving: result.monthlySaving,
     approximateConsumption,
-    serviceLuz: serviceType === 'luz' || serviceType === 'luz-gas',
-    serviceGas: serviceType === 'luz-gas',
+    serviceLuz:
+      serviceType === CALCULATOR_SERVICE_TYPE.LUZ ||
+      serviceType === CALCULATOR_SERVICE_TYPE.LUZ_GAS,
+    serviceGas: serviceType === CALCULATOR_SERVICE_TYPE.LUZ_GAS,
   };
 }
 
@@ -258,33 +277,33 @@ export function buildLeadBody(options: BuildLeadBodyOptions): FormData {
     body.set('estimated_monthly_saving', options.monthlySaving.toFixed(2));
   }
 
-  const extra: Record<string, unknown> = {};
+  const extraFields: Record<string, unknown> = {};
 
   if (options.vertical) {
-    extra.vertical = options.vertical;
+    extraFields.vertical = options.vertical;
   }
 
   if (options.sourcePage) {
-    extra.source_page = options.sourcePage;
+    extraFields.source_page = options.sourcePage;
   }
 
   if (options.serviceInternet) {
-    extra.service_internet = true;
+    extraFields.service_internet = true;
   }
 
   if (options.serviceMovil) {
-    extra.service_movil = true;
+    extraFields.service_movil = true;
   }
 
   if (options.calculatorData) {
-    extra.calculator = {
+    extraFields.calculator = {
       answers: options.calculatorData.answers,
       result: options.calculatorData.result,
     };
   }
 
-  if (Object.keys(extra).length > 0) {
-    body.set('extra_data', JSON.stringify(extra));
+  if (Object.keys(extraFields).length > 0) {
+    body.set('extra_data', JSON.stringify(extraFields));
   }
 
   if (options.invoice) {
@@ -304,13 +323,15 @@ export async function submitLandingLead(
     headers: { 'X-API-Key': apiKey },
     body,
   });
-  const result = await response.json().catch(() => null);
+  const responseBody = await response.json().catch(() => null);
 
-  if (!response.ok || result?.estado !== 1) {
+  if (!response.ok || responseBody?.estado !== CRM_RESPONSE_STATUS.SUCCESS) {
     const errorMessage =
-      result?.exception || result?.message || 'No se pudo enviar el formulario';
+      responseBody?.exception ||
+      responseBody?.message ||
+      'No se pudo enviar el formulario';
     throw new Error(errorMessage);
   }
 
-  return result;
+  return responseBody;
 }

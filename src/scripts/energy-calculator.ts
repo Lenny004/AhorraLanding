@@ -1,63 +1,74 @@
 import { calculatorToLeadFields } from '../lib/landingLead';
-import { initCalculatorWizard } from './calculator-wizard';
+import {
+  ENERGY_KNOWLEDGE_ANSWER,
+  ENERGY_SAVINGS,
+  ENERGY_SERVICE_TYPE,
+  ENERGY_TARIFF_TYPE,
+  initCalculatorWizard,
+  type WizardAnswers,
+} from './calculator-wizard';
 
 type EnergyLeadFields = ReturnType<typeof calculatorToLeadFields>;
 
-function calculateEnergySavings(data: Record<string, string>) {
-  const bill = Math.max(parseFloat(data.monthlyBill) || 80, 1);
-  let percent = 10;
+function calculateEnergySavings(answers: WizardAnswers) {
+  const monthlyBill = Math.max(
+    parseFloat(answers.monthlyBill) || ENERGY_SAVINGS.DEFAULT_MONTHLY_BILL_EUR,
+    ENERGY_SAVINGS.MIN_MONTHLY_BILL_EUR,
+  );
+  let savingsPercent = ENERGY_SAVINGS.BASE_PERCENT;
 
-  if (data.serviceType === 'luz-gas') {
-    percent += 2;
+  if (answers.serviceType === ENERGY_SERVICE_TYPE.LUZ_GAS) {
+    savingsPercent += ENERGY_SAVINGS.BONUS.LUZ_GAS;
   }
 
-  if (data.knowsPower === 'no') {
-    percent += 2;
+  if (answers.knowsPower === ENERGY_KNOWLEDGE_ANSWER.NO) {
+    savingsPercent += ENERGY_SAVINGS.BONUS.UNKNOWN_POWER;
   }
 
-  if (data.knowsKwh === 'no') {
-    percent += 2;
+  if (answers.knowsKwh === ENERGY_KNOWLEDGE_ANSWER.NO) {
+    savingsPercent += ENERGY_SAVINGS.BONUS.UNKNOWN_KWH;
   }
 
-  if (data.tariffType === 'pvpc') {
-    percent += 3;
+  if (answers.tariffType === ENERGY_TARIFF_TYPE.PVPC) {
+    savingsPercent += ENERGY_SAVINGS.BONUS.PVPC_TARIFF;
   }
 
-  if (data.tariffType === 'unknown') {
-    percent += 4;
+  if (answers.tariffType === ENERGY_TARIFF_TYPE.UNKNOWN) {
+    savingsPercent += ENERGY_SAVINGS.BONUS.UNKNOWN_TARIFF;
   }
 
-  if (data.tariffType === 'libre') {
-    percent += 1;
+  if (answers.tariffType === ENERGY_TARIFF_TYPE.LIBRE) {
+    savingsPercent += ENERGY_SAVINGS.BONUS.LIBRE_TARIFF;
   }
 
-  percent = Math.min(Math.round(percent), 25);
+  savingsPercent = Math.min(Math.round(savingsPercent), ENERGY_SAVINGS.MAX_PERCENT);
 
-  const newBill = bill * (1 - percent / 100);
-  const monthlySaving = bill - newBill;
+  const newMonthlyBill =
+    monthlyBill * (1 - savingsPercent / ENERGY_SAVINGS.PERCENT_DIVISOR);
+  const monthlySaving = monthlyBill - newMonthlyBill;
 
   return {
-    percent,
-    bill,
-    newBill,
+    percent: savingsPercent,
+    bill: monthlyBill,
+    newBill: newMonthlyBill,
     monthlySaving,
-    yearlySaving: monthlySaving * 12,
+    yearlySaving: monthlySaving * ENERGY_SAVINGS.MONTHS_PER_YEAR,
   };
 }
 
 export function initEnergyCalculator(): void {
   initCalculatorWizard({
-    calculateResult: calculateEnergySavings,
-    buildLeadOptions: (_payload, _root, fields: EnergyLeadFields) => ({
-      fullName: fields.fullName,
-      phone: fields.phone,
-      postalCode: fields.postalCode,
-      monthlyBill: fields.monthlyBill,
-      savingsPercent: fields.savingsPercent,
-      monthlySaving: fields.monthlySaving,
-      approximateConsumption: fields.approximateConsumption,
-      serviceLuz: fields.serviceLuz,
-      serviceGas: fields.serviceGas,
+    calculateSavings: calculateEnergySavings,
+    buildLeadFields: (_calculatorPayload, _wizardRoot, leadFields: EnergyLeadFields) => ({
+      fullName: leadFields.fullName,
+      phone: leadFields.phone,
+      postalCode: leadFields.postalCode,
+      monthlyBill: leadFields.monthlyBill,
+      savingsPercent: leadFields.savingsPercent,
+      monthlySaving: leadFields.monthlySaving,
+      approximateConsumption: leadFields.approximateConsumption,
+      serviceLuz: leadFields.serviceLuz,
+      serviceGas: leadFields.serviceGas,
     }),
   });
 }
