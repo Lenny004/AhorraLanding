@@ -640,8 +640,10 @@ const consumptionPlaceholder =
     buildLeadBody,
     calculatorToLeadFields,
     clearCalculatorData,
+    createCalculatorSession,
     getCalculatorData,
     getSessionToken,
+    setSessionTokenOverride,
     submitLandingLead,
   } from '../lib/landingLead';
 
@@ -750,6 +752,21 @@ const consumptionPlaceholder =
       const calcFields = calculatorData ? calculatorToLeadFields(calculatorData) : null;
       const consumption = String(data.get('approximate_consumption') ?? '').trim();
 
+      let sessionToken = calculatorData?.sessionToken || getSessionToken();
+
+      if (calculatorData && !calculatorData.sessionToken) {
+        const calcSessEndpoint = endpoint.replace('api_landing_leads.php', 'api_calculator_session.php');
+        const vertical = form.dataset.vertical || 'energy';
+        const sessionData = await createCalculatorSession(
+          calcSessEndpoint, apiKey, source, vertical,
+          calculatorData.answers, calculatorData.result,
+        );
+        if (sessionData?.session_token) {
+          sessionToken = sessionData.session_token;
+          setSessionTokenOverride(sessionToken);
+        }
+      }
+
       const body = buildLeadBody({
         source,
         leadOrigin: calculatorData ? 'both' : 'contact',
@@ -769,7 +786,7 @@ const consumptionPlaceholder =
         savingsPercent: calcFields?.savingsPercent,
         monthlySaving: calcFields?.monthlySaving,
         calculatorData,
-        sessionToken: getSessionToken(),
+        sessionToken,
         invoice: data.get('invoice') instanceof File && (data.get('invoice') as File).size > 0
           ? (data.get('invoice') as File)
           : undefined,

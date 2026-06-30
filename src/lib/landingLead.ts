@@ -13,18 +13,15 @@ export type CalculatorResult = {
 export type CalculatorPayload = {
   answers: Record<string, string>;
   result: CalculatorResult;
+  sessionToken?: string;
   submittedToCrm?: boolean;
   submittedAt?: string;
 };
 
-function generateUUID(): string {
-  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
-    return crypto.randomUUID();
-  }
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0;
-    return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
-  });
+function generateToken(): string {
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes).map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
 function getCookie(name: string): string | null {
@@ -42,10 +39,14 @@ function removeCookie(name: string): void {
 
 export function getSessionToken(): string {
   const existing = getCookie(COOKIE_SESSION_KEY);
-  if (existing) return existing;
-  const token = generateUUID();
+  if (existing && /^[a-f0-9]{64}$/.test(existing)) return existing;
+  const token = generateToken();
   setCookie(COOKIE_SESSION_KEY, token, 3600);
   return token;
+}
+
+export function setSessionTokenOverride(token: string): void {
+  setCookie(COOKIE_SESSION_KEY, token, 3600);
 }
 
 export function saveCalculatorData(payload: CalculatorPayload) {
@@ -81,6 +82,42 @@ export function getCalculatorData(): CalculatorPayload | null {
 export function clearCalculatorData() {
   sessionStorage.removeItem(CALC_STORAGE_KEY);
   removeCookie(COOKIE_DATA_KEY);
+}
+
+export async function createCalculatorSession(
+  calcSessionEndpoint: string,
+  apiKey: string,
+  source: string,
+  vertical: string,
+  answers: Record<string, string>,
+  result: CalculatorResult,
+): Promise<{ id_session: number; session_token: string } | null> {
+  try {
+    const response = await fetch(calcSessionEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': apiKey,
+      },
+      body: JSON.stringify({ source, vertical, answers, result }),
+    });
+    const data: unknown = await response.json();
+    if (
+      response.ok &&
+      typeof data === 'object' &&
+      data !== null &&
+      'estado' in data &&
+      (data as Record<string, unknown>).estado === 1
+    ) {
+      const ds = (data as Record<string, unknown>).dataset;
+      if (typeof ds === 'object' && ds !== null && 'session_token' in ds) {
+        return ds as { id_session: number; session_token: string };
+      }
+    }
+    return null;
+  } catch {
+    return null;
+  }
 }
 
 export function calculatorToLeadFields(data: CalculatorPayload) {
@@ -146,6 +183,12 @@ export function buildLeadBody(options: {
   if (options.sourcePage) extra.source_page = options.sourcePage;
   if (options.serviceInternet) extra.service_internet = true;
   if (options.serviceMovil) extra.service_movil = true;
+  if (options.calculatorData) {
+    extra.calculator = {
+      answers: options.calculatorData.answers,
+      result: options.calculatorData.result,
+    };
+  }
   if (Object.keys(extra).length > 0) {
     body.set('extra_data', JSON.stringify(extra));
   }
