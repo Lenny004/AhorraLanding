@@ -1,4 +1,4 @@
-const DESKTOP_MEDIA_QUERY = '(min-width: 48rem)';
+const DESKTOP_MEDIA_QUERY = '(min-width: 769px)';
 const OPEN_CLASS = 'open';
 
 /**

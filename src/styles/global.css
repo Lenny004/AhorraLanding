@@ -27,6 +27,8 @@
   --size-icon: 1.875rem;
   --size-icon-nav: 1.75rem;
 
+  --brand-logo: 6rem;
+
   /* Layout */
   --container-max: 80rem;
   --gutter: 1.5rem;
@@ -179,8 +181,8 @@ ul {
 
 .brand img {
   display: block;
-  height: var(--brand-logo-height, 3rem);
-  width: auto;
+  width: var(--brand-logo);
+  height: auto;
 }
 
 .section {
